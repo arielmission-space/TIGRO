@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tigro"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
     {name = "Andrea Bocchieri <andrea.bocchieri@uniroma1.it>"},
     {name = "Enzo Pascale"},
@@ -31,6 +31,9 @@ dependencies = [
     "prysm>=0.21.1",
     "lsq-ellipse>=2.2.1",
     "opencv-python>=4.10.0",
+    "shiny>=0.10.2",
+    "shinywidgets>=0.3.2",
+    "faicons>=0.2.2",
 ]
 
 [project.readme]
