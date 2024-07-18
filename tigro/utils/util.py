@@ -133,10 +133,9 @@ def get_threshold(phmap, threshold="lo", plot=True):
     return threshold
 
 
-def get_uref(phmap, semi_major, semi_minor):
+def get_uref(phmap, semi_major, semi_minor, sequence_ref):
     uref = {}
-    ref_seq = list(phmap.keys())[0]
-    shape = phmap[ref_seq]["RegMap"].shape
+    shape = phmap[sequence_ref]["RegMap"].shape
 
     x0, y0 = shape[1]//2, shape[0]//2 
     aperture = EllipticalAperture( (x0, y0), semi_major, semi_minor, theta=0.0)
