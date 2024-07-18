@@ -1,19 +1,18 @@
 import configparser
 import numpy as np
 
-from paos.log.logger import Logger
+from tigro import logger
 
 
-class Parser(Logger):
+class Parser():
     def __init__(self, file_name):
-        super().__init__()
-        self.info("Initializing parser")
+        logger.info("Initializing parser")
 
         # Read config file
         self.file_name = file_name
         self.config = configparser.ConfigParser()
         self.config.read(self.file_name)
-        self.debug("Config file read")
+        logger.debug("Config file read")
 
         # General
         general = self.config["general"]
@@ -25,7 +24,7 @@ class Parser(Logger):
         self.save_pickle = general.getboolean("save_pickle")
         self.outpath = general.get("outpath")
         self.loglevel = general.get("loglevel")
-        self.debug("General parameters read")
+        logger.debug("General parameters read")
 
         # CGVT
         cgvt = self.config["cgvt"]
@@ -34,7 +33,7 @@ class Parser(Logger):
         self.phmap_semi_major = cgvt.getfloat("phmap_semi_major")
         self.phmap_semi_minor = cgvt.getfloat("phmap_semi_minor")
         self.phmap_seq_ref = cgvt.getint("phmap_seq_ref")
-        self.debug("CGVT parameters read")
+        logger.debug("CGVT parameters read")
 
         # CGVT plots
         cgvt_plots = self.config["cgvt_plots"]
@@ -51,7 +50,7 @@ class Parser(Logger):
             int(order) for order in cgvt_plots.get("plot_polys_order").split(",")
         ]
         self.plot_polys_colors = cgvt_plots.get("plot_polys_colors")
-        self.debug("CGVT plots options read")
+        logger.debug("CGVT plots options read")
 
         # ZeroG options
         zerog = self.config["zerog"]
@@ -70,7 +69,7 @@ class Parser(Logger):
             for x in zerog.get("dphmap_idx")[1:-1].split("), (")
         ]
         self.dphmap_gain = zerog.getfloat("dphmap_gain")
-        self.debug("ZeroG options read")
+        logger.debug("ZeroG options read")
 
         # Zerog plots
         zerog_plots = self.config["zerog_plots"]
@@ -91,7 +90,7 @@ class Parser(Logger):
         self.plot_dphmap_hist_ylim = tuple(
             map(float, zerog_plots.get("plot_dphmap_hist_ylim").split(","))
         )
-        self.debug("Zerog plots options read")
+        logger.debug("Zerog plots options read")
 
     @classmethod
     def input_keywords(cls):
