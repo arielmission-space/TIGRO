@@ -4,12 +4,14 @@ from astropy.stats import sigma_clip
 from tigro.utils.util import mymfil
 from tigro.utils.util import transform
 
+from tigro import logger
+
 
 def filter_phmap(phmap):
     # Outlier rejection, gravity flip, median estimate
-    print("Filter sequence : ", end="")
+    logger.debug("Filter sequence...")
     for seq in phmap.keys():
-        print("{:3d}".format(seq), end="")
+        logger.debug("{:3d}".format(seq))
         rawmap = phmap[seq]["rawmap"].copy()
         for num in range(rawmap.shape[0]):
             rawmap[num] -= rawmap[num].mean()
@@ -25,10 +27,9 @@ def filter_phmap(phmap):
 
         if phmap[seq]["phi_offs"] == np.pi:
             phmap[seq]["cleanmap"] = rawmap[:, ::-1, ::-1]
-            print("r ", end="")
+            logger.debug("Sequence {:3d} rotated".format(seq))
         else:
             phmap[seq]["cleanmap"] = rawmap
-            print("  ", end="")
         del rawmap
 
     return phmap
@@ -46,7 +47,7 @@ def med_phmap(phmap, threshold, filter_type=np.ma.mean):
     return phmap
 
 
-def register_phmap(phmap, verbose=True):
+def register_phmap(phmap):
     ref_seq = list(phmap.keys())[0]
     shape = phmap[ref_seq]["medmap"].shape
     x0, y0 = shape[1] // 2, shape[0] // 2
@@ -65,8 +66,7 @@ def register_phmap(phmap, verbose=True):
             m_out[k] = transform(phmap[seq]["cleanmap"][k], xc, yc, dx, dy, phi)
         phmap[seq]["RegCleanMap"] = m_out
 
-        if verbose:
-            print("|| seq:{:3d} | dx:{:6.2f} dy:{:6.2f}  ||".format(seq, dx, dy))
+        logger.debug("|| seq:{:3d} | dx:{:6.2f} dy:{:6.2f}  ||".format(seq, dx, dy))
     return phmap
 
 
@@ -104,18 +104,18 @@ def zerog_phmap(phmap, diff_idx):
 
 def delta_phmap(
     maps,
+    idx0: tuple,
     idx1: tuple,
-    idx2: tuple,
     gain=None,
     filter_type=np.ma.mean,
 ):
 
+    map0 = filter_type(maps[idx0[0] : idx0[1]], axis=0)
     map1 = filter_type(maps[idx1[0] : idx1[1]], axis=0)
-    map2 = filter_type(maps[idx2[0] : idx2[1]], axis=0)
 
     if gain is None:
-        gain = np.ma.sum(map2 * map1) / np.ma.sum(map2 * map2)
+        gain = np.ma.sum(map1 * map0) / np.ma.sum(map1 * map1)
 
-    dmap = gain * map2 - map1
+    dmap = gain * map1 - map0
 
     return dmap
