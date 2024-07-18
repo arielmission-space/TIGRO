@@ -20,4 +20,3 @@ logger = logging.getLogger("paos")
 setLogLevel(logging.DEBUG)
 
 logger.name = __pkg_name__
-logger.info(f"code version {__version__}")

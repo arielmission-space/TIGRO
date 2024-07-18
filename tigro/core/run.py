@@ -111,6 +111,8 @@ def run(config_file):
                 poly_order=pp.plot_polys_order,
                 colors=pp.plot_polys_colors,
             )
+        
+        logger.info("CGVT completed")
 
     if pp.run_zerog:
         logger.info("Running ZeroG")
@@ -160,3 +162,5 @@ def run(config_file):
                 hist_xlim=pp.plot_dphmap_hist_xlim,
                 hist_ylim=pp.plot_dphmap_hist_ylim,
             )
+
+        logger.info("ZeroG completed")
