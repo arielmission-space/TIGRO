@@ -1,4 +1,7 @@
+import os
 import shutil
+
+from shiny import run_app
 
 from tigro import __pkg_name__
 from tigro import __version__
@@ -75,8 +78,9 @@ def main():
         addLogFile(fname=logfile, reset=True, level=logger.level)
         logger.info("Logging to file enabled")
 
-    # do something here
-    print("Hello, world!")
+    app = os.path.join(os.path.realpath(os.path.dirname(__file__)), "ui", "app.py")
+    logger.info(f"Running app: {__pkg_name__} v{__version__}")
+    run_app(app, reload=True, launch_browser=False)
 
     end = timer()
     logger.info(f"Finished in {end - start:.2f} seconds")
