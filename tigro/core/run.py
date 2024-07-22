@@ -177,9 +177,9 @@ def run_zerog(pp, phmap=None):
     logger.info("ZeroG completed")
 
 
-def run(config_file):
+def run(config, outpath):
     logger.info("Parsing configuration file")
-    pp = Parser(config_file)
+    pp = Parser(config, outpath)
 
     logger.setLevel(pp.loglevel)
 

@@ -5,12 +5,14 @@ import numpy as np
 from tigro import logger
 
 
-class Parser():
-    def __init__(self, file_name):
+class Parser:
+    def __init__(self, file_name, outpath):
         logger.info("Initializing parser")
 
-        # Read config file
         self.file_name = file_name
+        self.outpath = outpath
+
+        # Read config file
         self.config = configparser.ConfigParser()
         self.config.read(self.file_name)
         logger.debug("Config file read")
@@ -22,7 +24,6 @@ class Parser():
             int(seq_id) for seq_id in general.get("sequence_ids").split(",")
         ]
         self.n_zernike = general.getint("n_zernike")
-        self.outpath = general.get("outpath")
         self.store_phmap = general.getboolean("store_phmap")
         self.fname_phmap = general.get("fname_phmap")
         self.fname_phmap = os.path.join(self.outpath, self.fname_phmap)

@@ -29,8 +29,8 @@ def main():
 
     parser.add_argument(
         "-o",
-        "--output",
-        dest="output",
+        "--outpath",
+        dest="outpath",
         type=str,
         required=True,
         help="Path to the output directory",
@@ -59,24 +59,24 @@ def main():
 
     logger.info(f"Configuration file: {args.config}")
 
-    Path(args.output).mkdir(parents=True, exist_ok=True)
-    logger.info(f"Output directory: {args.output}")
+    Path(args.outpath).mkdir(parents=True, exist_ok=True)
+    logger.info(f"Output directory: {args.outpath}")
 
-    shutil.copy(args.config, args.output)
-    logger.info(f"Configuration file copied to {args.output}")
+    shutil.copy(args.config, args.outpath)
+    logger.info(f"Configuration file copied to {args.outpath}")
 
     if args.debug:
         logger.setLevel("DEBUG")
         logger.info("Debug mode enabled")
 
     if args.log:
-        logfile = Path(args.output) / f"{__pkg_name__}.log"
+        logfile = Path(args.outpath) / f"{__pkg_name__}.log"
         from paos.log import addLogFile
 
         addLogFile(fname=logfile, reset=True, level=logger.level)
         logger.info("Logging to file enabled")
 
-    run(args.config)
+    run(args.config, args.outpath)
 
     end = timer()
     logger.info(f"Finished in {end - start:.2f} seconds")
