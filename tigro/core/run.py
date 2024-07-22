@@ -66,6 +66,7 @@ def run_cgvt(pp):
             uref,
             imkey=pp.plot_regmap_imkey,
             imsubkey="RegMap",
+            outpath=pp.outpath,
         )
 
     logger.info("Fitting Zernike orthonormal polynomials")
@@ -84,11 +85,12 @@ def run_cgvt(pp):
             uref,
             imkey=pp.plot_regmap_no_pttf_imkey,
             imsubkey="RegMap-PTTF",
+            outpath=pp.outpath,
         )
 
-    if pp.save_pickle:
+    if pp.store_phmap:
         logger.info("Saving results to pickle file")
-        to_pickle(phmap, pp.outpath)
+        to_pickle(phmap, pp.fname_phmap)
 
     if pp.plot_allpolys:
         logger.info("Plotting all polynomials")
@@ -98,6 +100,7 @@ def run_cgvt(pp):
             sequence_ref=pp.plot_allpolys_seq_ref,
             NZernike=pp.n_zernike,
             colors=pp.plot_allpolys_colors,
+            outpath=pp.outpath,
         )
 
     if pp.plot_polys:
@@ -108,12 +111,15 @@ def run_cgvt(pp):
             sequence_ref=pp.plot_polys_seq_ref,
             poly_order=pp.plot_polys_order,
             colors=pp.plot_polys_colors,
+            outpath=pp.outpath,
         )
 
     logger.info("CGVT completed")
 
+    return phmap
 
-def run_zerog(pp):
+
+def run_zerog(pp, phmap=None):
 
     if not pp.run_zerog:
         return
@@ -123,7 +129,7 @@ def run_zerog(pp):
     if not phmap:
         try:
             logger.info("Loading phase maps")
-            phmap = from_pickle(pp.outpath)
+            phmap = from_pickle(pp.fname_phmap)
         except FileNotFoundError:
             logger.error("File not found")
             return
@@ -139,11 +145,12 @@ def run_zerog(pp):
     if pp.plot_zerog:
         logger.info("Plotting ZeroG results")
         plot_zerog(
-            coeff_med,
-            cmed,
-            rms,
-            color,
-            pp.plot_zerog_ylim,
+            coeff_med=coeff_med,
+            cmed=cmed,
+            rms=rms,
+            color=color,
+            ylim=pp.plot_zerog_ylim,
+            outpath=pp.outpath,
         )
 
     logger.info("Computing delta phase map")
@@ -164,6 +171,7 @@ def run_zerog(pp):
             vlines=pp.plot_dphmap_vlines,
             hist_xlim=pp.plot_dphmap_hist_xlim,
             hist_ylim=pp.plot_dphmap_hist_ylim,
+            outpath=pp.outpath,
         )
 
     logger.info("ZeroG completed")
@@ -175,6 +183,6 @@ def run(config_file):
 
     logger.setLevel(pp.loglevel)
 
-    run_cgvt(pp)
+    phmap = run_cgvt(pp)
 
-    run_zerog(pp)
+    run_zerog(pp, phmap)

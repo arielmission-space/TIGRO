@@ -1,3 +1,4 @@
+import os
 import configparser
 import numpy as np
 
@@ -21,8 +22,10 @@ class Parser():
             int(seq_id) for seq_id in general.get("sequence_ids").split(",")
         ]
         self.n_zernike = general.getint("n_zernike")
-        self.save_pickle = general.getboolean("save_pickle")
         self.outpath = general.get("outpath")
+        self.store_phmap = general.getboolean("store_phmap")
+        self.fname_phmap = general.get("fname_phmap")
+        self.fname_phmap = os.path.join(self.outpath, self.fname_phmap)
         self.loglevel = general.get("loglevel")
         logger.debug("General parameters read")
 

@@ -6,7 +6,13 @@ from matplotlib.patches import Ellipse
 import paos
 
 
-def plot_sag(phmap, uref, imkey, imsubkey="RegMap"):
+def plot_sag(
+    phmap,
+    uref,
+    imkey,
+    imsubkey="RegMap",
+    outpath=None,
+):
 
     fig = plt.figure(111, figsize=(7, 5))
     ax = fig.add_subplot(111)
@@ -47,10 +53,24 @@ def plot_sag(phmap, uref, imkey, imsubkey="RegMap"):
     ax.legend(loc=1, fontsize=10)
     ax.grid(which="both")
 
+    if outpath is not None:
+        plt.savefig(
+            f"{outpath}/{imkey}_{imsubkey}.png",
+            dpi=300,
+            bbox_inches="tight",
+        )
+
     plt.show()
 
 
-def plot_allpolys(phmap, sequence_ids, sequence_ref, NZernike, colors):
+def plot_allpolys(
+    phmap,
+    sequence_ids,
+    sequence_ref,
+    NZernike,
+    colors,
+    outpath=None,
+):
 
     fig, ax0 = plt.subplots(1, 1, figsize=(12, 12 / 1.618))
 
@@ -74,10 +94,24 @@ def plot_allpolys(phmap, sequence_ids, sequence_ref, NZernike, colors):
     ax0.set_ylabel("Amplitude [nm]")
     ax0.set_xlabel("Poly order")
 
+    if outpath is not None:
+        plt.savefig(
+            f"{outpath}/allpolys.png",
+            dpi=300,
+            bbox_inches="tight",
+        )
+
     plt.show()
 
 
-def plot_polys(phmap, sequence_ids, sequence_ref, poly_order=[5, 8], colors="rb"):
+def plot_polys(
+    phmap,
+    sequence_ids,
+    sequence_ref,
+    poly_order=[5, 8],
+    colors="rb",
+    outpath=None,
+):
 
     for seq, k in itertools.product(sequence_ids, poly_order):
         plt.plot(
@@ -106,10 +140,24 @@ def plot_polys(phmap, sequence_ids, sequence_ref, poly_order=[5, 8], colors="rb"
 
     plt.legend()
 
+    if outpath is not None:
+        plt.savefig(
+            f"{outpath}/polys.png",
+            dpi=300,
+            bbox_inches="tight",
+        )
+
     plt.show()
 
 
-def plot_zerog(coeff_med, cmed, rms, color, ylim=(-50, 50)):
+def plot_zerog(
+    coeff_med,
+    cmed,
+    rms,
+    color,
+    ylim=(-50, 50),
+    outpath=None,
+):
     fig = plt.figure(123, figsize=(12, 12 / 1.618))
     gs = GridSpec(4, 4, figure=fig)
     ax = fig.add_subplot(gs[0:4, 0:3])
@@ -134,6 +182,13 @@ def plot_zerog(coeff_med, cmed, rms, color, ylim=(-50, 50)):
     ax.set_ylabel("RMS [nm]")
     ax.set_xlabel("Sequence")
 
+    if outpath is not None:
+        plt.savefig(
+            f"{outpath}/zerog.png",
+            dpi=300,
+            bbox_inches="tight",
+        )
+
     plt.show()
 
 
@@ -143,6 +198,7 @@ def plot_map(
     vlines=[512],
     hist_xlim=(-200, 200),
     hist_ylim=(-200, 200),
+    outpath=None,
 ):
 
     fig = plt.figure(figsize=(8, 6))
@@ -180,4 +236,12 @@ def plot_map(
     ax1.set_ylim(*hist_ylim)
     ax2.set_xlim(*hist_xlim)
     # print((M10).std(), M20.std(), M.std(), gain)
+
+    if outpath is not None:
+        plt.savefig(
+            f"{outpath}/dphmap.png",
+            dpi=300,
+            bbox_inches="tight",
+        )
+
     plt.show()
