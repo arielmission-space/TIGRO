@@ -113,8 +113,10 @@ def plot_polys(
     outpath=None,
 ):
 
+    fig, ax0 = plt.subplots(1, 1, figsize=(12, 12 / 1.618))
+
     for seq, k in itertools.product(sequence_ids, poly_order):
-        plt.plot(
+        ax0.plot(
             seq,
             phmap[seq]["coeff"][k] - phmap[sequence_ref]["coeff"][k],
             "." + colors[poly_order.index(k)],
@@ -123,22 +125,22 @@ def plot_polys(
 
     # plot the labels for the poly_order
     for k in poly_order:
-        plt.plot([], [], "." + colors[poly_order.index(k)], label="Poly {:d}".format(k))
+        ax0.plot([], [], "." + colors[poly_order.index(k)], label="Poly {:d}".format(k))
 
-    xlim = plt.xlim()
-    ylim = plt.ylim()
+    xlim = ax0.get_xlim()
+    ylim = ax0.get_ylim()
 
-    plt.vlines(
+    ax0.vlines(
         np.arange(xlim[0], xlim[1]), *ylim, color="0.5", lw=1, ls="-.", alpha=0.5
     )
-    plt.xlim(xlim)
-    plt.ylim(ylim)
-    plt.grid()
+    ax0.set_xlim(xlim)
+    ax0.set_ylim(ylim)
+    ax0.grid()
 
-    plt.xlabel("Sequence")
-    plt.ylabel("Amplitude [nm]")
+    ax0.set_xlabel("Sequence")
+    ax0.set_ylabel("Amplitude [nm]")
 
-    plt.legend()
+    ax0.legend()
 
     if outpath is not None:
         plt.savefig(
