@@ -6,19 +6,19 @@ from tigro import logger
 
 
 class Parser:
-    def __init__(self, file_name, outpath):
+    def __init__(self, config, outpath):
         logger.info("Initializing parser")
 
-        self.file_name = file_name
+        self.config = config
         self.outpath = outpath
 
         # Read config file
-        self.config = configparser.ConfigParser()
-        self.config.read(self.file_name)
+        self.cparser = configparser.ConfigParser()
+        self.cparser.read(self.config)
         logger.debug("Config file read")
 
         # General
-        general = self.config["general"]
+        general = self.cparser["general"]
         self.project = general.get("project")
         self.comment = general.get("comment")
         self.version = general.get("version")
@@ -43,7 +43,7 @@ class Parser:
         logger.debug("General parameters read")
 
         # CGVT
-        cgvt = self.config["cgvt"]
+        cgvt = self.cparser["cgvt"]
         self.run_cgvt = cgvt.getboolean("run_cgvt")
         self.phmap_filter_type = getattr(
             np.ma, cgvt.get("phmap_filter_type", fallback="mean")
@@ -54,7 +54,7 @@ class Parser:
         logger.debug("CGVT parameters read")
 
         # CGVT plots
-        cgvt_plots = self.config["cgvt_plots"]
+        cgvt_plots = self.cparser["cgvt_plots"]
         self.plot_regmap = cgvt_plots.getboolean("plot_regmap")
         self.plot_regmap_imkey = cgvt_plots.getint("plot_regmap_imkey")
         self.plot_regmap_no_pttf = cgvt_plots.getboolean("plot_regmap_no_pttf")
@@ -77,7 +77,7 @@ class Parser:
         logger.debug("CGVT plots options read")
 
         # ZeroG options
-        zerog = self.config["zerog"]
+        zerog = self.cparser["zerog"]
         self.run_zerog = zerog.getboolean("run_zerog")
         self.zerog_idx0 = get_idx(zerog, "zerog_idx0")
         self.zerog_idx1 = get_idx(zerog, "zerog_idx1")
@@ -90,7 +90,7 @@ class Parser:
         self.dphmap_gain = zerog.getfloat("dphmap_gain", fallback=None)
 
         # Zerog plots
-        zerog_plots = self.config["zerog_plots"]
+        zerog_plots = self.cparser["zerog_plots"]
         self.plot_zerog = zerog_plots.getboolean("plot_zerog")
         self.plot_zerog_ylim = tuple(
             map(

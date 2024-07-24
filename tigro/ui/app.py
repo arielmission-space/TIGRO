@@ -13,6 +13,8 @@ from tigro import __author__
 from tigro import __version__
 from tigro import __license__
 
+from tigro.classes.parser import Parser
+
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar
 from tigro.ui.items import CGVt_sidebar
@@ -79,8 +81,8 @@ def app_ui(request: StarletteRequest) -> Tag:
 
 def server(input, output, session):
 
-    ini_file = reactive.value("filename")
-    config = reactive.value(configparser.ConfigParser())
+    config = reactive.value("config")
+    outpath = reactive.value("outpath")
 
     @reactive.effect
     @reactive.event(input.open)
@@ -119,14 +121,14 @@ def server(input, output, session):
             print("Invalid file")
             return
 
-        if ini_file.get().endswith(".ini") and ini_file.get() != file[0]["name"]:
+        if config.get().endswith(".ini") and config.get() != file[0]["name"]:
             return
             # await session.send_custom_message("refresh", "")
 
-        ini_file.set(file[0]["datapath"])
-        config.get().read(ini_file.get())
+        config.set(file[0]["datapath"])
+        pp = Parser(config=config.get(), outpath=outpath.get())
 
-        (general_elems,) = app_elems(config.get())
+        (general_elems,) = app_elems(pp)
 
         refresh_ui("general", general_elems)
 
