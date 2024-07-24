@@ -73,7 +73,7 @@ def app_ui(request: StarletteRequest) -> Tag:
             placement="right",
         ),
         window_title="TIGRO UI",
-        selected="System",
+        # selected="System",
     )
 
 
@@ -81,6 +81,30 @@ def server(input, output, session):
 
     ini_file = reactive.value("filename")
     config = reactive.value(configparser.ConfigParser())
+
+    @reactive.effect
+    @reactive.event(input.open)
+    def _():
+        req(input.open())
+        m = ui.modal(
+            ui.input_file(
+                id="open_ini",
+                label=ui.markdown(
+                    "Input files must be in the INI format.  \n"
+                    "Example files can be found in the TIGRO [GitHub repository](https://github.com/arielmission-space/TIGRO)."
+                ),
+                accept=[".ini"],
+                multiple=False,
+                button_label="Browse",
+            ),
+            title="Open INI File",
+            easy_close=True,
+            footer=ui.markdown(
+                "Note: you may only open one file per session.  \n"
+                "Refresh the page to open a different file."
+            ),
+        )
+        ui.modal_show(m)
 
     @reactive.effect
     @reactive.event(input.open_ini)
@@ -142,4 +166,4 @@ def server(input, output, session):
         ui.modal_show(m)
 
 
-app = App(app_ui, server, debug=False)
+app = App(app_ui, server, debug=True)
