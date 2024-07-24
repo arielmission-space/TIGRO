@@ -7,7 +7,6 @@ from tigro.core.run import run
 
 
 def main():
-
     import argparse
     from pathlib import Path
     from time import time as timer
@@ -83,5 +82,4 @@ def main():
 
 
 if __name__ == "__main__":
-
     main()

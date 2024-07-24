@@ -13,7 +13,6 @@ def plot_sag(
     imsubkey="RegMap",
     outpath=None,
 ):
-
     fig = plt.figure(111, figsize=(7, 5))
     ax = fig.add_subplot(111)
     img = ax.imshow(
@@ -71,12 +70,10 @@ def plot_allpolys(
     colors,
     outpath=None,
 ):
-
     fig, ax0 = plt.subplots(1, 1, figsize=(12, 12 / 1.618))
 
     ipol = np.arange(5, NZernike + 1)
     for k, seq in enumerate(sequence_ids):
-
         ax0.plot(
             ipol + k / 20 / 2,
             phmap[seq]["coeff"][4:] - phmap[sequence_ref]["coeff"][4:],
@@ -112,7 +109,6 @@ def plot_polys(
     colors="rb",
     outpath=None,
 ):
-
     fig, ax0 = plt.subplots(1, 1, figsize=(12, 12 / 1.618))
 
     for seq, k in itertools.product(sequence_ids, poly_order):
@@ -202,7 +198,6 @@ def plot_map(
     hist_ylim=(-200, 200),
     outpath=None,
 ):
-
     fig = plt.figure(figsize=(8, 6))
     gs = fig.add_gridspec(
         6,

@@ -71,7 +71,6 @@ def register_phmap(phmap):
 
 
 def zerog_phmap(phmap, diff_idx):
-
     coeff_med = []
     medmap = []
     color = []
@@ -110,7 +109,6 @@ def delta_phmap(
     gain=None,
     filter_type=np.ma.mean,
 ):
-
     map0 = filter_type(maps[idx0], axis=0)
     map1 = filter_type(maps[idx1], axis=0)
 

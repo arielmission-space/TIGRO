@@ -23,10 +23,9 @@ from tigro import logger
 
 
 def run_cgvt(pp):
-
     if not pp.run_cgvt:
         return
-    
+
     logger.info("Running CGVT")
 
     logger.info("Loading phase maps")
@@ -120,10 +119,9 @@ def run_cgvt(pp):
 
 
 def run_zerog(pp, phmap=None):
-
     if not pp.run_zerog:
         return
-    
+
     logger.info("Running ZeroG")
 
     if not phmap:
@@ -135,9 +133,7 @@ def run_zerog(pp, phmap=None):
             return
 
     logger.info("Getting diff indices")
-    diff_idx = get_diff_idx(
-        pp.zerog_idx0, pp.zerog_idx1, pp.zerog_colors
-    )
+    diff_idx = get_diff_idx(pp.zerog_idx0, pp.zerog_idx1, pp.zerog_colors)
 
     logger.info("ZeroG-ing phase maps")
     medmap, zerogmap, coeff_med, cmed, rms, color = zerog_phmap(phmap, diff_idx)

@@ -11,9 +11,7 @@ def app_ui(request: StarletteRequest) -> Tag:
         ui.nav_panel(
             "CGVt",
             ui.layout_sidebar(
-                ui.sidebar(
-
-                ),
+                ui.sidebar(),
                 ui.card(
                     full_screen=True,
                 ),
@@ -22,13 +20,11 @@ def app_ui(request: StarletteRequest) -> Tag:
         ui.nav_panel(
             "ZeroG",
             ui.layout_sidebar(
-                ui.sidebar(
-
-                ),
+                ui.sidebar(),
                 ui.card(
                     full_screen=True,
                 ),
-            )
+            ),
         ),
         fillable="TIGRO UI",
         id="navbar",

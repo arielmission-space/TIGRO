@@ -56,11 +56,15 @@ class myLsqEllipse(LsqEllipse):
         center = (x0, y0)
 
         # Find the semi-axes lengths [eqn. 21 and 22] from (**)
-        numerator = 2 * (a * f**2 + c * d**2 + g * b**2 - 2 * b * d * f - a * c * g)
+        numerator = 2 * (
+            a * f**2 + c * d**2 + g * b**2 - 2 * b * d * f - a * c * g
+        )
         denominator1 = (b**2 - a * c) * (
             np.sqrt((a - c) ** 2 + 4 * b**2) - (c + a)
         )  # noqa: E201
-        denominator2 = (b**2 - a * c) * (-np.sqrt((a - c) ** 2 + 4 * b**2) - (c + a))
+        denominator2 = (b**2 - a * c) * (
+            -np.sqrt((a - c) ** 2 + 4 * b**2) - (c + a)
+        )
         width = np.sqrt(numerator / denominator1)
         height = np.sqrt(numerator / denominator2)
 
@@ -115,11 +119,13 @@ def transform(M, xc, yc, Dx, Dy, phi):
 
 def get_threshold(phmap, threshold="lo", plot=True):
     # Get threshold for outlier rejection
-    ncounts = np.hstack([phmap[seq]["cleanmap"].count(axis=(1,2)) for seq in phmap.keys()])
+    ncounts = np.hstack(
+        [phmap[seq]["cleanmap"].count(axis=(1, 2)) for seq in phmap.keys()]
+    )
 
     lo, threshold, med, hi = np.percentile(ncounts, [0.0, 0.1, 50, 99.9])
     if threshold == "lo":
-        threshold = lo    
+        threshold = lo
 
     if plot:
         plt.figure()
@@ -127,9 +133,9 @@ def get_threshold(phmap, threshold="lo", plot=True):
         plt.ylim(lo, hi)
         xlim = plt.xlim()
         plt.hlines([threshold, med], *xlim)
-        plt.title('Check threshold by eye!!!')
+        plt.title("Check threshold by eye!!!")
         plt.show()
-    
+
     return threshold
 
 
@@ -137,20 +143,20 @@ def get_uref(phmap, semi_major, semi_minor, sequence_ref):
     uref = {}
     shape = phmap[sequence_ref]["RegMap"].shape
 
-    x0, y0 = shape[1]//2, shape[0]//2 
-    aperture = EllipticalAperture( (x0, y0), semi_major, semi_minor, theta=0.0)
-    mask = ~aperture.to_mask('center').to_image(shape).astype(bool)
+    x0, y0 = shape[1] // 2, shape[0] // 2
+    aperture = EllipticalAperture((x0, y0), semi_major, semi_minor, theta=0.0)
+    mask = ~aperture.to_mask("center").to_image(shape).astype(bool)
 
-    x = (np.arange(shape[1])-x0)/semi_major
-    y = (np.arange(shape[0])-y0)/semi_major
+    x = (np.arange(shape[1]) - x0) / semi_major
+    y = (np.arange(shape[0]) - y0) / semi_major
 
-    uref['pupil_mask'] = mask
-    uref['xc'] = x0
-    uref['yc'] = y0
-    uref['a'] = semi_major
-    uref['b'] = semi_minor
-    uref['yx'] = [y, x]
-    uref['extent'] = x.min(), x.max(), y.min(), y.max()
+    uref["pupil_mask"] = mask
+    uref["xc"] = x0
+    uref["yc"] = y0
+    uref["a"] = semi_major
+    uref["b"] = semi_minor
+    uref["yx"] = [y, x]
+    uref["extent"] = x.min(), x.max(), y.min(), y.max()
 
     return uref
 
@@ -158,7 +164,7 @@ def get_uref(phmap, semi_major, semi_minor, sequence_ref):
 def get_diff_idx(idx0, idx1, colors):
     assert len(idx0) == len(idx1), "Length mismatch"
     diff_idx = []
-    for (i0, i1, color) in zip(idx0, idx1, colors):
+    for i0, i1, color in zip(idx0, idx1, colors):
         for j0, j1 in zip(i0, i1):
             diff_idx.append([int(j0), int(j1), color])
     return diff_idx

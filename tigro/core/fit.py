@@ -48,7 +48,6 @@ def fit_ellipse(phmap):
 
 
 def fit_zernike(phmap, uref, NZernike=15):
-
     logger.debug("Calculating {:d} Polys... ".format(NZernike))
     pupil_mask = uref["pupil_mask"]
     y_, x_ = uref["yx"]
