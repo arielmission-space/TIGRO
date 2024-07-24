@@ -19,6 +19,9 @@ class Parser:
 
         # General
         general = self.config["general"]
+        self.project = general.get("project")
+        self.comment = general.get("comment")
+        self.version = general.get("version")
         self.datapath = general.get("datapath")
 
         def get_idx(dd, key):
