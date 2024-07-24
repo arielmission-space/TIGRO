@@ -26,7 +26,7 @@ def app_elems(pp):
         ui.input_text(
             "sequence_ids",
             "Sequence IDs",
-            value=pp.sequence_ids_config,
+            value=pp._sequence_ids,
         ),
         ui.input_text(
             "n_zernike",
@@ -61,7 +61,7 @@ def app_elems(pp):
         ui.input_text(
             "phmap_filter_type",
             "Filter type",
-            value=pp.phmap_filter_type_config,
+            value=pp._phmap_filter_type,
         ),
         ui.input_text(
             "phmap_semi_major",
@@ -99,7 +99,7 @@ def app_elems(pp):
         ui.input_text(
             "plot_allpolys_colors",
             "All polynomials: colors",
-            value=pp.plot_allpolys_colors_config,
+            value=pp._plot_allpolys_colors,
         ),
         ui.input_text(
             "plot_polys_seq_ref",
@@ -109,12 +109,12 @@ def app_elems(pp):
         ui.input_text(
             "plot_polys_order",
             "Polynomials vs sequence: order",
-            value=pp.plot_polys_order_config,
+            value=pp._plot_polys_order,
         ),
         ui.input_text(
             "plot_polys_colors",
             "Polynomials vs sequence: colors",
-            value=pp.plot_polys_colors_config,
+            value=pp._plot_polys_colors,
         ),
     ]
 
@@ -122,22 +122,22 @@ def app_elems(pp):
         ui.input_text(
             "zerog_idx0",
             "Zero-G index 0",
-            value=pp.zerog_idx0_config,
+            value=pp._zerog_idx0,
         ),
         ui.input_text(
             "zerog_idx1",
             "Zero-G index 1",
-            value=pp.zerog_idx1_config,
+            value=pp._zerog_idx1,
         ),
         ui.input_text(
             "zerog_colors",
             "Zero-G colors",
-            value=pp.zerog_colors_config,
+            value=pp._zerog_colors,
         ),
         ui.input_text(
             "dphmap_filter_type",
             "Filter type",
-            value=pp.dphmap_filter_type_config,
+            value=pp._dphmap_filter_type,
         ),
         ui.input_text(
             "dphmap_gain",
@@ -147,12 +147,12 @@ def app_elems(pp):
         ui.input_text(
             "dphmap_idx0",
             "Differential phase map index 0",
-            value=pp.dphmap_idx0_config,
+            value=pp._dphmap_idx0,
         ),
         ui.input_text(
             "dphmap_idx1",
             "Differential phase map index 1",
-            value=pp.dphmap_idx1_config,
+            value=pp._dphmap_idx1,
         ),
     ]
 
@@ -160,27 +160,27 @@ def app_elems(pp):
         ui.input_text(
             "plot_zerog_ylim",
             "Zero-G: Y limits",
-            value=pp.plot_zerog_ylim_config,
+            value=pp._plot_zerog_ylim,
         ),
         ui.input_text(
             "plot_dphmap_hlines",
             "Differential phase map: horizontal lines",
-            value=pp.plot_dphmap_hlines_config,
+            value=pp._plot_dphmap_hlines,
         ),
         ui.input_text(
             "plot_dphmap_vlines",
             "Differential phase map: vertical lines",
-            value=pp.plot_dphmap_vlines_config,
+            value=pp._plot_dphmap_vlines,
         ),
         ui.input_text(
             "plot_dphmap_hist_xlim",
             "Differential phase map histogram: X limits",
-            value=pp.plot_dphmap_hist_xlim_config,
+            value=pp._plot_dphmap_hist_xlim,
         ),
         ui.input_text(
             "plot_dphmap_hist_ylim",
             "Differential phase map histogram: Y limits",
-            value=pp.plot_dphmap_hist_ylim_config,
+            value=pp._plot_dphmap_hist_ylim,
         ),
     ]
 
