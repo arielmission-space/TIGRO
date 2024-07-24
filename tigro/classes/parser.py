@@ -78,8 +78,11 @@ class Parser:
         ]
         self.zerog_colors = get_colors(zerog, "zerog_colors")
         self.dphmap_filter_type = getattr(np.ma, zerog.get("dphmap_filter_type", fallback="mean"))
-        self.dphmap_idx = [
-            tuple(map(int, x.split("-"))) for x in zerog.get("dphmap_idx").split(",")
+        self.dphmap_idx0 = [
+            tuple(map(int, x.split("-"))) for x in zerog.get("dphmap_idx0").split(",")
+        ]
+        self.dphmap_idx1 = [
+            tuple(map(int, x.split("-"))) for x in zerog.get("dphmap_idx1").split(",")
         ]
         self.dphmap_gain = zerog.getfloat("dphmap_gain", fallback=None)
 

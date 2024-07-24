@@ -156,8 +156,8 @@ def run_zerog(pp, phmap=None):
     logger.info("Computing delta phase map")
     dphmap = delta_phmap(
         zerogmap,
-        idx0=pp.dphmap_idx[0],
-        idx1=pp.dphmap_idx[1],
+        idx0=pp.dphmap_idx0,
+        idx1=pp.dphmap_idx1,
         gain=pp.dphmap_gain,
         filter_type=pp.dphmap_filter_type,
     )
