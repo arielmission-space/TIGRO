@@ -75,9 +75,7 @@ class Parser:
         self.zerog_idx1 = get_idx(self._zerog_idx1)
         self._zerog_colors = zerog.get("zerog_colors")
         self.zerog_colors = get_colors(self._zerog_colors)
-        self._dphmap_filter_type = zerog.get(
-            "dphmap_filter_type", fallback="mean"
-        )
+        self._dphmap_filter_type = zerog.get("dphmap_filter_type", fallback="mean")
         self.dphmap_filter_type = getattr(np.ma, self._dphmap_filter_type)
         self._dphmap_idx0 = zerog.get("dphmap_idx0")
         self._dphmap_idx1 = zerog.get("dphmap_idx1")
@@ -88,9 +86,7 @@ class Parser:
         # Zerog plots
         zerog_plots = self.cparser["zerog_plots"]
         self.plot_zerog = zerog_plots.getboolean("plot_zerog")
-        self._plot_zerog_ylim = zerog_plots.get(
-            "plot_zerog_ylim", fallback="-40, 40"
-        )
+        self._plot_zerog_ylim = zerog_plots.get("plot_zerog_ylim", fallback="-40, 40")
         self.plot_zerog_ylim = tuple(map(float, self._plot_zerog_ylim.split(",")))
         self.plot_dphmap = zerog_plots.getboolean("plot_dphmap")
         self._plot_dphmap_hlines = zerog_plots.get(
@@ -102,12 +98,8 @@ class Parser:
                 self._plot_dphmap_hlines.split(","),
             )
         )
-        self._plot_dphmap_vlines = zerog_plots.get(
-            "plot_dphmap_vlines", fallback="512"
-        )
-        self.plot_dphmap_vlines = tuple(
-            map(int, self._plot_dphmap_vlines.split(","))
-        )
+        self._plot_dphmap_vlines = zerog_plots.get("plot_dphmap_vlines", fallback="512")
+        self.plot_dphmap_vlines = tuple(map(int, self._plot_dphmap_vlines.split(",")))
         self._plot_dphmap_hist_xlim = zerog_plots.get(
             "plot_dphmap_hist_xlim", fallback="-200, 200"
         )

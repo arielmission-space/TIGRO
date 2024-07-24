@@ -80,7 +80,6 @@ def app_ui(request: StarletteRequest) -> Tag:
 
 
 def server(input, output, session):
-
     config = reactive.value("config")
     outpath = reactive.value("outpath")
 
