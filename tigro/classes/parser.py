@@ -77,7 +77,7 @@ class Parser:
             int(num) for num in zerog.get("zerog_num_pairs").split(",")
         ]
         self.zerog_colors = get_colors(zerog, "zerog_colors")
-        self.dphmap_filter_type = getattr(np.ma, zerog.get("dphmap_filter_type"))
+        self.dphmap_filter_type = getattr(np.ma, zerog.get("dphmap_filter_type", fallback="mean"))
         self.dphmap_idx = [
             tuple(map(int, x.split("-"))) for x in zerog.get("dphmap_idx").split(",")
         ]
