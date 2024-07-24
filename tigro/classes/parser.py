@@ -81,6 +81,8 @@ class Parser:
         self.dphmap_idx = [
             tuple(map(int, x.split("-"))) for x in zerog.get("dphmap_idx").split(",")
         ]
+        self.dphmap_gain = zerog.getfloat("dphmap_gain", fallback=None)
+
         # Zerog plots
         zerog_plots = self.config["zerog_plots"]
         self.plot_zerog = zerog_plots.getboolean("plot_zerog")
@@ -89,10 +91,10 @@ class Parser:
         )
         self.plot_dphmap = zerog_plots.getboolean("plot_dphmap")
         self.plot_dphmap_hlines = tuple(
-            map(int, zerog_plots.get("plot_dphmap_hlines").split(","))
+            map(int, zerog_plots.get("plot_dphmap_hlines", fallback="240, 512").split(","))
         )
         self.plot_dphmap_vlines = tuple(
-            map(int, zerog_plots.get("plot_dphmap_vlines").split(","))
+            map(int, zerog_plots.get("plot_dphmap_vlines", fallback="512").split(","))
         )
         self.plot_dphmap_hist_xlim = tuple(
             map(float, zerog_plots.get("plot_dphmap_hist_xlim", fallback="-200, 200").split(","))
