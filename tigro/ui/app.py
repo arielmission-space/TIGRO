@@ -1,17 +1,50 @@
+import configparser
+
 from htmltools import Tag
 from starlette.requests import Request as StarletteRequest
 from faicons import icon_svg
 from shiny import App
 from shiny import ui
+from shiny import reactive
+from shiny import req
+from shiny.types import FileInfo
+
+from tigro import __author__
+from tigro import __version__
+from tigro import __license__
+
+from tigro.ui.items import menu_items
+from tigro.ui.items import system_sidebar
+from tigro.ui.items import CGVt_sidebar
+from tigro.ui.items import ZeroG_sidebar
+from tigro.ui.elems import app_elems
+from tigro.ui.shared import refresh_ui
 
 
 def app_ui(request: StarletteRequest) -> Tag:
     return ui.page_navbar(
         ui.nav_spacer(),
+        *menu_items,
+        ui.nav_spacer(),
+        ui.nav_panel(
+            "System",
+            ui.layout_sidebar(
+                ui.sidebar(
+                    ui.p("System Explorer"),
+                    ui.accordion(*system_sidebar, open=False),
+                ),
+                ui.card(
+                    full_screen=True,
+                ),
+            ),
+        ),
         ui.nav_panel(
             "CGVt",
             ui.layout_sidebar(
-                ui.sidebar(),
+                ui.sidebar(
+                    ui.p("CGVt Explorer"),
+                    ui.accordion(*CGVt_sidebar, open=False),
+                ),
                 ui.card(
                     full_screen=True,
                 ),
@@ -20,7 +53,10 @@ def app_ui(request: StarletteRequest) -> Tag:
         ui.nav_panel(
             "ZeroG",
             ui.layout_sidebar(
-                ui.sidebar(),
+                ui.sidebar(
+                    ui.p("ZeroG Explorer"),
+                    ui.accordion(*ZeroG_sidebar, open=False),
+                ),
                 ui.card(
                     full_screen=True,
                 ),
@@ -37,11 +73,73 @@ def app_ui(request: StarletteRequest) -> Tag:
             placement="right",
         ),
         window_title="TIGRO UI",
+        selected="System",
     )
 
 
 def server(input, output, session):
-    pass
+
+    ini_file = reactive.value("filename")
+    config = reactive.value(configparser.ConfigParser())
+
+    @reactive.effect
+    @reactive.event(input.open_ini)
+    def open_ini():
+        req(input.open_ini())
+        file: list[FileInfo] | None = input.open_ini()
+
+        if file is None:
+            return
+
+        if not file[0]["name"].endswith(".ini"):
+            print("Invalid file")
+            return
+
+        if ini_file.get().endswith(".ini") and ini_file.get() != file[0]["name"]:
+            return
+            # await session.send_custom_message("refresh", "")
+
+        ini_file.set(file[0]["datapath"])
+        config.get().read(ini_file.get())
+
+        (general_elems,) = app_elems(config.get())
+
+        refresh_ui("general", general_elems)
+
+    @reactive.effect
+    @reactive.event(input.close)
+    async def _():
+        await session.close()
+
+    @reactive.effect
+    @reactive.event(input.docs)
+    def _():
+        req(input.docs())
+        m = ui.modal(
+            ui.markdown(
+                """
+                Click [here](https://tigro.readthedocs.io/en/latest/) to access the TIGRO documentation.
+                """
+            ),
+            title="Documentation",
+            easy_close=True,
+        )
+        ui.modal_show(m)
+
+    @reactive.effect
+    @reactive.event(input.about)
+    def _():
+        req(input.about())
+        m = ui.modal(
+            ui.markdown(
+                f"SOFTWARE: TIGRO UI v{__version__}  \n"
+                f"AUTHOR: {__author__}  \n"
+                f"LICENSE: {__license__}  \n"
+            ),
+            title="About",
+            easy_close=True,
+        )
+        ui.modal_show(m)
 
 
 app = App(app_ui, server, debug=False)
