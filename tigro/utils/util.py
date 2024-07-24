@@ -160,6 +160,5 @@ def get_diff_idx(idx0, idx1, colors):
     diff_idx = []
     for (i0, i1, color) in zip(idx0, idx1, colors):
         for j0, j1 in zip(i0, i1):
-            diff_idx.append([j0, j1, color])
-    diff_idx = np.array(diff_idx)
+            diff_idx.append([int(j0), int(j1), color])
     return diff_idx

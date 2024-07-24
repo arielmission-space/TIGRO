@@ -93,6 +93,7 @@ def zerog_phmap(phmap, diff_idx):
         color.append(col)
 
     medmap = np.ma.MaskedArray(medmap)
+    zerogmap = np.ma.MaskedArray(zerogmap)
     coeff_med = np.ma.MaskedArray(coeff_med)
     cmed = np.ma.median(coeff_med, axis=0)
 
@@ -104,14 +105,14 @@ def zerog_phmap(phmap, diff_idx):
 
 def delta_phmap(
     maps,
-    idx0: tuple,
-    idx1: tuple,
+    idx0,
+    idx1,
     gain=None,
     filter_type=np.ma.mean,
 ):
 
-    map0 = filter_type(maps[idx0[0] : idx0[1]], axis=0)
-    map1 = filter_type(maps[idx1[0] : idx1[1]], axis=0)
+    map0 = filter_type(maps[idx0], axis=0)
+    map1 = filter_type(maps[idx1], axis=0)
 
     if gain is None:
         gain = np.ma.sum(map1 * map0) / np.ma.sum(map1 * map1)
