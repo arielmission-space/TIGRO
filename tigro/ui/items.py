@@ -14,11 +14,11 @@ system_sidebar = [
 ]
 
 CGVt_sidebar = [
-    ui.accordion_panel("Analysis", nested_div("cgvt")),
+    ui.accordion_panel("Analysis", nested_div("cgvt_analysis")),
     ui.accordion_panel("Plots", nested_div("cgvt_plots")),
 ]
 
 ZeroG_sidebar = [
-    ui.accordion_panel("Analysis", nested_div("zerog")),
+    ui.accordion_panel("Analysis", nested_div("zerog_analysis")),
     ui.accordion_panel("Plots", nested_div("zerog_plots")),
 ]

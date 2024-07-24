@@ -126,11 +126,21 @@ def server(input, output, session):
             # await session.send_custom_message("refresh", "")
 
         config.set(file[0]["datapath"])
-        pp = Parser(config=config.get(), outpath=outpath.get())
+        pp = Parser(config=config.get())
 
-        (general_elems,) = app_elems(pp)
+        (
+            general_elems,
+            cgvt_analysis_elems,
+            cgvt_plots_elems,
+            zerog_analysis_elems,
+            zerog_plots_elems,
+        ) = app_elems(pp)
 
         refresh_ui("general", general_elems)
+        refresh_ui("cgvt_analysis", cgvt_analysis_elems)
+        refresh_ui("cgvt_plots", cgvt_plots_elems)
+        refresh_ui("zerog_analysis", zerog_analysis_elems)
+        refresh_ui("zerog_plots", zerog_plots_elems)
 
     @reactive.effect
     @reactive.event(input.close)
