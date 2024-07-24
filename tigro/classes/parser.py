@@ -20,13 +20,18 @@ class Parser:
         # General
         general = self.config["general"]
         self.datapath = general.get("datapath")
-        self.sequence_ids = []
-        for seq_id in general.get("sequence_ids").split(","):
-            if "-" in seq_id:
-                start, end = map(int, seq_id.split("-"))
-                self.sequence_ids.extend(range(start, end + 1))
-            else:
-                self.sequence_ids.append(int(seq_id))
+
+        def get_idx(dd, key):
+            ll = []
+            for idx in dd.get(key).split(","):
+                if "-" in idx:
+                    start, end = map(int, idx.split("-"))
+                    ll.extend([range(start, end + 1)])
+                else:
+                    ll.append([int(idx)])
+            return ll
+        
+        self.sequence_ids = np.concatenate(get_idx(general, "sequence_ids"))
         self.n_zernike = general.getint("n_zernike", fallback=15)
         self.store_phmap = general.getboolean("store_phmap")
         self.fname_phmap = general.get("fname_phmap")
@@ -69,13 +74,8 @@ class Parser:
         # ZeroG options
         zerog = self.config["zerog"]
         self.run_zerog = zerog.getboolean("run_zerog")
-        self.zerog_start_indices_pairs = [
-            tuple(map(int, x.split(", ")))
-            for x in zerog.get("zerog_start_indices_pairs")[1:-1].split("), (")
-        ]
-        self.zerog_num_pairs = [
-            int(num) for num in zerog.get("zerog_num_pairs").split(",")
-        ]
+        self.zerog_idx0 = get_idx(zerog, "zerog_idx0")
+        self.zerog_idx1 = get_idx(zerog, "zerog_idx1")
         self.zerog_colors = get_colors(zerog, "zerog_colors")
         self.dphmap_filter_type = getattr(np.ma, zerog.get("dphmap_filter_type", fallback="mean"))
         self.dphmap_idx0 = [

@@ -155,9 +155,11 @@ def get_uref(phmap, semi_major, semi_minor, sequence_ref):
     return uref
 
 
-def get_diff_idx(start_indices_pairs, num_pairs, colors):
+def get_diff_idx(idx0, idx1, colors):
+    assert len(idx0) == len(idx1), "Length mismatch"
     diff_idx = []
-    for (start1, start2), num_pair, color in zip(start_indices_pairs, num_pairs, colors):
-        for i in range(num_pair):
-            diff_idx.append([start1 + i, start2 + i, color])
+    for (i0, i1, color) in zip(idx0, idx1, colors):
+        for j0, j1 in zip(i0, i1):
+            diff_idx.append([j0, j1, color])
+    diff_idx = np.array(diff_idx)
     return diff_idx

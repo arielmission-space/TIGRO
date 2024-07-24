@@ -136,7 +136,7 @@ def run_zerog(pp, phmap=None):
 
     logger.info("Getting diff indices")
     diff_idx = get_diff_idx(
-        pp.zerog_start_indices_pairs, pp.zerog_num_pairs, pp.zerog_colors
+        pp.zerog_idx0, pp.zerog_idx1, pp.zerog_colors
     )
 
     logger.info("ZeroG-ing phase maps")
