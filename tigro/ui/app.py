@@ -1,5 +1,3 @@
-import configparser
-
 from htmltools import Tag
 from starlette.requests import Request as StarletteRequest
 from faicons import icon_svg
@@ -17,7 +15,6 @@ from tigro.classes.parser import Parser
 
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar
-from tigro.ui.items import CGVt_sidebar
 from tigro.ui.items import ZeroG_sidebar
 from tigro.ui.elems import app_elems
 from tigro.ui.shared import refresh_ui
@@ -33,8 +30,8 @@ def app_ui(request: StarletteRequest) -> Tag:
             "System",
             ui.layout_sidebar(
                 ui.sidebar(
-                    ui.p("System Explorer"),
                     ui.accordion(*system_sidebar, open=False),
+                    width=350,
                 ),
                 ui.card(
                     full_screen=True,

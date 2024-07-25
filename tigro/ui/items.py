@@ -10,7 +10,7 @@ menu_items = [
 ]
 
 system_sidebar = [
-    ui.accordion_panel("General", nested_div("general")),
+    ui.accordion_panel("System Explorer", nested_div("general")),
 ]
 
 CGVt_sidebar = [

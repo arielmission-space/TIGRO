@@ -36,16 +36,6 @@ def app_elems(pp):
             value=pp._sequence_ids,
         ),
         ui.input_text(
-            "n_zernike",
-            "Number of Zernike polynomials",
-            value=pp.n_zernike,
-        ),
-        ui.input_checkbox(
-            "store_phmap",
-            "Store phase map",
-            value=pp.store_phmap,
-        ),
-        ui.input_text(
             "fname_phmap",
             "Phase map file name",
             value=pp.fname_phmap,
@@ -155,6 +145,11 @@ def app_elems(pp):
                         "phmap_seq_ref",
                         "Reference sequence",
                         value=pp.phmap_seq_ref,
+                    ),
+                    ui.input_text(
+                        "n_zernike",
+                        "Number of Zernike polynomials",
+                        value=pp.n_zernike,
                     ),
                 ],
                 title="",
