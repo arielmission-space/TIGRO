@@ -191,22 +191,22 @@ def app_elems(pp):
     cgvt_main_analysis_elems = [
         ui.card_header(
             "CGVt analysis",
-                ui.popover(
-                    ICONS["ellipsis"],
-                    *[
-                        ui.input_select(
-                            id="cgvt_analysis_ellipsis",
-                            label="Actions",
-                            choices=[
-                                "Load",
-                                "Save",
-                            ],
-                            selected="Load",
-                        ),
-                    ],
-                    title="",
-                    placement="top",
-                ),
+            ui.popover(
+                ICONS["ellipsis"],
+                *[
+                    ui.input_select(
+                        id="cgvt_analysis_ellipsis",
+                        label="Actions",
+                        choices=[
+                            "Load",
+                            "Save",
+                        ],
+                        selected="Load",
+                    ),
+                ],
+                title="",
+                placement="top",
+            ),
             class_=card_header_class_,
         ),
         ui.card(
@@ -220,7 +220,9 @@ def app_elems(pp):
         ui.card_footer(
             ui.layout_columns(
                 ui.input_action_button("run_all_cgvt", "Run all", icon=ICONS["run"]),
-                ui.input_action_button("download_phmap", "Download phmap", icon=ICONS["save"]),
+                ui.input_action_button(
+                    "download_phmap", "Download phmap", icon=ICONS["save"]
+                ),
             ),
         ),
     ]
@@ -228,22 +230,22 @@ def app_elems(pp):
     cgvt_main_plots_elems = [
         ui.card_header(
             "CGVt plots",
-                ui.popover(
-                    ICONS["ellipsis"],
-                    *[
-                        ui.input_select(
-                            id="cgvt_plots_ellipsis",
-                            label="Actions",
-                            choices=[
-                                "Load",
-                                "Save",
-                            ],
-                            selected="Load",
-                        ),
-                    ],
-                    title="",
-                    placement="top",
-                ),
+            ui.popover(
+                ICONS["ellipsis"],
+                *[
+                    ui.input_select(
+                        id="cgvt_plots_ellipsis",
+                        label="Actions",
+                        choices=[
+                            "Load",
+                            "Save",
+                        ],
+                        selected="Load",
+                    ),
+                ],
+                title="",
+                placement="top",
+            ),
             class_=card_header_class_,
         ),
         ui.card(
@@ -251,8 +253,12 @@ def app_elems(pp):
                 ui.output_plot("plot_1_cgvt"),
                 ui.card_footer(
                     ui.layout_columns(
-                        ui.input_action_button("do_plot_1_cgvt", "Plot 1", icon=ICONS["run"]),
-                        ui.input_action_button("download_plot_1_cgvt", "Download plot 1", icon=ICONS["save"]),
+                        ui.input_action_button(
+                            "do_plot_1_cgvt", "Plot", icon=ICONS["run"]
+                        ),
+                        ui.input_action_button(
+                            "download_plot_1_cgvt", "Download", icon=ICONS["save"]
+                        ),
                     ),
                 ),
                 full_screen=True,
@@ -261,8 +267,12 @@ def app_elems(pp):
                 ui.output_plot("plot_2_cgvt"),
                 ui.card_footer(
                     ui.layout_columns(
-                        ui.input_action_button("do_plot_2_cgvt", "Plot 2", icon=ICONS["run"]),
-                        ui.input_action_button("download_plot_2_cgvt", "Download plot 2", icon=ICONS["save"]),
+                        ui.input_action_button(
+                            "do_plot_2_cgvt", "Plot", icon=ICONS["run"]
+                        ),
+                        ui.input_action_button(
+                            "download_plot_2_cgvt", "Download", icon=ICONS["save"]
+                        ),
                     ),
                 ),
                 full_screen=True,
@@ -271,8 +281,12 @@ def app_elems(pp):
                 ui.output_plot("plot_3_cgvt"),
                 ui.card_footer(
                     ui.layout_columns(
-                        ui.input_action_button("do_plot_3_cgvt", "Plot 3", icon=ICONS["run"]),
-                        ui.input_action_button("download_plot_3_cgvt", "Download plot 3", icon=ICONS["save"]),
+                        ui.input_action_button(
+                            "do_plot_3_cgvt", "Plot", icon=ICONS["run"]
+                        ),
+                        ui.input_action_button(
+                            "download_plot_3_cgvt", "Download", icon=ICONS["save"]
+                        ),
                     ),
                 ),
                 full_screen=True,
@@ -281,7 +295,9 @@ def app_elems(pp):
         ui.card_footer(
             ui.layout_columns(
                 ui.input_action_button("plot_all_cgvt", "Plot all", icon=ICONS["run"]),
-                ui.input_action_button("download_all_plots_cgvt", "Download all plots", icon=ICONS["save"]),
+                ui.input_action_button(
+                    "download_all_plots_cgvt", "Download all", icon=ICONS["save"]
+                ),
             ),
         ),
     ]
@@ -289,22 +305,22 @@ def app_elems(pp):
     zerog_main_analysis_elems = [
         ui.card_header(
             "ZeroG analysis",
-                ui.popover(
-                    ICONS["ellipsis"],
-                    *[
-                        ui.input_select(
-                            id="zerog_analysis_ellipsis",
-                            label="Actions",
-                            choices=[
-                                "Load",
-                                "Save",
-                            ],
-                            selected="Load",
-                        ),
-                    ],
-                    title="",
-                    placement="top",
-                ),
+            ui.popover(
+                ICONS["ellipsis"],
+                *[
+                    ui.input_select(
+                        id="zerog_analysis_ellipsis",
+                        label="Actions",
+                        choices=[
+                            "Load",
+                            "Save",
+                        ],
+                        selected="Load",
+                    ),
+                ],
+                title="",
+                placement="top",
+            ),
             class_=card_header_class_,
         ),
         ui.card(
@@ -318,7 +334,9 @@ def app_elems(pp):
         ui.card_footer(
             ui.layout_columns(
                 ui.input_action_button("run_all_zerog", "Run all", icon=ICONS["run"]),
-                ui.input_action_button("download_zerogmap", "Download ZeroG map", icon=ICONS["save"]),
+                ui.input_action_button(
+                    "download_zerogmap", "Download ZeroG map", icon=ICONS["save"]
+                ),
             ),
         ),
     ]
@@ -326,22 +344,22 @@ def app_elems(pp):
     zerog_main_plots_elems = [
         ui.card_header(
             "ZeroG plots",
-                ui.popover(
-                    ICONS["ellipsis"],
-                    *[
-                        ui.input_select(
-                            id="zerog_plots_ellipsis",
-                            label="Actions",
-                            choices=[
-                                "Load",
-                                "Save",
-                            ],
-                            selected="Load",
-                        ),
-                    ],
-                    title="",
-                    placement="top",
-                ),
+            ui.popover(
+                ICONS["ellipsis"],
+                *[
+                    ui.input_select(
+                        id="zerog_plots_ellipsis",
+                        label="Actions",
+                        choices=[
+                            "Load",
+                            "Save",
+                        ],
+                        selected="Load",
+                    ),
+                ],
+                title="",
+                placement="top",
+            ),
             class_=card_header_class_,
         ),
         ui.card(
@@ -349,8 +367,12 @@ def app_elems(pp):
                 ui.output_plot("plot_1_zerog"),
                 ui.card_footer(
                     ui.layout_columns(
-                        ui.input_action_button("do_plot_1_zerog", "Plot 1", icon=ICONS["run"]),
-                        ui.input_action_button("download_plot_1_zerog", "Download plot 1", icon=ICONS["save"]),
+                        ui.input_action_button(
+                            "do_plot_1_zerog", "Plot", icon=ICONS["run"]
+                        ),
+                        ui.input_action_button(
+                            "download_plot_1_zerog", "Download", icon=ICONS["save"]
+                        ),
                     ),
                 ),
                 full_screen=True,
@@ -359,8 +381,12 @@ def app_elems(pp):
                 ui.output_plot("plot_2_zerog"),
                 ui.card_footer(
                     ui.layout_columns(
-                        ui.input_action_button("do_plot_2_zerog", "Plot 2", icon=ICONS["run"]),
-                        ui.input_action_button("download_plot_2_zerog", "Download plot 2", icon=ICONS["save"]),
+                        ui.input_action_button(
+                            "do_plot_2_zerog", "Plot", icon=ICONS["run"]
+                        ),
+                        ui.input_action_button(
+                            "download_plot_2_zerog", "Download", icon=ICONS["save"]
+                        ),
                     ),
                 ),
                 full_screen=True,
@@ -369,8 +395,12 @@ def app_elems(pp):
                 ui.output_plot("plot_3_zerog"),
                 ui.card_footer(
                     ui.layout_columns(
-                        ui.input_action_button("do_plot_3_zerog", "Plot 3", icon=ICONS["run"]),
-                        ui.input_action_button("download_plot_3_zerog", "Download plot 3", icon=ICONS["save"]),
+                        ui.input_action_button(
+                            "do_plot_3_zerog", "Plot", icon=ICONS["run"]
+                        ),
+                        ui.input_action_button(
+                            "download_plot_3_zerog", "Download", icon=ICONS["save"]
+                        ),
                     ),
                 ),
                 full_screen=True,
@@ -379,7 +409,9 @@ def app_elems(pp):
         ui.card_footer(
             ui.layout_columns(
                 ui.input_action_button("plot_all_zerog", "Plot all", icon=ICONS["run"]),
-                ui.input_action_button("download_all_plots_zerog", "Download all plots", icon=ICONS["save"]),
+                ui.input_action_button(
+                    "download_all_plots_zerog", "Download all", icon=ICONS["save"]
+                ),
             ),
         ),
     ]
