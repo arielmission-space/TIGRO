@@ -43,15 +43,9 @@ def app_ui(request: StarletteRequest) -> Tag:
         ),
         ui.nav_panel(
             "CGVt",
-            ui.layout_sidebar(
-                ui.sidebar(
-                    ui.p("CGVt Explorer"),
-                    ui.accordion(*CGVt_sidebar, open=False),
-                ),
-                ui.layout_columns(
-                    ui.card(nested_div("cgvt_main_analysis"), full_screen=True),
-                    ui.card(nested_div("cgvt_main_plots"), full_screen=True),
-                ),
+            ui.layout_columns(
+                ui.card(nested_div("cgvt_analysis"), full_screen=True),
+                ui.card(nested_div("cgvt_plots"), full_screen=True),
             ),
         ),
         ui.nav_panel(
@@ -132,10 +126,8 @@ def server(input, output, session):
 
         (
             general_elems,
-            cgvt_sidebar_analysis_elems,
-            cgvt_sidebar_plots_elems,
-            cgvt_main_analysis_elems,
-            cgvt_main_plots_elems,
+            cgvt_analysis_elems,
+            cgvt_plots_elems,
             zerog_sidebar_analysis_elems,
             zerog_sidebar_plots_elems,
             zerog_main_analysis_elems,
@@ -143,10 +135,8 @@ def server(input, output, session):
         ) = app_elems(pp)
 
         refresh_ui("general", general_elems)
-        refresh_ui("cgvt_sidebar_analysis", cgvt_sidebar_analysis_elems)
-        refresh_ui("cgvt_sidebar_plots", cgvt_sidebar_plots_elems)
-        refresh_ui("cgvt_main_analysis", cgvt_main_analysis_elems)
-        refresh_ui("cgvt_main_plots", cgvt_main_plots_elems)
+        refresh_ui("cgvt_analysis", cgvt_analysis_elems)
+        refresh_ui("cgvt_plots", cgvt_plots_elems)
         refresh_ui("zerog_sidebar_analysis", zerog_sidebar_analysis_elems)
         refresh_ui("zerog_sidebar_plots", zerog_sidebar_plots_elems)
         refresh_ui("zerog_main_analysis", zerog_main_analysis_elems)
