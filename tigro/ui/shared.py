@@ -4,6 +4,8 @@ import faicons as fa
 from shiny import ui
 
 
+card_header_class_ = "d-flex justify-content-between align-items-center"
+
 ICONS = {
     "ellipsis": fa.icon_svg("ellipsis"),
     "open": fa.icon_svg("folder-open"),
@@ -153,4 +155,17 @@ def refresh_ui(name, items, mode=None, key=""):
         ),
         selector=f"#{name}-editor",
         where="beforeEnd",
+    )
+
+
+def output_text_verbatim(id, placeholder=True):
+    return ui.div(
+        {"id": f"{id}-editor"},
+        ui.div(
+            {"id": f"inserted-{id}-editor"},
+            ui.output_text_verbatim(
+                id,
+                placeholder=placeholder,
+            ),
+        ),
     )
