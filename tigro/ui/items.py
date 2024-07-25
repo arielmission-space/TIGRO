@@ -12,13 +12,3 @@ menu_items = [
 system_sidebar = [
     ui.accordion_panel("System Explorer", nested_div("general")),
 ]
-
-CGVt_sidebar = [
-    ui.accordion_panel("Analysis", nested_div("cgvt_sidebar_analysis")),
-    ui.accordion_panel("Plots", nested_div("cgvt_sidebar_plots")),
-]
-
-ZeroG_sidebar = [
-    ui.accordion_panel("Analysis", nested_div("zerog_sidebar_analysis")),
-    ui.accordion_panel("Plots", nested_div("zerog_sidebar_plots")),
-]

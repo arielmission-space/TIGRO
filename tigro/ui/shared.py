@@ -4,8 +4,6 @@ import faicons as fa
 from shiny import ui
 
 
-golden_ratio = (1 + 5 ** 0.5) / 2
-
 card_header_class_ = "d-flex justify-content-between align-items-center"
 
 ICONS = {

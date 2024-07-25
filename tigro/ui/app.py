@@ -15,7 +15,6 @@ from tigro.classes.parser import Parser
 
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar
-from tigro.ui.items import ZeroG_sidebar
 from tigro.ui.elems import app_elems
 from tigro.ui.shared import refresh_ui
 from tigro.ui.shared import nested_div
@@ -47,15 +46,9 @@ def app_ui(request: StarletteRequest) -> Tag:
         ),
         ui.nav_panel(
             "ZeroG",
-            ui.layout_sidebar(
-                ui.sidebar(
-                    ui.p("ZeroG Explorer"),
-                    ui.accordion(*ZeroG_sidebar, open=False),
-                ),
-                ui.layout_columns(
-                    ui.card(nested_div("zerog_main_analysis"), full_screen=True),
-                    ui.card(nested_div("zerog_main_plots"), full_screen=True),
-                ),
+            ui.layout_columns(
+                ui.card(nested_div("zerog_analysis"), full_screen=True),
+                ui.card(nested_div("zerog_plots"), full_screen=True),
             ),
         ),
         fillable="TIGRO UI",
@@ -125,19 +118,15 @@ def server(input, output, session):
             general_elems,
             cgvt_analysis_elems,
             cgvt_plots_elems,
-            zerog_sidebar_analysis_elems,
-            zerog_sidebar_plots_elems,
-            zerog_main_analysis_elems,
-            zerog_main_plots_elems,
+            zerog_analysis_elems,
+            zerog_plots_elems,
         ) = app_elems(pp)
 
         refresh_ui("general", general_elems)
         refresh_ui("cgvt_analysis", cgvt_analysis_elems)
         refresh_ui("cgvt_plots", cgvt_plots_elems)
-        refresh_ui("zerog_sidebar_analysis", zerog_sidebar_analysis_elems)
-        refresh_ui("zerog_sidebar_plots", zerog_sidebar_plots_elems)
-        refresh_ui("zerog_main_analysis", zerog_main_analysis_elems)
-        refresh_ui("zerog_main_plots", zerog_main_plots_elems)
+        refresh_ui("zerog_analysis", zerog_analysis_elems)
+        refresh_ui("zerog_plots", zerog_plots_elems)
 
     @reactive.effect
     @reactive.event(input.close)
