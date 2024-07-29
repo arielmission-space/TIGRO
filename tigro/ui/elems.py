@@ -285,7 +285,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    ui.output_plot("plot_1_cgvt", height="100%", fill=True),
+                    ui.output_plot("plot_1_cgvt", width="1000px", height="800px", fill=True),
                     ui.card_footer(
                         ui.layout_columns(
                             ui.input_action_button(
@@ -321,7 +321,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    ui.output_plot("plot_2_cgvt", height="100%", fill=True),
+                    ui.output_plot("plot_2_cgvt", width="1000px", height="800px", fill=True),
                     ui.card_footer(
                         ui.layout_columns(
                             ui.input_action_button(
@@ -364,7 +364,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    ui.output_plot("plot_3_cgvt", height="100%", fill=True),
+                    ui.output_plot("plot_3_cgvt", width="1000px", height="800px", fill=True),
                     ui.card_footer(
                         ui.layout_columns(
                             ui.input_action_button(
@@ -410,7 +410,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    ui.output_plot("plot_4_cgvt", height="100%", fill=True),
+                    ui.output_plot("plot_4_cgvt", width="1000px", height="800px", fill=True),
                     ui.card_footer(
                         ui.layout_columns(
                             ui.input_action_button(
@@ -573,7 +573,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    ui.output_plot("plot_1_zerog", height="100%", fill=True),
+                    ui.output_plot("plot_1_zerog", width="1000px", height="800px", fill=True),
                     ui.card_footer(
                         ui.layout_columns(
                             ui.input_action_button(
@@ -623,7 +623,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    ui.output_plot("plot_2_zerog", height="100%", fill=True),
+                    ui.output_plot("plot_2_zerog", width="1000px", height="800px", fill=True),
                     ui.card_footer(
                         ui.layout_columns(
                             ui.input_action_button(

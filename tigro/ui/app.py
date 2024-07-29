@@ -20,6 +20,7 @@ from tigro import __license__
 from tigro.classes.parser import Parser
 from tigro.io.load import load_phmap
 from tigro.plots.plot import plot_sag_quicklook
+from tigro.core.process import filter_phmap
 
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar
@@ -115,13 +116,13 @@ def server(input, output, session):
 
             # phmap = load_phmap(pp.get().datapath, sequence_ids)
             for i, sequence_id in enumerate(sequence_ids):
-                retval.update(load_phmap(pp.get().datapath, [sequence_id]))
                 p.set(i, message=f"Loading sequence {sequence_id}", detail="")
+                retval.update(load_phmap(pp.get().datapath, [sequence_id]))
+
+            phmap.set(retval)
 
             p.set(len(sequence_ids), message="Done!", detail="")
             time.sleep(1.0)
-
-        phmap.set(retval)
 
     @render.plot(alt="Quicklook plot")
     @reactive.event(input.do_plot_1_system)
@@ -166,6 +167,29 @@ def server(input, output, session):
             fig.savefig(path, dpi=300, bbox_inches="tight")
 
             p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
+
+    @reactive.effect
+    @reactive.event(input.run_step2_cgvt)
+    def filter_sequences():
+        req(pp.get())
+        req(phmap.get())
+
+        sequence_ids = pp.get().sequence_ids
+
+        with ui.Progress(min=-1, max=len(sequence_ids)) as p:
+            p.set(message="Filtering in progress", detail="")
+            time.sleep(1.0)
+
+            retval = {}
+            for i, sequence_id in enumerate(sequence_ids):
+                p.set(i, message=f"Filtering sequence {sequence_id}", detail="")
+                _phmap = {sequence_id: phmap.get()[sequence_id]}
+                retval.update(filter_phmap(_phmap))
+
+            phmap.set(retval)
+
+            p.set(len(sequence_ids), message="Done!", detail="")
             time.sleep(1.0)
 
     @reactive.effect
