@@ -126,10 +126,11 @@ def app_elems(pp):
                         "Semi-minor axis",
                         value=pp.phmap_semi_minor,
                     ),
-                    ui.input_text(
+                    ui.input_select(
                         "phmap_seq_ref",
                         "Reference sequence",
-                        value=pp.phmap_seq_ref,
+                        choices=list(pp.sequence_ids.astype(str)),
+                        selected=pp.phmap_seq_ref,
                     ),
                     ui.input_text(
                         "n_zernike",
@@ -272,11 +273,11 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["ellipsis"],
                             *[
-                                ui.input_text(
+                                ui.input_select(
                                     "plot_regmap_imkey",
                                     "Map",
-                                    value=pp.plot_regmap_imkey,
-                                    placeholder="0",
+                                    choices=list(pp.sequence_ids.astype(str)),
+                                    selected=pp.plot_regmap_imkey,
                                 ),
                             ],
                             title="",
@@ -308,11 +309,11 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["ellipsis"],
                             *[
-                                ui.input_text(
+                                ui.input_select(
                                     "plot_regmap_no_pttf_imkey",
                                     "Map",
-                                    value=pp.plot_regmap_no_pttf_imkey,
-                                    placeholder="0",
+                                    choices=list(pp.sequence_ids.astype(str)),
+                                    selected=pp.plot_regmap_no_pttf_imkey,
                                 ),
                             ],
                             title="",
@@ -346,11 +347,11 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["ellipsis"],
                             *[
-                                ui.input_text(
+                                ui.input_select(
                                     "plot_allpolys_seq_ref",
                                     "Reference map",
-                                    value=pp.plot_allpolys_seq_ref,
-                                    placeholder="0",
+                                    choices=list(pp.sequence_ids.astype(str)),
+                                    selected=pp.plot_allpolys_seq_ref,
                                 ),
                                 ui.input_text(
                                     "plot_allpolys_colors",
@@ -387,11 +388,11 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["ellipsis"],
                             *[
-                                ui.input_text(
+                                ui.input_select(
                                     "plot_polys_seq_ref",
                                     "Reference map",
-                                    value=pp.plot_polys_seq_ref,
-                                    placeholder="0",
+                                    choices=list(pp.sequence_ids.astype(str)),
+                                    selected=pp.plot_polys_seq_ref,
                                 ),
                                 ui.input_text(
                                     "plot_polys_order",

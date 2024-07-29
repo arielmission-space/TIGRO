@@ -1,3 +1,5 @@
+import time
+
 from htmltools import Tag
 from starlette.requests import Request as StarletteRequest
 from faicons import icon_svg
@@ -12,6 +14,7 @@ from tigro import __version__
 from tigro import __license__
 
 from tigro.classes.parser import Parser
+from tigro.io.load import load_phmap
 
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar
@@ -69,7 +72,45 @@ def app_ui(request: StarletteRequest) -> Tag:
 
 def server(input, output, session):
     config = reactive.value("config")
+    pp = reactive.value({})
+    phmap = reactive.value({})
     outpath = reactive.value("outpath")
+
+    # @reactive.calc
+    # def api_call():
+    #     req(config.get().sections())
+    #     # other req here
+
+    #     # myvalue = input.myvalue()
+    #     # get inputs here
+
+    #     with ui.Progress(min=1, max=15) as p:
+    #         p.set(message="API call in progress", detail="")
+
+    #         # api call here
+
+    #         p.set(15, message="Done!", detail="")
+    #         time.sleep(1.0)
+
+    @reactive.effect
+    @reactive.event(input.run_step1_system, input.run_step1_cgvt, input.run_step1_zerog)
+    def load_sequences():
+
+        sequence_ids = pp.get().sequence_ids
+        retval = {}
+        with ui.Progress(min=-1, max=len(sequence_ids)) as p:
+            p.set(message="Loading sequences", detail="")
+            time.sleep(1.0)
+
+            # phmap = load_phmap(pp.get().datapath, sequence_ids)
+            for i, sequence_id in enumerate(sequence_ids):
+                retval.update(load_phmap(pp.get().datapath, [sequence_id]))
+                p.set(i, message=f"Loading sequence {sequence_id}", detail="")
+
+            p.set(len(sequence_ids), message="Done!", detail="")
+            time.sleep(1.0)
+
+        phmap.set(retval)
 
     @reactive.effect
     @reactive.event(input.open)
@@ -113,7 +154,7 @@ def server(input, output, session):
             # await session.send_custom_message("refresh", "")
 
         config.set(file[0]["datapath"])
-        pp = Parser(config=config.get())
+        pp.set(Parser(config=config.get()))
 
         (
             system_sidebar_elems,
@@ -122,7 +163,7 @@ def server(input, output, session):
             cgvt_plots_elems,
             zerog_analysis_elems,
             zerog_plots_elems,
-        ) = app_elems(pp)
+        ) = app_elems(pp.get())
 
         refresh_ui("system_sidebar", system_sidebar_elems)
         refresh_ui("system_quicklook", system_quicklook_elems)
