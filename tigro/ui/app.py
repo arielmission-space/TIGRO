@@ -23,6 +23,7 @@ from tigro.plots.plot import plot_sag_quicklook
 from tigro.core.process import filter_phmap
 from tigro.utils.util import get_threshold
 from tigro.core.process import med_phmap
+from tigro.core.fit import fit_ellipse
 
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar
@@ -107,7 +108,7 @@ def server(input, output, session):
 
     @reactive.effect
     @reactive.event(input.run_step1_system, input.run_step1_cgvt, input.run_all_cgvt)
-    def load_sequences():
+    def _load_phmap_():
         req(pp.get())
 
         sequence_ids = pp.get().sequence_ids
@@ -128,7 +129,7 @@ def server(input, output, session):
 
     @render.plot(alt="Quicklook plot")
     @reactive.event(input.do_plot_1_system)
-    def plot_1_system():
+    def _plot_sag_quicklook_():
         req(pp.get())
         req(phmap.get())
 
@@ -173,7 +174,7 @@ def server(input, output, session):
 
     @reactive.effect
     @reactive.event(input.run_step2_cgvt, input.run_all_cgvt)
-    def filter_sequences():
+    def _filter_phmap_():
         req(pp.get())
         req(phmap.get())
 
@@ -196,7 +197,7 @@ def server(input, output, session):
 
     @reactive.effect
     @reactive.event(input.run_step3_cgvt, input.run_all_cgvt)
-    def threshold_sequences():
+    def _get_threshold_():
         req(pp.get())
         req(phmap.get())
 
@@ -216,7 +217,7 @@ def server(input, output, session):
 
     @reactive.effect
     @reactive.event(input.run_step4_cgvt, input.run_all_cgvt)
-    def average_sequences():
+    def _med_phmap_():
         req(pp.get())
         req(phmap.get())
         req(threshold.get())
@@ -239,6 +240,32 @@ def server(input, output, session):
                         filter_type=pp.get().phmap_filter_type,
                     )
                 )
+
+            phmap.set(retval)
+
+            p.set(len(sequence_ids), message="Done!", detail="")
+            time.sleep(1.0)
+
+    @reactive.effect
+    @reactive.event(input.run_step5_cgvt, input.run_all_cgvt)
+    def _fit_ellipse_():
+        req(pp.get())
+        req(phmap.get())
+
+        sequence_ids = pp.get().sequence_ids
+        for seq in sequence_ids:
+            if "medmap" not in phmap.get()[seq].keys():
+                return
+
+        with ui.Progress(min=-1, max=len(sequence_ids)) as p:
+            p.set(message="Ellipse fit in progress", detail="")
+            time.sleep(1.0)
+
+            retval = {}
+            for i, sequence_id in enumerate(sequence_ids):
+                p.set(i, message=f"Fitting ellipse {sequence_id}", detail="")
+                _phmap = {sequence_id: phmap.get()[sequence_id]}
+                retval.update(fit_ellipse(_phmap))
 
             phmap.set(retval)
 
