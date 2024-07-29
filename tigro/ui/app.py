@@ -22,6 +22,7 @@ from tigro.io.load import load_phmap
 from tigro.plots.plot import plot_sag_quicklook
 from tigro.core.process import filter_phmap
 from tigro.utils.util import get_threshold
+from tigro.core.process import med_phmap
 
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar
@@ -172,7 +173,7 @@ def server(input, output, session):
 
     @reactive.effect
     @reactive.event(input.run_step2_cgvt, input.run_all_cgvt)
-    def _():
+    def filter_sequences():
         req(pp.get())
         req(phmap.get())
 
@@ -212,6 +213,40 @@ def server(input, output, session):
 
             p.set(15, message="Done!", detail="")
             time.sleep(1.0)
+
+    @reactive.effect
+    @reactive.event(input.run_step4_cgvt, input.run_all_cgvt)
+    def average_sequences():
+        req(pp.get())
+        req(phmap.get())
+        req(threshold.get())
+
+        sequence_ids = pp.get().sequence_ids
+
+        with ui.Progress(min=-1, max=len(sequence_ids)) as p:
+
+            p.set(message="Averaging in progress", detail="")
+            time.sleep(1.0)
+
+            retval = {}
+            for i, sequence_id in enumerate(sequence_ids):
+                p.set(i, message=f"Averaging sequence {sequence_id}", detail="")
+                _phmap = {sequence_id: phmap.get()[sequence_id]}
+                retval.update(
+                    med_phmap(
+                        _phmap,
+                        threshold.get(),
+                        filter_type=pp.get().phmap_filter_type,
+                    )
+                )
+
+            phmap.set(retval)
+
+            p.set(len(sequence_ids), message="Done!", detail="")
+            time.sleep(1.0)
+
+        print(phmap.get().keys())
+        print(phmap.get()[237].keys())
 
     @reactive.effect
     @reactive.event(input.open)
