@@ -24,6 +24,7 @@ from tigro.core.process import filter_phmap
 from tigro.utils.util import get_threshold
 from tigro.core.process import med_phmap
 from tigro.core.fit import fit_ellipse
+from tigro.core.process import register_phmap
 
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar
@@ -272,8 +273,35 @@ def server(input, output, session):
             p.set(len(sequence_ids), message="Done!", detail="")
             time.sleep(1.0)
 
+    @reactive.effect
+    @reactive.event(input.run_step6_cgvt, input.run_all_cgvt)
+    def _register_phmap_():
+        req(pp.get())
+        req(phmap.get())
+
+        sequence_ids = pp.get().sequence_ids
+        for seq in sequence_ids:
+            if "ellipse" not in phmap.get()[seq].keys():
+                return
+
+        with ui.Progress(min=-1, max=len(sequence_ids)) as p:
+            p.set(message="Registration in progress", detail="")
+            time.sleep(1.0)
+
+            retval = {}
+            for i, sequence_id in enumerate(sequence_ids):
+                p.set(i, message=f"Registering {sequence_id}", detail="")
+                _phmap = {sequence_id: phmap.get()[sequence_id]}
+                retval.update(register_phmap(_phmap))
+
+            phmap.set(retval)
+
+            p.set(len(sequence_ids), message="Done!", detail="")
+            time.sleep(1.0)
+
         print(phmap.get().keys())
         print(phmap.get()[237].keys())
+        print(phmap.get()[238].keys())
 
     @reactive.effect
     @reactive.event(input.open)
