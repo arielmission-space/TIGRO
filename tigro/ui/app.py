@@ -21,6 +21,7 @@ from tigro.classes.parser import Parser
 from tigro.io.load import load_phmap
 from tigro.plots.plot import plot_sag_quicklook
 from tigro.core.process import filter_phmap
+from tigro.utils.util import get_threshold
 
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar
@@ -84,8 +85,8 @@ def server(input, output, session):
     config = reactive.value("config")
     pp = reactive.value({})
     phmap = reactive.value({})
-    outpath = reactive.value("outpath")
     figure_quicklook = reactive.value(None)
+    threshold = reactive.value(None)
 
     # @reactive.calc
     # def api_call():
@@ -104,7 +105,7 @@ def server(input, output, session):
     #         time.sleep(1.0)
 
     @reactive.effect
-    @reactive.event(input.run_step1_system, input.run_step1_cgvt)
+    @reactive.event(input.run_step1_system, input.run_step1_cgvt, input.run_all_cgvt)
     def load_sequences():
         req(pp.get())
 
@@ -170,8 +171,8 @@ def server(input, output, session):
             time.sleep(1.0)
 
     @reactive.effect
-    @reactive.event(input.run_step2_cgvt)
-    def filter_sequences():
+    @reactive.event(input.run_step2_cgvt, input.run_all_cgvt)
+    def _():
         req(pp.get())
         req(phmap.get())
 
@@ -190,6 +191,26 @@ def server(input, output, session):
             phmap.set(retval)
 
             p.set(len(sequence_ids), message="Done!", detail="")
+            time.sleep(1.0)
+
+    @reactive.effect
+    @reactive.event(input.run_step3_cgvt, input.run_all_cgvt)
+    def threshold_sequences():
+        req(pp.get())
+        req(phmap.get())
+
+        sequence_ids = pp.get().sequence_ids
+        for seq in sequence_ids:
+            if "cleanmap" not in phmap.get()[seq].keys():
+                return
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Thresholding in progress", detail="")
+            time.sleep(1.0)
+
+            threshold.set(get_threshold(phmap.get()))
+
+            p.set(15, message="Done!", detail="")
             time.sleep(1.0)
 
     @reactive.effect
