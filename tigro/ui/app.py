@@ -19,12 +19,16 @@ from tigro import __license__
 
 from tigro.classes.parser import Parser
 from tigro.io.load import load_phmap
-from tigro.plots.plot import plot_sag_quicklook
 from tigro.core.process import filter_phmap
 from tigro.utils.util import get_threshold
 from tigro.core.process import med_phmap
 from tigro.core.fit import fit_ellipse
 from tigro.core.process import register_phmap
+from tigro.utils.util import get_uref
+from tigro.core.fit import calculate_zernike
+from tigro.core.fit import fit_zernike
+
+from tigro.plots.plot import plot_sag_quicklook
 
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar
@@ -90,6 +94,7 @@ def server(input, output, session):
     phmap = reactive.value({})
     figure_quicklook = reactive.value(None)
     threshold = reactive.value(None)
+    uref = reactive.value(None)
 
     # @reactive.calc
     # def api_call():
@@ -299,9 +304,57 @@ def server(input, output, session):
             p.set(len(sequence_ids), message="Done!", detail="")
             time.sleep(1.0)
 
-        print(phmap.get().keys())
-        print(phmap.get()[237].keys())
-        print(phmap.get()[238].keys())
+    @reactive.effect
+    @reactive.event(input.run_step7_cgvt, input.run_all_cgvt)
+    def _get_uref_():
+        req(pp.get())
+        req(phmap.get())
+
+        sequence_ids = pp.get().sequence_ids
+        for seq in sequence_ids:
+            if "RegMap" not in phmap.get()[seq].keys():
+                return
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Getting reference in progress", detail="")
+            time.sleep(1.0)
+
+            uref.set(
+                get_uref(
+                    phmap.get(),
+                    pp.get().phmap_semi_major,
+                    pp.get().phmap_semi_minor,
+                    pp.get().phmap_seq_ref,
+                )
+            )
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
+
+    @reactive.effect
+    @reactive.event(input.run_step8_cgvt, input.run_all_cgvt)
+    def _fit_zernike_():
+        req(pp.get())
+        req(phmap.get())
+        req(uref.get())
+
+        zkm, A = calculate_zernike(phmap.get(), uref.get(), NZernike=pp.get().n_zernike)
+        sequence_ids = pp.get().sequence_ids
+
+        with ui.Progress(min=-1, max=len(sequence_ids)) as p:
+            p.set(message="Zernike fitting in progress", detail="")
+            time.sleep(1.0)
+
+            retval = {}
+            for i, sequence_id in enumerate(sequence_ids):
+                p.set(i, message=f"Fitting Zernike {sequence_id}", detail="")
+                _phmap = {sequence_id: phmap.get()[sequence_id]}
+                retval.update(fit_zernike(_phmap, uref.get(), NZernike=pp.get().n_zernike, zkm=zkm, A=A))
+
+            phmap.set(retval)
+
+            p.set(len(sequence_ids), message="Done!", detail="")
+            time.sleep(1.0)
 
     @reactive.effect
     @reactive.event(input.open)

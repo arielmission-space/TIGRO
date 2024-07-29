@@ -47,7 +47,7 @@ def fit_ellipse(phmap):
     return phmap
 
 
-def fit_zernike(phmap, uref, NZernike=15):
+def calculate_zernike(phmap, uref, NZernike=15):
     logger.debug("Calculating {:d} Polys... ".format(NZernike))
     pupil_mask = uref["pupil_mask"]
     y_, x_ = uref["yx"]
@@ -62,6 +62,14 @@ def fit_zernike(phmap, uref, NZernike=15):
     zkm = poly()
     A = poly.cov()
     logger.debug("... done!")
+    return zkm, A
+
+
+def fit_zernike(phmap, uref, NZernike=15, zkm=None, A=None):
+
+    if zkm is None or A is None:
+        zkm, A = calculate_zernike(phmap, uref, NZernike)
+
     logger.debug("Fitting sequence n: ...")
     for seq in phmap.keys():
         logger.debug("{:3d}".format(seq))
