@@ -93,7 +93,7 @@ def server(input, output, session):
     #         time.sleep(1.0)
 
     @reactive.effect
-    @reactive.event(input.run_step1_system, input.run_step1_cgvt, input.run_step1_zerog)
+    @reactive.event(input.run_step1_system, input.run_step1_cgvt)
     def load_sequences():
 
         sequence_ids = pp.get().sequence_ids
