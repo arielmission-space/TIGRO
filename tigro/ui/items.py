@@ -10,5 +10,5 @@ menu_items = [
 ]
 
 system_sidebar = [
-    ui.accordion_panel("System Explorer", nested_div("general")),
+    ui.accordion_panel("System Explorer", nested_div("system_sidebar")),
 ]

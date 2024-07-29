@@ -33,6 +33,7 @@ def app_ui(request: StarletteRequest) -> Tag:
                     width=350,
                 ),
                 ui.card(
+                    nested_div("system_quicklook"),
                     full_screen=True,
                 ),
             ),
@@ -115,14 +116,16 @@ def server(input, output, session):
         pp = Parser(config=config.get())
 
         (
-            general_elems,
+            system_sidebar_elems,
+            system_quicklook_elems,
             cgvt_analysis_elems,
             cgvt_plots_elems,
             zerog_analysis_elems,
             zerog_plots_elems,
         ) = app_elems(pp)
 
-        refresh_ui("general", general_elems)
+        refresh_ui("system_sidebar", system_sidebar_elems)
+        refresh_ui("system_quicklook", system_quicklook_elems)
         refresh_ui("cgvt_analysis", cgvt_analysis_elems)
         refresh_ui("cgvt_plots", cgvt_plots_elems)
         refresh_ui("zerog_analysis", zerog_analysis_elems)

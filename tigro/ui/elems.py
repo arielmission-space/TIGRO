@@ -8,7 +8,7 @@ from tigro.ui.shared import card_header_class_
 
 
 def app_elems(pp):
-    general_elems = [
+    system_sidebar_elems = [
         ui.input_text(
             "project",
             "Project name",
@@ -50,6 +50,58 @@ def app_elems(pp):
                 "CRITICAL",
             ],
             selected=pp.loglevel,
+        ),
+    ]
+
+    system_quicklook_elems = [
+        ui.card_header(
+            "Quicklook",
+            class_=card_header_class_,
+        ),
+        ui.card(
+            ui.card_header(
+                ui.layout_columns(
+                    ui.card(
+                        ui.card_header(
+                            "1. Load",
+                            ui.popover(
+                                icon_svg("circle-info").add_class("ms-2"),
+                                ui.markdown("blabla"),
+                                placement="right",
+                            ),
+                        ),
+                        ui.input_action_button("run_step1_system", "Run", icon=ICONS["run"]),
+                        # output_text_verbatim("run_step1_system_output"),
+                    ),
+                    ui.card(
+                        ui.card_header(
+                            "2. Select",
+                            ui.popover(
+                                icon_svg("circle-info").add_class("ms-2"),
+                                ui.markdown("blabla"),
+                                placement="right",
+                            ),
+                        ),                        
+                        ui.input_select(
+                            "select_1_system",
+                            "",
+                            choices=list(pp.sequence_ids.astype(str)),
+                        ),
+                    ),
+                ),
+            ),
+            ui.output_plot("plot_1_system", height="100%", fill=True),
+            ui.card_footer(
+                ui.layout_columns(
+                    ui.input_action_button(
+                        "do_plot_1_system", "Plot", icon=ICONS["run"]
+                    ),
+                    ui.input_action_button(
+                        "download_plot_1_system", "Save", icon=ICONS["save"]
+                    ),
+                ),
+            ),
+        full_screen=True,
         ),
     ]
 
@@ -596,7 +648,8 @@ def app_elems(pp):
     ]
 
     return (
-        general_elems,
+        system_sidebar_elems,
+        system_quicklook_elems,
         cgvt_analysis_elems,
         cgvt_plots_elems,
         zerog_analysis_elems,
