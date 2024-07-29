@@ -169,3 +169,24 @@ def output_text_verbatim(id, placeholder=True):
             ),
         ),
     )
+
+
+def modal_download(id, ext):
+    m = ui.modal(
+        *[
+            ui.input_text(
+                id=f"save_{ext}",
+                label="Save As",
+                value=f"filename.{ext}",
+                placeholder=f"filename.{ext}",
+            ),
+            ui.input_action_button(
+                f"download_{id}_{ext}",
+                "Save",
+            ),
+            # ui.output_text(f"download_{ext}_progress"),
+        ],
+        title=f"Save to {ext.upper()} File",
+        easy_close=True,
+    )
+    ui.modal_show(m)

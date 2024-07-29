@@ -1,4 +1,7 @@
+import os
 import time
+
+import matplotlib.pyplot as plt
 
 from htmltools import Tag
 from starlette.requests import Request as StarletteRequest
@@ -6,6 +9,7 @@ from faicons import icon_svg
 from shiny import App
 from shiny import ui
 from shiny import reactive
+from shiny import render
 from shiny import req
 from shiny.types import FileInfo
 
@@ -15,12 +19,17 @@ from tigro import __license__
 
 from tigro.classes.parser import Parser
 from tigro.io.load import load_phmap
+from tigro.plots.plot import plot_sag_quicklook
 
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar
 from tigro.ui.elems import app_elems
 from tigro.ui.shared import refresh_ui
 from tigro.ui.shared import nested_div
+from tigro.ui.shared import modal_download
+
+# reset matplotlib style
+plt.style.use("default")
 
 
 def app_ui(request: StarletteRequest) -> Tag:
@@ -75,6 +84,7 @@ def server(input, output, session):
     pp = reactive.value({})
     phmap = reactive.value({})
     outpath = reactive.value("outpath")
+    figure_quicklook = reactive.value(None)
 
     # @reactive.calc
     # def api_call():
@@ -95,6 +105,7 @@ def server(input, output, session):
     @reactive.effect
     @reactive.event(input.run_step1_system, input.run_step1_cgvt)
     def load_sequences():
+        req(pp.get())
 
         sequence_ids = pp.get().sequence_ids
         retval = {}
@@ -111,6 +122,51 @@ def server(input, output, session):
             time.sleep(1.0)
 
         phmap.set(retval)
+
+    @render.plot(alt="Quicklook plot")
+    @reactive.event(input.do_plot_1_system)
+    def plot_1_system():
+        req(pp.get())
+        req(phmap.get())
+
+        imkey = int(input.select_1_system())
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Plotting in progress", detail="")
+
+            fig = plot_sag_quicklook(phmap.get(), imkey)
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
+
+        figure_quicklook.set(fig)
+
+    @reactive.effect
+    @reactive.event(input.download_plot_1_system)
+    def download_quicklook():
+        req(phmap.get())
+        req(pp.get())
+        req(figure_quicklook.get())
+        modal_download("quicklook", "png")
+
+    @reactive.effect
+    @reactive.event(input.download_quicklook_png)
+    def download_quicklook_png():
+        outfile: list[FileInfo] | None = input.save_png()
+
+        fig = figure_quicklook.get()
+
+        if outfile is None:
+            outfile = fig.get_title()
+
+        path = os.path.join(pp.get().outpath, f"{outfile}")
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Saving in progress", detail="")
+            fig.savefig(path, dpi=300, bbox_inches="tight")
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
 
     @reactive.effect
     @reactive.event(input.open)

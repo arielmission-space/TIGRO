@@ -3,7 +3,55 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.patches import Ellipse
-import paos
+
+
+def plot_sag_quicklook(
+    phmap,
+    imkey,
+    imsubkey="rawmap",
+    outpath=None,
+):
+    nkeys = len(phmap[imkey][imsubkey])
+    ncols = 6
+    nrows = int(np.ceil(nkeys / ncols))
+    fig = plt.figure(figsize=(6 * ncols, 6 * nrows))
+
+    vmin, vmax = [], []
+    for i in range(nkeys):
+        vmin = np.min(phmap[imkey][imsubkey][i])
+        vmax = np.max(phmap[imkey][imsubkey][i])
+    vmin = np.median(vmin) - 3 * np.std(vmin)
+    vmax = np.median(vmax) + 3 * np.std(vmax)
+
+    for i in range(nkeys):
+        ax = fig.add_subplot(nrows, ncols, i + 1)
+        if i < nkeys:
+            im = ax.imshow(
+                phmap[imkey][imsubkey][i],
+                origin="lower",
+                interpolation="none",
+                zorder=0,
+                alpha=1,
+                cmap="Reds",
+                vmin=vmin,
+                vmax=vmax,
+            )
+            ax.set_title(f"Map {i+1}")
+        else:
+            ax.axis("off")
+
+    figname = phmap[imkey]["name"][0].split("_")
+    figname = "_".join([figname[0]] + figname[2:])
+    fig.suptitle(f"{figname}", fontsize=20)
+
+    if outpath is not None:
+        plt.savefig(
+            f"{outpath}/{imkey}_{imsubkey}.png",
+            dpi=300,
+            bbox_inches="tight",
+        )
+
+    return fig
 
 
 def plot_sag(

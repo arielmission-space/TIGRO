@@ -90,7 +90,7 @@ def app_elems(pp):
                     ),
                 ),
             ),
-            ui.output_plot("plot_1_system", height="100%", fill=True),
+            ui.output_plot("plot_1_system", width="1000px", height="800px", fill=True),
             ui.card_footer(
                 ui.layout_columns(
                     ui.input_action_button(
