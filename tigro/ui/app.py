@@ -227,7 +227,6 @@ def server(input, output, session):
         sequence_ids = pp.get().sequence_ids
 
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
-
             p.set(message="Averaging in progress", detail="")
             time.sleep(1.0)
 

@@ -263,9 +263,7 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot(
-                    "plot_1_cgvt", width="700px", height="550px", fill=True
-                ),
+                ui.output_plot("plot_1_cgvt", width="700px", height="550px", fill=True),
                 ui.card_footer(
                     ui.layout_columns(
                         ui.input_action_button(
@@ -301,9 +299,7 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot(
-                    "plot_2_cgvt", width="700px", height="550px", fill=True
-                ),
+                ui.output_plot("plot_2_cgvt", width="700px", height="550px", fill=True),
                 ui.card_footer(
                     ui.layout_columns(
                         ui.input_action_button(
@@ -344,9 +340,7 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot(
-                    "plot_3_cgvt", width="700px", height="550px", fill=True
-                ),
+                ui.output_plot("plot_3_cgvt", width="700px", height="550px", fill=True),
                 ui.card_footer(
                     ui.layout_columns(
                         ui.input_action_button(
@@ -392,9 +386,7 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot(
-                    "plot_4_cgvt", width="700px", height="550px", fill=True
-                ),
+                ui.output_plot("plot_4_cgvt", width="700px", height="550px", fill=True),
                 ui.card_footer(
                     ui.layout_columns(
                         ui.input_action_button(

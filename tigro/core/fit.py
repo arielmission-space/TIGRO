@@ -66,7 +66,6 @@ def calculate_zernike(phmap, uref, NZernike=15):
 
 
 def fit_zernike(phmap, uref, NZernike=15, zkm=None, A=None):
-
     if zkm is None or A is None:
         zkm, A = calculate_zernike(phmap, uref, NZernike)
 
