@@ -175,7 +175,7 @@ def modal_download(id, ext):
     m = ui.modal(
         *[
             ui.input_text(
-                id=f"save_{ext}",
+                id=f"save_{id}_{ext}",
                 label="Save As",
                 value=f"filename.{ext}",
                 placeholder=f"filename.{ext}",

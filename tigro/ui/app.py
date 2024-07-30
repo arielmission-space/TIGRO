@@ -107,7 +107,7 @@ def server(input, output, session):
 
         sequence_ids = pp.get().sequence_ids
         retval = {}
-        with ui.Progress(min=-1, max=len(sequence_ids)) as p:
+        with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Loading sequences", detail="")
             time.sleep(1.0)
 
@@ -128,7 +128,6 @@ def server(input, output, session):
         req(phmap.get())
 
         imkey = int(input.select_1_system())
-        print(imkey)
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Plotting in progress", detail="")
@@ -151,7 +150,7 @@ def server(input, output, session):
     @reactive.effect
     @reactive.event(input.download_quicklook_png)
     def download_quicklook_png():
-        outfile: list[FileInfo] | None = input.save_png()
+        outfile: list[FileInfo] | None = input.save_quicklook_png()
 
         fig = figure_quicklook.get()
 
@@ -175,7 +174,7 @@ def server(input, output, session):
 
         sequence_ids = pp.get().sequence_ids
 
-        with ui.Progress(min=-1, max=len(sequence_ids)) as p:
+        with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Filtering in progress", detail="")
             time.sleep(1.0)
 
@@ -219,7 +218,7 @@ def server(input, output, session):
 
         sequence_ids = pp.get().sequence_ids
 
-        with ui.Progress(min=-1, max=len(sequence_ids)) as p:
+        with ui.Progress(min=0, max=len(sequence_ids)) as p:
 
             p.set(message="Averaging in progress", detail="")
             time.sleep(1.0)
@@ -252,7 +251,7 @@ def server(input, output, session):
             if "medmap" not in phmap.get()[seq].keys():
                 return
 
-        with ui.Progress(min=-1, max=len(sequence_ids)) as p:
+        with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Ellipse fit in progress", detail="")
             time.sleep(1.0)
 
@@ -278,7 +277,7 @@ def server(input, output, session):
             if "ellipse" not in phmap.get()[seq].keys():
                 return
 
-        with ui.Progress(min=-1, max=len(sequence_ids)) as p:
+        with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Registration in progress", detail="")
             time.sleep(1.0)
 
@@ -332,7 +331,6 @@ def server(input, output, session):
                 return
 
         imkey = int(input.plot_regmap_imkey())
-        print(imkey)
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Plotting in progress", detail="")
@@ -347,15 +345,19 @@ def server(input, output, session):
     @reactive.effect
     @reactive.event(input.download_plot_1_cgvt)
     def download_regmap():
+        print("here")
         req(phmap.get())
+        print("here")
         req(pp.get())
+        print("here")
         req(figure_regmap.get())
+        print("here")
         modal_download("regmap", "png")
 
     @reactive.effect
     @reactive.event(input.download_regmap_png)
     def download_regmap_png():
-        outfile: list[FileInfo] | None = input.save_png()
+        outfile: list[FileInfo] | None = input.save_regmap_png()
 
         fig = figure_regmap.get()
 
@@ -381,7 +383,7 @@ def server(input, output, session):
         zkm, A = calculate_zernike(phmap.get(), uref.get(), NZernike=pp.get().n_zernike)
         sequence_ids = pp.get().sequence_ids
 
-        with ui.Progress(min=-1, max=len(sequence_ids)) as p:
+        with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Zernike fitting in progress", detail="")
             time.sleep(1.0)
 

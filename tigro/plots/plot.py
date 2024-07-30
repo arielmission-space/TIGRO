@@ -107,7 +107,7 @@ def plot_sag(
             bbox_inches="tight",
         )
 
-    plt.show()
+    return fig
 
 
 def plot_allpolys(
@@ -146,7 +146,7 @@ def plot_allpolys(
             bbox_inches="tight",
         )
 
-    plt.show()
+    return fig
 
 
 def plot_polys(
@@ -193,7 +193,7 @@ def plot_polys(
             bbox_inches="tight",
         )
 
-    plt.show()
+    return fig
 
 
 def plot_zerog(
@@ -235,7 +235,7 @@ def plot_zerog(
             bbox_inches="tight",
         )
 
-    plt.show()
+    return fig
 
 
 def plot_map(
@@ -289,4 +289,4 @@ def plot_map(
             bbox_inches="tight",
         )
 
-    plt.show()
+    return fig
