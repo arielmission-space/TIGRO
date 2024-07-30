@@ -215,7 +215,14 @@ def server(input, output, session):
             p.set(message="Thresholding in progress", detail="")
             time.sleep(1.0)
 
-            threshold.set(get_threshold(phmap.get(), level=pp.get().phmap_threshold, plot=False, full_return=True))
+            threshold.set(
+                get_threshold(
+                    phmap.get(),
+                    level=pp.get().phmap_threshold,
+                    plot=False,
+                    full_return=True,
+                )
+            )
 
             p.set(15, message="Done!", detail="")
             time.sleep(1.0)
@@ -287,7 +294,7 @@ def server(input, output, session):
                 retval.update(
                     med_phmap(
                         _phmap,
-                        threshold.get(),
+                        threshold.get()[2],
                         filter_type=pp.get().phmap_filter_type,
                     )
                 )
