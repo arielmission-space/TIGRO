@@ -136,6 +136,7 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Plotting in progress", detail="")
+            time.sleep(1.0)
 
             fig = plot_sag_quicklook(phmap.get(), imkey, imsubkey="rawmap")
 
@@ -166,6 +167,8 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Saving in progress", detail="")
+            time.sleep(1.0)
+
             fig.savefig(path, dpi=300, bbox_inches="tight")
 
             p.set(15, message="Done!", detail="")
@@ -339,6 +342,7 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Plotting in progress", detail="")
+            time.sleep(1.0)
 
             fig = plot_sag(phmap.get(), uref.get(), imkey, imsubkey="RegMap")
 
@@ -369,6 +373,8 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Saving in progress", detail="")
+            time.sleep(1.0)
+
             fig.savefig(path, dpi=300, bbox_inches="tight")
 
             p.set(15, message="Done!", detail="")
@@ -418,6 +424,7 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Plotting in progress", detail="")
+            time.sleep(1.0)
 
             fig = plot_sag(phmap.get(), uref.get(), imkey, imsubkey="RegMap-PTTF")
 
@@ -448,6 +455,8 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Saving in progress", detail="")
+            time.sleep(1.0)
+
             fig.savefig(path, dpi=300, bbox_inches="tight")
 
             p.set(15, message="Done!", detail="")
@@ -466,6 +475,7 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Plotting in progress", detail="")
+            time.sleep(1.0)
 
             fig = plot_allpolys(
                 phmap.get(),
@@ -502,6 +512,8 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Saving in progress", detail="")
+            time.sleep(1.0)
+
             fig.savefig(path, dpi=300, bbox_inches="tight")
 
             p.set(15, message="Done!", detail="")
@@ -520,6 +532,7 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Plotting in progress", detail="")
+            time.sleep(1.0)
 
             fig = plot_polys(
                 phmap.get(),
@@ -556,6 +569,8 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Saving in progress", detail="")
+            time.sleep(1.0)
+
             fig.savefig(path, dpi=300, bbox_inches="tight")
 
             p.set(15, message="Done!", detail="")
