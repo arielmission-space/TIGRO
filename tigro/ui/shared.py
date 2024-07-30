@@ -186,7 +186,7 @@ def modal_download(id, ext):
             ),
             # ui.output_text(f"download_{ext}_progress"),
         ],
-        title=f"Save to {ext.upper()} File",
+        title=f"Save {id} to {ext.upper()} File",
         easy_close=True,
     )
     ui.modal_show(m)

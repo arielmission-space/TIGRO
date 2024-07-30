@@ -27,6 +27,7 @@ from tigro.core.process import register_phmap
 from tigro.utils.util import get_uref
 from tigro.core.fit import calculate_zernike
 from tigro.core.fit import fit_zernike
+from tigro.io.save import to_pickle
 
 from tigro.plots.plot import plot_sag_quicklook
 from tigro.plots.plot import plot_sag
@@ -148,8 +149,8 @@ def server(input, output, session):
     @reactive.effect
     @reactive.event(input.download_plot_1_system)
     def download_quicklook():
-        req(phmap.get())
         req(pp.get())
+        req(phmap.get())
         req(figure_quicklook.get())
         modal_download("quicklook", "png")
 
@@ -351,10 +352,10 @@ def server(input, output, session):
         figure_regmap.set(fig)
 
     @reactive.effect
-    @reactive.event(input.download_plot_1_cgvt)
+    @reactive.event(input.download_all_plots_cgvt, input.download_plot_1_cgvt)
     def download_regmap():
-        req(phmap.get())
         req(pp.get())
+        req(phmap.get())
         req(figure_regmap.get())
         modal_download("regmap", "png")
 
@@ -433,10 +434,10 @@ def server(input, output, session):
         figure_regmap_no_pttf.set(fig)
 
     @reactive.effect
-    @reactive.event(input.download_plot_2_cgvt)
+    @reactive.event(input.download_all_plots_cgvt, input.download_plot_2_cgvt)
     def download_regmap_no_pttf():
-        req(phmap.get())
         req(pp.get())
+        req(phmap.get())
         req(figure_regmap_no_pttf.get())
         modal_download("regmap_no_pttf", "png")
 
@@ -490,10 +491,10 @@ def server(input, output, session):
         figure_allpolys.set(fig)
 
     @reactive.effect
-    @reactive.event(input.download_plot_3_cgvt)
+    @reactive.event(input.download_all_plots_cgvt, input.download_plot_3_cgvt)
     def download_allpolys():
-        req(phmap.get())
         req(pp.get())
+        req(phmap.get())
         req(figure_allpolys.get())
         modal_download("allpolys", "png")
 
@@ -547,10 +548,10 @@ def server(input, output, session):
         figure_polys.set(fig)
 
     @reactive.effect
-    @reactive.event(input.download_plot_4_cgvt)
+    @reactive.event(input.download_all_plots_cgvt, input.download_plot_4_cgvt)
     def download_polys():
-        req(phmap.get())
         req(pp.get())
+        req(phmap.get())
         req(figure_polys.get())
         modal_download("polys", "png")
 
@@ -571,6 +572,32 @@ def server(input, output, session):
             time.sleep(1.0)
 
             fig.savefig(path, dpi=300, bbox_inches="tight")
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
+
+    @reactive.effect
+    @reactive.event(input.download_phmap)
+    def download_phmap():
+        req(pp.get())
+        req(phmap.get())
+        modal_download("phmap", "pkl")
+
+    @reactive.effect
+    @reactive.event(input.download_phmap_pkl)
+    def download_phmap_pkl():
+        outfile: list[FileInfo] | None = input.save_phmap_pkl()
+
+        if outfile is None:
+            outfile = pp.get().outpath
+
+        path = os.path.join(pp.get().outpath, f"{outfile}")
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Saving in progress", detail="")
+            time.sleep(1.0)
+
+            to_pickle(phmap.get(), path)
 
             p.set(15, message="Done!", detail="")
             time.sleep(1.0)
