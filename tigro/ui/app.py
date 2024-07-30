@@ -30,6 +30,7 @@ from tigro.core.fit import fit_zernike
 
 from tigro.plots.plot import plot_sag_quicklook
 from tigro.plots.plot import plot_sag
+from tigro.plots.plot import plot_allpolys
 
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar
@@ -99,6 +100,7 @@ def server(input, output, session):
     uref = reactive.value(None)
     figure_regmap = reactive.value(None)
     figure_regmap_no_pttf = reactive.value(None)
+    figure_allpolys = reactive.value(None)
 
     @reactive.effect
     @reactive.event(input.run_all_cgvt, input.run_step1_cgvt, input.run_step1_system)
@@ -436,6 +438,60 @@ def server(input, output, session):
         outfile: list[FileInfo] | None = input.save_regmap_no_pttf_png()
 
         fig = figure_regmap_no_pttf.get()
+
+        if outfile is None:
+            outfile = fig.get_title()
+
+        path = os.path.join(pp.get().outpath, f"{outfile}")
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Saving in progress", detail="")
+            fig.savefig(path, dpi=300, bbox_inches="tight")
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
+
+    @render.plot(alt="Allpolys plot")
+    @reactive.event(input.plot_all_cgvt, input.do_plot_3_cgvt)
+    def plot_3_cgvt():
+        req(pp.get())
+        req(phmap.get())
+
+        sequence_ids = pp.get().sequence_ids
+        for seq in sequence_ids:
+            if "residual" not in phmap.get()[seq].keys():
+                return
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Plotting in progress", detail="")
+
+            fig = plot_allpolys(
+                phmap.get(),
+                sequence_ids=pp.get().sequence_ids,
+                sequence_ref=pp.get().plot_allpolys_seq_ref,
+                NZernike=pp.get().n_zernike,
+                colors=pp.get().plot_allpolys_colors,
+            )
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
+
+        figure_allpolys.set(fig)
+
+    @reactive.effect
+    @reactive.event(input.download_plot_3_cgvt)
+    def download_allpolys():
+        req(phmap.get())
+        req(pp.get())
+        req(figure_allpolys.get())
+        modal_download("allpolys", "png")
+
+    @reactive.effect
+    @reactive.event(input.download_allpolys_png)
+    def download_allpolys_png():
+        outfile: list[FileInfo] | None = input.save_allpolys_png()
+
+        fig = figure_allpolys.get()
 
         if outfile is None:
             outfile = fig.get_title()
