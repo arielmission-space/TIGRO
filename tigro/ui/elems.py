@@ -45,9 +45,6 @@ def app_elems(pp):
             choices=[
                 "DEBUG",
                 "INFO",
-                "WARNING",
-                "ERROR",
-                "CRITICAL",
             ],
             selected=pp.loglevel,
         ),
