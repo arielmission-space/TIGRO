@@ -70,7 +70,9 @@ def app_elems(pp):
                                 placement="right",
                             ),
                         ),
-                        ui.input_action_button("run_step1_system", "Run", icon=ICONS["run"]),
+                        ui.input_action_button(
+                            "run_step1_system", "Run", icon=ICONS["run"]
+                        ),
                         # output_text_verbatim("run_step1_system_output"),
                     ),
                     ui.card(
@@ -81,7 +83,7 @@ def app_elems(pp):
                                 ui.markdown("blabla"),
                                 placement="right",
                             ),
-                        ),                        
+                        ),
                         ui.input_select(
                             "select_1_system",
                             "",
@@ -101,7 +103,7 @@ def app_elems(pp):
                     ),
                 ),
             ),
-        full_screen=True,
+            full_screen=True,
         ),
     ]
 
@@ -144,107 +146,101 @@ def app_elems(pp):
             class_=card_header_class_,
         ),
         ui.card(
-            ui.layout_columns(
-                ui.card(
-                    ui.card_header(
-                        "1. Load (optional)",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
+            ui.card(
+                ui.card_header(
+                    "1. Load (optional)",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
                     ),
-                    ui.input_action_button("run_step1_cgvt", "Run", icon=ICONS["run"]),
-                    # output_text_verbatim("run_step1_cgvt_output"),
                 ),
-                ui.card(
-                    ui.card_header(
-                        "2. Filter",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
-                    ),
-                    ui.input_action_button("run_step2_cgvt", "Run", icon=ICONS["run"]),
-                    # output_text_verbatim("run_step2_cgvt_output"),
-                ),
-                ui.card(
-                    ui.card_header(
-                        "3. Threshold",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
-                    ),
-                    ui.input_action_button("run_step3_cgvt", "Run", icon=ICONS["run"]),
-                    # output_text_verbatim("run_step3_cgvt_output"),
-                ),
+                ui.input_action_button("run_step1_cgvt", "Run", icon=ICONS["run"]),
+                # output_text_verbatim("run_step1_cgvt_output"),
             ),
-            ui.layout_columns(
-                ui.card(
-                    ui.card_header(
-                        "4. Average",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
+            ui.card(
+                ui.card_header(
+                    "2. Filter",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
                     ),
-                    ui.input_action_button("run_step4_cgvt", "Run", icon=ICONS["run"]),
-                    # output_text_verbatim("run_step4_cgvt_output"),
                 ),
-                ui.card(
-                    ui.card_header(
-                        "5. Fit ellipse",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
-                    ),
-                    ui.input_action_button("run_step5_cgvt", "Run", icon=ICONS["run"]),
-                    # output_text_verbatim("run_step5_cgvt_output"),
-                ),
-                ui.card(
-                    ui.card_header(
-                        "6. Register",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
-                    ),
-                    ui.input_action_button("run_step6_cgvt", "Run", icon=ICONS["run"]),
-                    # output_text_verbatim("run_step6_cgvt_output"),
-                ),
+                ui.input_action_button("run_step2_cgvt", "Run", icon=ICONS["run"]),
+                # output_text_verbatim("run_step2_cgvt_output"),
             ),
-            ui.layout_columns(
-                ui.card(
-                    ui.card_header(
-                        "7. Reference",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
+            ui.card(
+                ui.card_header(
+                    "3. Threshold",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
                     ),
-                    ui.input_action_button("run_step7_cgvt", "Run", icon=ICONS["run"]),
-                    # output_text_verbatim("run_step7_cgvt_output"),
                 ),
-                ui.card(
-                    ui.card_header(
-                        "8. Zernike",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
+                ui.input_action_button("run_step3_cgvt", "Run", icon=ICONS["run"]),
+                # output_text_verbatim("run_step3_cgvt_output"),
+            ),
+            ui.card(
+                ui.card_header(
+                    "4. Average",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
                     ),
-                    ui.input_action_button("run_step8_cgvt", "Run", icon=ICONS["run"]),
-                    # output_text_verbatim("run_step8_cgvt_output"),
                 ),
+                ui.input_action_button("run_step4_cgvt", "Run", icon=ICONS["run"]),
+                # output_text_verbatim("run_step4_cgvt_output"),
+            ),
+            ui.card(
+                ui.card_header(
+                    "5. Fit ellipse",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
+                    ),
+                ),
+                ui.input_action_button("run_step5_cgvt", "Run", icon=ICONS["run"]),
+                # output_text_verbatim("run_step5_cgvt_output"),
+            ),
+            ui.card(
+                ui.card_header(
+                    "6. Register",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
+                    ),
+                ),
+                ui.input_action_button("run_step6_cgvt", "Run", icon=ICONS["run"]),
+                # output_text_verbatim("run_step6_cgvt_output"),
+            ),
+            ui.card(
+                ui.card_header(
+                    "7. Reference",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
+                    ),
+                ),
+                ui.input_action_button("run_step7_cgvt", "Run", icon=ICONS["run"]),
+                # output_text_verbatim("run_step7_cgvt_output"),
+            ),
+            ui.card(
+                ui.card_header(
+                    "8. Zernike",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
+                    ),
+                ),
+                ui.input_action_button("run_step8_cgvt", "Run", icon=ICONS["run"]),
+                # output_text_verbatim("run_step8_cgvt_output"),
             ),
         ),
         ui.card_footer(
@@ -261,168 +257,172 @@ def app_elems(pp):
             class_=card_header_class_,
         ),
         ui.card(
-            ui.layout_columns(
-                ui.card(
-                    ui.card_header(
-                        "RegMap",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
-                        ui.popover(
-                            ICONS["ellipsis"],
-                            *[
-                                ui.input_select(
-                                    "plot_regmap_imkey",
-                                    "Map",
-                                    choices=list(pp.sequence_ids.astype(str)),
-                                    selected=pp.plot_regmap_imkey,
-                                ),
-                            ],
-                            title="",
-                            placement="top",
-                        ),
-                        class_=card_header_class_,
+            ui.card(
+                ui.card_header(
+                    "RegMap",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
                     ),
-                    ui.output_plot("plot_1_cgvt", width="1000px", height="800px", fill=True),
-                    ui.card_footer(
-                        ui.layout_columns(
-                            ui.input_action_button(
-                                "do_plot_1_cgvt", "Plot", icon=ICONS["run"]
+                    ui.popover(
+                        ICONS["ellipsis"],
+                        *[
+                            ui.input_select(
+                                "plot_regmap_imkey",
+                                "Map",
+                                choices=list(pp.sequence_ids.astype(str)),
+                                selected=pp.plot_regmap_imkey,
                             ),
-                            ui.input_action_button(
-                                "download_plot_1_cgvt", "Save", icon=ICONS["save"]
-                            ),
-                        ),
+                        ],
+                        title="",
+                        placement="top",
                     ),
-                    full_screen=True,
+                    class_=card_header_class_,
                 ),
-                ui.card(
-                    ui.card_header(
-                        "RegMap-PTTF",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
-                        ui.popover(
-                            ICONS["ellipsis"],
-                            *[
-                                ui.input_select(
-                                    "plot_regmap_no_pttf_imkey",
-                                    "Map",
-                                    choices=list(pp.sequence_ids.astype(str)),
-                                    selected=pp.plot_regmap_no_pttf_imkey,
-                                ),
-                            ],
-                            title="",
-                            placement="top",
-                        ),
-                        class_=card_header_class_,
-                    ),
-                    ui.output_plot("plot_2_cgvt", width="1000px", height="800px", fill=True),
-                    ui.card_footer(
-                        ui.layout_columns(
-                            ui.input_action_button(
-                                "do_plot_2_cgvt", "Plot", icon=ICONS["run"]
-                            ),
-                            ui.input_action_button(
-                                "download_plot_2_cgvt", "Save", icon=ICONS["save"]
-                            ),
-                        ),
-                    ),
-                    full_screen=True,
+                ui.output_plot(
+                    "plot_1_cgvt", width="1000px", height="800px", fill=True
                 ),
+                ui.card_footer(
+                    ui.layout_columns(
+                        ui.input_action_button(
+                            "do_plot_1_cgvt", "Plot", icon=ICONS["run"]
+                        ),
+                        ui.input_action_button(
+                            "download_plot_1_cgvt", "Save", icon=ICONS["save"]
+                        ),
+                    ),
+                ),
+                full_screen=True,
             ),
-            ui.layout_columns(
-                ui.card(
-                    ui.card_header(
-                        "Allpolys",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
-                        ui.popover(
-                            ICONS["ellipsis"],
-                            *[
-                                ui.input_select(
-                                    "plot_allpolys_seq_ref",
-                                    "Reference map",
-                                    choices=list(pp.sequence_ids.astype(str)),
-                                    selected=pp.plot_allpolys_seq_ref,
-                                ),
-                                ui.input_text(
-                                    "plot_allpolys_colors",
-                                    "Colors",
-                                    value=pp._plot_allpolys_colors,
-                                ),
-                            ],
-                            title="",
-                            placement="top",
-                        ),
-                        class_=card_header_class_,
+            ui.card(
+                ui.card_header(
+                    "RegMap-PTTF",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
                     ),
-                    ui.output_plot("plot_3_cgvt", width="1000px", height="800px", fill=True),
-                    ui.card_footer(
-                        ui.layout_columns(
-                            ui.input_action_button(
-                                "do_plot_3_cgvt", "Plot", icon=ICONS["run"]
+                    ui.popover(
+                        ICONS["ellipsis"],
+                        *[
+                            ui.input_select(
+                                "plot_regmap_no_pttf_imkey",
+                                "Map",
+                                choices=list(pp.sequence_ids.astype(str)),
+                                selected=pp.plot_regmap_no_pttf_imkey,
                             ),
-                            ui.input_action_button(
-                                "download_plot_3_cgvt", "Save", icon=ICONS["save"]
-                            ),
-                        ),
+                        ],
+                        title="",
+                        placement="top",
                     ),
-                    full_screen=True,
+                    class_=card_header_class_,
                 ),
-                ui.card(
-                    ui.card_header(
-                        "Polys",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
-                        ui.popover(
-                            ICONS["ellipsis"],
-                            *[
-                                ui.input_select(
-                                    "plot_polys_seq_ref",
-                                    "Reference map",
-                                    choices=list(pp.sequence_ids.astype(str)),
-                                    selected=pp.plot_polys_seq_ref,
-                                ),
-                                ui.input_text(
-                                    "plot_polys_order",
-                                    "Colors",
-                                    value=pp._plot_polys_order,
-                                ),
-                                ui.input_text(
-                                    "plot_polys_colors",
-                                    "Colors",
-                                    value=pp._plot_polys_colors,
-                                ),
-                            ],
-                            title="",
-                            placement="top",
-                        ),
-                        class_=card_header_class_,
-                    ),
-                    ui.output_plot("plot_4_cgvt", width="1000px", height="800px", fill=True),
-                    ui.card_footer(
-                        ui.layout_columns(
-                            ui.input_action_button(
-                                "do_plot_4_cgvt", "Plot", icon=ICONS["run"]
-                            ),
-                            ui.input_action_button(
-                                "download_plot_4_cgvt", "Save", icon=ICONS["save"]
-                            ),
-                        ),
-                    ),
-                    full_screen=True,
+                ui.output_plot(
+                    "plot_2_cgvt", width="1000px", height="800px", fill=True
                 ),
+                ui.card_footer(
+                    ui.layout_columns(
+                        ui.input_action_button(
+                            "do_plot_2_cgvt", "Plot", icon=ICONS["run"]
+                        ),
+                        ui.input_action_button(
+                            "download_plot_2_cgvt", "Save", icon=ICONS["save"]
+                        ),
+                    ),
+                ),
+                full_screen=True,
+            ),
+            ui.card(
+                ui.card_header(
+                    "Allpolys",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
+                    ),
+                    ui.popover(
+                        ICONS["ellipsis"],
+                        *[
+                            ui.input_select(
+                                "plot_allpolys_seq_ref",
+                                "Reference map",
+                                choices=list(pp.sequence_ids.astype(str)),
+                                selected=pp.plot_allpolys_seq_ref,
+                            ),
+                            ui.input_text(
+                                "plot_allpolys_colors",
+                                "Colors",
+                                value=pp._plot_allpolys_colors,
+                            ),
+                        ],
+                        title="",
+                        placement="top",
+                    ),
+                    class_=card_header_class_,
+                ),
+                ui.output_plot(
+                    "plot_3_cgvt", width="1000px", height="800px", fill=True
+                ),
+                ui.card_footer(
+                    ui.layout_columns(
+                        ui.input_action_button(
+                            "do_plot_3_cgvt", "Plot", icon=ICONS["run"]
+                        ),
+                        ui.input_action_button(
+                            "download_plot_3_cgvt", "Save", icon=ICONS["save"]
+                        ),
+                    ),
+                ),
+                full_screen=True,
+            ),
+            ui.card(
+                ui.card_header(
+                    "Polys",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
+                    ),
+                    ui.popover(
+                        ICONS["ellipsis"],
+                        *[
+                            ui.input_select(
+                                "plot_polys_seq_ref",
+                                "Reference map",
+                                choices=list(pp.sequence_ids.astype(str)),
+                                selected=pp.plot_polys_seq_ref,
+                            ),
+                            ui.input_text(
+                                "plot_polys_order",
+                                "Colors",
+                                value=pp._plot_polys_order,
+                            ),
+                            ui.input_text(
+                                "plot_polys_colors",
+                                "Colors",
+                                value=pp._plot_polys_colors,
+                            ),
+                        ],
+                        title="",
+                        placement="top",
+                    ),
+                    class_=card_header_class_,
+                ),
+                ui.output_plot(
+                    "plot_4_cgvt", width="1000px", height="800px", fill=True
+                ),
+                ui.card_footer(
+                    ui.layout_columns(
+                        ui.input_action_button(
+                            "do_plot_4_cgvt", "Plot", icon=ICONS["run"]
+                        ),
+                        ui.input_action_button(
+                            "download_plot_4_cgvt", "Save", icon=ICONS["save"]
+                        ),
+                    ),
+                ),
+                full_screen=True,
             ),
         ),
         ui.card_footer(
@@ -483,57 +483,53 @@ def app_elems(pp):
             class_=card_header_class_,
         ),
         ui.card(
-            ui.layout_columns(
-                ui.card(
-                    ui.card_header(
-                        "1. Load (optional)",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
+            ui.card(
+                ui.card_header(
+                    "1. Load (optional)",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
                     ),
-                    ui.input_action_button("run_step1_zerog", "Run", icon=ICONS["run"]),
-                    # output_text_verbatim("run_step1_zerog_output"),
                 ),
-                ui.card(
-                    ui.card_header(
-                        "2. Get indices",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
-                    ),
-                    ui.input_action_button("run_step2_zerog", "Run", icon=ICONS["run"]),
-                    # output_text_verbatim("run_step2_zerog_output"),
-                ),
-                ui.card(
-                    ui.card_header(
-                        "3. ZeroG",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
-                    ),
-                    ui.input_action_button("run_step3_zerog", "Run", icon=ICONS["run"]),
-                    # output_text_verbatim("run_step3_zerog_output"),
-                ),
+                ui.input_action_button("run_step1_zerog", "Run", icon=ICONS["run"]),
+                # output_text_verbatim("run_step1_zerog_output"),
             ),
-            ui.layout_columns(
-                ui.card(
-                    ui.card_header(
-                        "4. Dphmap",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
+            ui.card(
+                ui.card_header(
+                    "2. Get indices",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
                     ),
-                    ui.input_action_button("run_step4_zerog", "Run", icon=ICONS["run"]),
-                    # output_text_verbatim("run_step4_zerog_output"),
                 ),
+                ui.input_action_button("run_step2_zerog", "Run", icon=ICONS["run"]),
+                # output_text_verbatim("run_step2_zerog_output"),
+            ),
+            ui.card(
+                ui.card_header(
+                    "3. ZeroG",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
+                    ),
+                ),
+                ui.input_action_button("run_step3_zerog", "Run", icon=ICONS["run"]),
+                # output_text_verbatim("run_step3_zerog_output"),
+            ),
+            ui.card(
+                ui.card_header(
+                    "4. Dphmap",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
+                    ),
+                ),
+                ui.input_action_button("run_step4_zerog", "Run", icon=ICONS["run"]),
+                # output_text_verbatim("run_step4_zerog_output"),
             ),
         ),
         ui.card_footer(
@@ -550,92 +546,94 @@ def app_elems(pp):
             class_=card_header_class_,
         ),
         ui.card(
-            ui.layout_columns(
-                ui.card(
-                    ui.card_header(
-                        "ZeroG",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
-                        ui.popover(
-                            ICONS["ellipsis"],
-                            *[
-                                ui.input_text(
-                                    "plot_zerog_ylim",
-                                    "Y limits",
-                                    value=pp._plot_zerog_ylim,
-                                ),
-                            ],
-                            title="",
-                            placement="top",
-                        ),
-                        class_=card_header_class_,
+            ui.card(
+                ui.card_header(
+                    "ZeroG",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
                     ),
-                    ui.output_plot("plot_1_zerog", width="1000px", height="800px", fill=True),
-                    ui.card_footer(
-                        ui.layout_columns(
-                            ui.input_action_button(
-                                "do_plot_1_zerog", "Plot", icon=ICONS["run"]
+                    ui.popover(
+                        ICONS["ellipsis"],
+                        *[
+                            ui.input_text(
+                                "plot_zerog_ylim",
+                                "Y limits",
+                                value=pp._plot_zerog_ylim,
                             ),
-                            ui.input_action_button(
-                                "download_plot_1_zerog", "Save", icon=ICONS["save"]
-                            ),
-                        ),
+                        ],
+                        title="",
+                        placement="top",
                     ),
-                    full_screen=True,
+                    class_=card_header_class_,
                 ),
-                ui.card(
-                    ui.card_header(
-                        "Dphmap",
-                        ui.popover(
-                            icon_svg("circle-info").add_class("ms-2"),
-                            ui.markdown("blabla"),
-                            placement="right",
-                        ),
-                        ui.popover(
-                            ICONS["ellipsis"],
-                            *[
-                                ui.input_text(
-                                    "plot_dphmap_hlines",
-                                    "Horizontal lines",
-                                    value=pp._plot_dphmap_hlines,
-                                ),
-                                ui.input_text(
-                                    "plot_dphmap_vlines",
-                                    "Vertical lines",
-                                    value=pp._plot_dphmap_vlines,
-                                ),
-                                ui.input_text(
-                                    "plot_dphmap_hist_xlim",
-                                    "Histogram: X limits",
-                                    value=pp._plot_dphmap_hist_xlim,
-                                ),
-                                ui.input_text(
-                                    "plot_dphmap_hist_ylim",
-                                    "Histogram: Y limits",
-                                    value=pp._plot_dphmap_hist_ylim,
-                                ),
-                            ],
-                            title="",
-                            placement="top",
-                        ),
-                        class_=card_header_class_,
-                    ),
-                    ui.output_plot("plot_2_zerog", width="1000px", height="800px", fill=True),
-                    ui.card_footer(
-                        ui.layout_columns(
-                            ui.input_action_button(
-                                "do_plot_2_zerog", "Plot", icon=ICONS["run"]
-                            ),
-                            ui.input_action_button(
-                                "download_plot_2_zerog", "Save", icon=ICONS["save"]
-                            ),
-                        ),
-                    ),
-                    full_screen=True,
+                ui.output_plot(
+                    "plot_1_zerog", width="1000px", height="800px", fill=True
                 ),
+                ui.card_footer(
+                    ui.layout_columns(
+                        ui.input_action_button(
+                            "do_plot_1_zerog", "Plot", icon=ICONS["run"]
+                        ),
+                        ui.input_action_button(
+                            "download_plot_1_zerog", "Save", icon=ICONS["save"]
+                        ),
+                    ),
+                ),
+                full_screen=True,
+            ),
+            ui.card(
+                ui.card_header(
+                    "Dphmap",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
+                    ),
+                    ui.popover(
+                        ICONS["ellipsis"],
+                        *[
+                            ui.input_text(
+                                "plot_dphmap_hlines",
+                                "Horizontal lines",
+                                value=pp._plot_dphmap_hlines,
+                            ),
+                            ui.input_text(
+                                "plot_dphmap_vlines",
+                                "Vertical lines",
+                                value=pp._plot_dphmap_vlines,
+                            ),
+                            ui.input_text(
+                                "plot_dphmap_hist_xlim",
+                                "Histogram: X limits",
+                                value=pp._plot_dphmap_hist_xlim,
+                            ),
+                            ui.input_text(
+                                "plot_dphmap_hist_ylim",
+                                "Histogram: Y limits",
+                                value=pp._plot_dphmap_hist_ylim,
+                            ),
+                        ],
+                        title="",
+                        placement="top",
+                    ),
+                    class_=card_header_class_,
+                ),
+                ui.output_plot(
+                    "plot_2_zerog", width="1000px", height="800px", fill=True
+                ),
+                ui.card_footer(
+                    ui.layout_columns(
+                        ui.input_action_button(
+                            "do_plot_2_zerog", "Plot", icon=ICONS["run"]
+                        ),
+                        ui.input_action_button(
+                            "download_plot_2_zerog", "Save", icon=ICONS["save"]
+                        ),
+                    ),
+                ),
+                full_screen=True,
             ),
         ),
         ui.card_footer(

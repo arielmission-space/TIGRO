@@ -37,7 +37,6 @@ from tigro.ui.shared import refresh_ui
 from tigro.ui.shared import nested_div
 from tigro.ui.shared import modal_download
 
-# reset matplotlib style
 plt.style.use("default")
 
 
@@ -64,6 +63,7 @@ def app_ui(request: StarletteRequest) -> Tag:
             ui.layout_columns(
                 ui.card(nested_div("cgvt_analysis"), full_screen=True),
                 ui.card(nested_div("cgvt_plots"), full_screen=True),
+                col_widths=(3, 9),
             ),
         ),
         ui.nav_panel(
@@ -71,6 +71,7 @@ def app_ui(request: StarletteRequest) -> Tag:
             ui.layout_columns(
                 ui.card(nested_div("zerog_analysis"), full_screen=True),
                 ui.card(nested_div("zerog_plots"), full_screen=True),
+                col_widths=(3, 9),
             ),
         ),
         fillable="TIGRO UI",
