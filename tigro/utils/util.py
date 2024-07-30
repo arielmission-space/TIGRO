@@ -118,7 +118,7 @@ def transform(M, xc, yc, Dx, Dy, phi):
 #     return mm
 
 
-def get_threshold(phmap, level=0.1, plot=True):
+def get_threshold(phmap, level=0.1, plot=True, full_return=False):
     # Get threshold for outlier rejection
     ncounts = np.hstack(
         [phmap[seq]["cleanmap"].count(axis=(1, 2)) for seq in phmap.keys()]
@@ -129,6 +129,9 @@ def get_threshold(phmap, level=0.1, plot=True):
     if plot:
         fig = plot_threshold(ncounts, lo, threshold, med, hi)
 
+    if full_return:
+        return ncounts, lo, threshold, med, hi
+    
     return threshold
 
 

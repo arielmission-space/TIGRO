@@ -30,6 +30,7 @@ from tigro.core.fit import fit_zernike
 from tigro.io.save import to_pickle
 
 from tigro.plots.plot import plot_sag_quicklook
+from tigro.plots.plot import plot_threshold
 from tigro.plots.plot import plot_sag
 from tigro.plots.plot import plot_allpolys
 from tigro.plots.plot import plot_polys
@@ -214,7 +215,7 @@ def server(input, output, session):
             p.set(message="Thresholding in progress", detail="")
             time.sleep(1.0)
 
-            threshold.set(get_threshold(phmap.get(), level=pp.phmap_threshold, plot=False))
+            threshold.set(get_threshold(phmap.get(), level=pp.get().phmap_threshold, plot=False, full_return=True))
 
             p.set(15, message="Done!", detail="")
             time.sleep(1.0)
@@ -230,7 +231,7 @@ def server(input, output, session):
             p.set(message="Plotting in progress", detail="")
             time.sleep(1.0)
 
-            # plot here
+            fig = plot_threshold(*threshold.get())
 
             p.set(15, message="Done!", detail="")
             time.sleep(1.0)

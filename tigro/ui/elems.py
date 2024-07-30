@@ -59,6 +59,11 @@ def app_elems(pp):
             ui.card_header(
                 "RawMap",
                 ui.popover(
+                    icon_svg("circle-info").add_class("ms-2"),
+                    ui.markdown("blabla"),
+                    placement="right",
+                ),
+                ui.popover(
                     ICONS["ellipsis"],
                     *[
                         ui.input_select(
@@ -252,6 +257,14 @@ def app_elems(pp):
                         icon_svg("circle-info").add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
+                    ),
+                    ui.popover(
+                        ICONS["ellipsis"],
+                        *[
+                            ui.p(""),
+                        ],
+                        title="",
+                        placement="top",
                     ),
                     class_=card_header_class_,
                 ),
