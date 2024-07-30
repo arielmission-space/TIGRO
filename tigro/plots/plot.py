@@ -98,7 +98,9 @@ def plot_sag(
     ax.set_ylim(-1.1, 1.1)
 
     bar.set_label("Sag [nm]")
-    ax.set_title("{:s}".format(phmap[imkey]["name"][0]), fontsize=10)
+    figname = phmap[imkey]["name"][0].split("_")
+    figname = "_".join([figname[0]] + figname[2:])
+    ax.set_title(f"{figname}", fontsize=14)
     ax.legend(loc=1, fontsize=10)
     ax.grid(which="both")
 
