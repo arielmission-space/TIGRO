@@ -39,6 +39,7 @@ class Parser:
         # CGVT
         cgvt = self.cparser["cgvt"]
         self.run_cgvt = cgvt.getboolean("run_cgvt")
+        self.phmap_threshold = cgvt.getfloat("phmap_threshold", fallback=0.1)
         self._phmap_filter_type = cgvt.get("phmap_filter_type", fallback="mean")
         self.phmap_filter_type = getattr(np.ma, self._phmap_filter_type)
         self.phmap_semi_major = cgvt.getfloat("phmap_semi_major", fallback=451)

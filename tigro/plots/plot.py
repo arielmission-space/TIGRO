@@ -5,6 +5,16 @@ from matplotlib.gridspec import GridSpec
 from matplotlib.patches import Ellipse
 
 
+def plot_threshold(ncounts, lo, threshold, med, hi):
+    fig = plt.figure()
+    plt.plot(ncounts)
+    plt.ylim(lo, hi)
+    xlim = plt.xlim()
+    plt.hlines([threshold, med], *xlim)
+    plt.title("Check threshold by eye!!!")
+    return fig
+
+
 def plot_sag_quicklook(
     phmap,
     imkey,

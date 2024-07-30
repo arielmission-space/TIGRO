@@ -100,6 +100,7 @@ def server(input, output, session):
     figure_quicklook = reactive.value(None)
     threshold = reactive.value(None)
     uref = reactive.value(None)
+    figure_threshold = reactive.value(None)
     figure_regmap = reactive.value(None)
     figure_regmap_no_pttf = reactive.value(None)
     figure_allpolys = reactive.value(None)
@@ -213,7 +214,54 @@ def server(input, output, session):
             p.set(message="Thresholding in progress", detail="")
             time.sleep(1.0)
 
-            threshold.set(get_threshold(phmap.get(), plot=False))
+            threshold.set(get_threshold(phmap.get(), level=pp.phmap_threshold, plot=False))
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
+
+    @render.plot(alt="Threshold plot")
+    @reactive.event(input.plot_all_cgvt, input.do_plot_0_cgvt)
+    def plot_0_cgvt():
+        req(pp.get())
+        req(phmap.get())
+        req(threshold.get())
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Plotting in progress", detail="")
+            time.sleep(1.0)
+
+            # plot here
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
+
+        figure_threshold.set(fig)
+
+    @reactive.effect
+    @reactive.event(input.download_all_plots_cgvt, input.download_plot_0_cgvt)
+    def download_threshold():
+        req(pp.get())
+        req(phmap.get())
+        req(figure_threshold.get())
+        modal_download("threshold", "png")
+
+    @reactive.effect
+    @reactive.event(input.download_threshold_png)
+    def download_threshold_png():
+        outfile: list[FileInfo] | None = input.save_threshold_png()
+
+        fig = figure_threshold.get()
+
+        if outfile is None:
+            outfile = fig.get_title()
+
+        path = os.path.join(pp.get().outpath, f"{outfile}")
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Saving in progress", detail="")
+            time.sleep(1.0)
+
+            fig.savefig(path, dpi=300, bbox_inches="tight")
 
             p.set(15, message="Done!", detail="")
             time.sleep(1.0)

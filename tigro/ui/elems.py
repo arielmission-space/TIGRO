@@ -97,6 +97,11 @@ def app_elems(pp):
                 ICONS["ellipsis"],
                 *[
                     ui.input_text(
+                        "phmap_threshold",
+                        "Phase map threshold",
+                        value=pp.phmap_threshold,
+                    ),
+                    ui.input_text(
                         "phmap_filter_type",
                         "Phmap filter type",
                         value=pp._phmap_filter_type,
@@ -240,6 +245,29 @@ def app_elems(pp):
             class_=card_header_class_,
         ),
         ui.card(
+            ui.card(
+                ui.card_header(
+                    "Threshold",
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown("blabla"),
+                        placement="right",
+                    ),
+                    class_=card_header_class_,
+                ),
+                ui.output_plot("plot_0_cgvt", width="700px", height="550px", fill=True),
+                ui.card_footer(
+                    ui.layout_columns(
+                        ui.input_action_button(
+                            "do_plot_0_cgvt", "Plot", icon=ICONS["run"]
+                        ),
+                        ui.input_action_button(
+                            "download_plot_0_cgvt", "Save", icon=ICONS["save"]
+                        ),
+                    ),
+                ),
+                full_screen=True,
+            ),
             ui.card(
                 ui.card_header(
                     "RegMap",

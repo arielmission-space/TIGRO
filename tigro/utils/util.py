@@ -1,8 +1,9 @@
 import numpy as np
-from matplotlib import pyplot as plt
 from photutils.aperture import EllipticalAperture
 import cv2
 from ellipse import LsqEllipse
+
+from tigro.plots.plot import plot_threshold
 
 
 def mymfil(ima, kernel_size=3):
@@ -117,24 +118,16 @@ def transform(M, xc, yc, Dx, Dy, phi):
 #     return mm
 
 
-def get_threshold(phmap, threshold="lo", plot=True):
+def get_threshold(phmap, level=0.1, plot=True):
     # Get threshold for outlier rejection
     ncounts = np.hstack(
         [phmap[seq]["cleanmap"].count(axis=(1, 2)) for seq in phmap.keys()]
     )
 
-    lo, threshold, med, hi = np.percentile(ncounts, [0.0, 0.1, 50, 99.9])
-    if threshold == "lo":
-        threshold = lo
+    lo, threshold, med, hi = np.percentile(ncounts, [0.0, level, 50, 99.9])
 
     if plot:
-        plt.figure()
-        plt.plot(ncounts)
-        plt.ylim(lo, hi)
-        xlim = plt.xlim()
-        plt.hlines([threshold, med], *xlim)
-        plt.title("Check threshold by eye!!!")
-        plt.show()
+        fig = plot_threshold(ncounts, lo, threshold, med, hi)
 
     return threshold
 

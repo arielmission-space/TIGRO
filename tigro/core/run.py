@@ -35,7 +35,7 @@ def run_cgvt(pp):
     phmap = filter_phmap(phmap)
 
     logger.info("Getting threshold for outlier rejection")
-    threshold = get_threshold(phmap)
+    threshold = get_threshold(phmap, pp.phmap_threshold)
 
     logger.info("Computing median map and supermask")
     phmap = med_phmap(
