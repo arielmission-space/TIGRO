@@ -98,6 +98,7 @@ def server(input, output, session):
     threshold = reactive.value(None)
     uref = reactive.value(None)
     figure_regmap = reactive.value(None)
+    figure_regmap_no_pttf = reactive.value(None)
 
     @reactive.effect
     @reactive.event(input.run_all_cgvt, input.run_step1_cgvt, input.run_step1_system)
@@ -320,7 +321,7 @@ def server(input, output, session):
             time.sleep(1.0)
 
     @render.plot(alt="RegMap plot")
-    @reactive.event(input.do_plot_1_cgvt)
+    @reactive.event(input.plot_all_cgvt, input.do_plot_1_cgvt)
     def plot_1_cgvt():
         req(pp.get())
         req(phmap.get())
@@ -345,13 +346,9 @@ def server(input, output, session):
     @reactive.effect
     @reactive.event(input.download_plot_1_cgvt)
     def download_regmap():
-        print("here")
         req(phmap.get())
-        print("here")
         req(pp.get())
-        print("here")
         req(figure_regmap.get())
-        print("here")
         modal_download("regmap", "png")
 
     @reactive.effect
@@ -400,6 +397,56 @@ def server(input, output, session):
             phmap.set(retval)
 
             p.set(len(sequence_ids), message="Done!", detail="")
+            time.sleep(1.0)
+
+    @render.plot(alt="RegMap-PTTF plot")
+    @reactive.event(input.plot_all_cgvt, input.do_plot_2_cgvt)
+    def plot_2_cgvt():
+        req(pp.get())
+        req(phmap.get())
+
+        sequence_ids = pp.get().sequence_ids
+        for seq in sequence_ids:
+            if "residual" not in phmap.get()[seq].keys():
+                return
+
+        imkey = int(input.plot_regmap_no_pttf_imkey())
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Plotting in progress", detail="")
+
+            fig = plot_sag(phmap.get(), uref.get(), imkey, imsubkey="RegMap-PTTF")
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
+
+        figure_regmap_no_pttf.set(fig)
+
+    @reactive.effect
+    @reactive.event(input.download_plot_2_cgvt)
+    def download_regmap_no_pttf():
+        req(phmap.get())
+        req(pp.get())
+        req(figure_regmap_no_pttf.get())
+        modal_download("regmap_no_pttf", "png")
+
+    @reactive.effect
+    @reactive.event(input.download_regmap_no_pttf_png)
+    def download_regmap_no_pttf_png():
+        outfile: list[FileInfo] | None = input.save_regmap_no_pttf_png()
+
+        fig = figure_regmap_no_pttf.get()
+
+        if outfile is None:
+            outfile = fig.get_title()
+
+        path = os.path.join(pp.get().outpath, f"{outfile}")
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Saving in progress", detail="")
+            fig.savefig(path, dpi=300, bbox_inches="tight")
+
+            p.set(15, message="Done!", detail="")
             time.sleep(1.0)
 
     @reactive.effect

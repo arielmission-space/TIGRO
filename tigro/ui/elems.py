@@ -148,7 +148,7 @@ def app_elems(pp):
         ui.card(
             ui.card(
                 ui.card_header(
-                    "1. Load (optional)",
+                    "1. Load",
                     ui.popover(
                         icon_svg("circle-info").add_class("ms-2"),
                         ui.markdown("blabla"),
@@ -485,7 +485,7 @@ def app_elems(pp):
         ui.card(
             ui.card(
                 ui.card_header(
-                    "1. Load (optional)",
+                    "1. Load",
                     ui.popover(
                         icon_svg("circle-info").add_class("ms-2"),
                         ui.markdown("blabla"),
