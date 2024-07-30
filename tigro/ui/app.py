@@ -29,6 +29,7 @@ from tigro.core.fit import calculate_zernike
 from tigro.core.fit import fit_zernike
 
 from tigro.plots.plot import plot_sag_quicklook
+from tigro.plots.plot import plot_sag
 
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar
@@ -96,27 +97,13 @@ def server(input, output, session):
     figure_quicklook = reactive.value(None)
     threshold = reactive.value(None)
     uref = reactive.value(None)
-
-    # @reactive.calc
-    # def api_call():
-    #     req(config.get().sections())
-    #     # other req here
-
-    #     # myvalue = input.myvalue()
-    #     # get inputs here
-
-    #     with ui.Progress(min=1, max=15) as p:
-    #         p.set(message="API call in progress", detail="")
-
-    #         # api call here
-
-    #         p.set(15, message="Done!", detail="")
-    #         time.sleep(1.0)
+    figure_regmap = reactive.value(None)
 
     @reactive.effect
-    @reactive.event(input.run_step1_system, input.run_step1_cgvt, input.run_all_cgvt)
+    @reactive.event(input.run_all_cgvt, input.run_step1_cgvt, input.run_step1_system)
     def _load_phmap_():
         req(pp.get())
+        req(len(phmap.get().keys()) == 0)
 
         sequence_ids = pp.get().sequence_ids
         retval = {}
@@ -136,16 +123,17 @@ def server(input, output, session):
 
     @render.plot(alt="Quicklook plot")
     @reactive.event(input.do_plot_1_system)
-    def _plot_sag_quicklook_():
+    def plot_1_system():
         req(pp.get())
         req(phmap.get())
 
         imkey = int(input.select_1_system())
+        print(imkey)
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Plotting in progress", detail="")
 
-            fig = plot_sag_quicklook(phmap.get(), imkey)
+            fig = plot_sag_quicklook(phmap.get(), imkey, imsubkey="rawmap")
 
             p.set(15, message="Done!", detail="")
             time.sleep(1.0)
@@ -180,7 +168,7 @@ def server(input, output, session):
             time.sleep(1.0)
 
     @reactive.effect
-    @reactive.event(input.run_step2_cgvt, input.run_all_cgvt)
+    @reactive.event(input.run_all_cgvt, input.run_step2_cgvt)
     def _filter_phmap_():
         req(pp.get())
         req(phmap.get())
@@ -203,7 +191,7 @@ def server(input, output, session):
             time.sleep(1.0)
 
     @reactive.effect
-    @reactive.event(input.run_step3_cgvt, input.run_all_cgvt)
+    @reactive.event(input.run_all_cgvt, input.run_step3_cgvt)
     def _get_threshold_():
         req(pp.get())
         req(phmap.get())
@@ -217,13 +205,13 @@ def server(input, output, session):
             p.set(message="Thresholding in progress", detail="")
             time.sleep(1.0)
 
-            threshold.set(get_threshold(phmap.get()))
+            threshold.set(get_threshold(phmap.get(), plot=False))
 
             p.set(15, message="Done!", detail="")
             time.sleep(1.0)
 
     @reactive.effect
-    @reactive.event(input.run_step4_cgvt, input.run_all_cgvt)
+    @reactive.event(input.run_all_cgvt, input.run_step4_cgvt)
     def _med_phmap_():
         req(pp.get())
         req(phmap.get())
@@ -254,7 +242,7 @@ def server(input, output, session):
             time.sleep(1.0)
 
     @reactive.effect
-    @reactive.event(input.run_step5_cgvt, input.run_all_cgvt)
+    @reactive.event(input.run_all_cgvt, input.run_step5_cgvt)
     def _fit_ellipse_():
         req(pp.get())
         req(phmap.get())
@@ -280,7 +268,7 @@ def server(input, output, session):
             time.sleep(1.0)
 
     @reactive.effect
-    @reactive.event(input.run_step6_cgvt, input.run_all_cgvt)
+    @reactive.event(input.run_all_cgvt, input.run_step6_cgvt)
     def _register_phmap_():
         req(pp.get())
         req(phmap.get())
@@ -306,7 +294,7 @@ def server(input, output, session):
             time.sleep(1.0)
 
     @reactive.effect
-    @reactive.event(input.run_step7_cgvt, input.run_all_cgvt)
+    @reactive.event(input.run_all_cgvt, input.run_step7_cgvt)
     def _get_uref_():
         req(pp.get())
         req(phmap.get())
@@ -332,8 +320,59 @@ def server(input, output, session):
             p.set(15, message="Done!", detail="")
             time.sleep(1.0)
 
+    @render.plot(alt="RegMap plot")
+    @reactive.event(input.do_plot_1_cgvt)
+    def plot_1_cgvt():
+        req(pp.get())
+        req(phmap.get())
+
+        sequence_ids = pp.get().sequence_ids
+        for seq in sequence_ids:
+            if "RegMap" not in phmap.get()[seq].keys():
+                return
+
+        imkey = int(input.plot_regmap_imkey())
+        print(imkey)
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Plotting in progress", detail="")
+
+            fig = plot_sag(phmap.get(), uref.get(), imkey, imsubkey="RegMap")
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
+
+        figure_regmap.set(fig)
+
     @reactive.effect
-    @reactive.event(input.run_step8_cgvt, input.run_all_cgvt)
+    @reactive.event(input.download_plot_1_cgvt)
+    def download_regmap():
+        req(phmap.get())
+        req(pp.get())
+        req(figure_regmap.get())
+        modal_download("regmap", "png")
+
+    @reactive.effect
+    @reactive.event(input.download_regmap_png)
+    def download_regmap_png():
+        outfile: list[FileInfo] | None = input.save_png()
+
+        fig = figure_regmap.get()
+
+        if outfile is None:
+            outfile = fig.get_title()
+
+        path = os.path.join(pp.get().outpath, f"{outfile}")
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Saving in progress", detail="")
+            fig.savefig(path, dpi=300, bbox_inches="tight")
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
+
+    @reactive.effect
+    @reactive.event(input.run_all_cgvt, input.run_step8_cgvt)
     def _fit_zernike_():
         req(pp.get())
         req(phmap.get())
@@ -350,7 +389,11 @@ def server(input, output, session):
             for i, sequence_id in enumerate(sequence_ids):
                 p.set(i, message=f"Fitting Zernike {sequence_id}", detail="")
                 _phmap = {sequence_id: phmap.get()[sequence_id]}
-                retval.update(fit_zernike(_phmap, uref.get(), NZernike=pp.get().n_zernike, zkm=zkm, A=A))
+                retval.update(
+                    fit_zernike(
+                        _phmap, uref.get(), NZernike=pp.get().n_zernike, zkm=zkm, A=A
+                    )
+                )
 
             phmap.set(retval)
 
