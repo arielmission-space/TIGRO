@@ -60,41 +60,27 @@ def app_elems(pp):
         ),
         ui.card(
             ui.card_header(
-                ui.layout_columns(
-                    ui.card(
-                        ui.card_header(
-                            "1. Load",
-                            ui.popover(
-                                icon_svg("circle-info").add_class("ms-2"),
-                                ui.markdown("blabla"),
-                                placement="right",
-                            ),
-                        ),
-                        ui.input_action_button(
-                            "run_step1_system", "Run", icon=ICONS["run"]
-                        ),
-                        # output_text_verbatim("run_step1_system_output"),
-                    ),
-                    ui.card(
-                        ui.card_header(
-                            "2. Select",
-                            ui.popover(
-                                icon_svg("circle-info").add_class("ms-2"),
-                                ui.markdown("blabla"),
-                                placement="right",
-                            ),
-                        ),
+                "RawMap",
+                ui.popover(
+                    ICONS["ellipsis"],
+                    *[
                         ui.input_select(
                             "select_1_system",
-                            "",
+                            "Map",
                             choices=list(pp.sequence_ids.astype(str)),
                         ),
-                    ),
+                    ],
+                    title="",
+                    placement="top",
                 ),
+                class_=card_header_class_,
             ),
-            ui.output_plot("plot_1_system", width="1000px", height="800px", fill=True),
+            ui.output_plot("plot_1_system", width="700px", height="550px", fill=True),
             ui.card_footer(
                 ui.layout_columns(
+                    ui.input_action_button(
+                        "run_step1_system", "Load", icon=ICONS["run"]
+                    ),
                     ui.input_action_button(
                         "do_plot_1_system", "Plot", icon=ICONS["run"]
                     ),
@@ -281,7 +267,7 @@ def app_elems(pp):
                     class_=card_header_class_,
                 ),
                 ui.output_plot(
-                    "plot_1_cgvt", width="1000px", height="800px", fill=True
+                    "plot_1_cgvt", width="700px", height="550px", fill=True
                 ),
                 ui.card_footer(
                     ui.layout_columns(
@@ -319,7 +305,7 @@ def app_elems(pp):
                     class_=card_header_class_,
                 ),
                 ui.output_plot(
-                    "plot_2_cgvt", width="1000px", height="800px", fill=True
+                    "plot_2_cgvt", width="700px", height="550px", fill=True
                 ),
                 ui.card_footer(
                     ui.layout_columns(
@@ -362,7 +348,7 @@ def app_elems(pp):
                     class_=card_header_class_,
                 ),
                 ui.output_plot(
-                    "plot_3_cgvt", width="1000px", height="800px", fill=True
+                    "plot_3_cgvt", width="700px", height="550px", fill=True
                 ),
                 ui.card_footer(
                     ui.layout_columns(
@@ -410,7 +396,7 @@ def app_elems(pp):
                     class_=card_header_class_,
                 ),
                 ui.output_plot(
-                    "plot_4_cgvt", width="1000px", height="800px", fill=True
+                    "plot_4_cgvt", width="700px", height="550px", fill=True
                 ),
                 ui.card_footer(
                     ui.layout_columns(
@@ -569,7 +555,7 @@ def app_elems(pp):
                     class_=card_header_class_,
                 ),
                 ui.output_plot(
-                    "plot_1_zerog", width="1000px", height="800px", fill=True
+                    "plot_1_zerog", width="700px", height="550px", fill=True
                 ),
                 ui.card_footer(
                     ui.layout_columns(
@@ -621,7 +607,7 @@ def app_elems(pp):
                     class_=card_header_class_,
                 ),
                 ui.output_plot(
-                    "plot_2_zerog", width="1000px", height="800px", fill=True
+                    "plot_2_zerog", width="700px", height="550px", fill=True
                 ),
                 ui.card_footer(
                     ui.layout_columns(

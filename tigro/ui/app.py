@@ -31,6 +31,7 @@ from tigro.core.fit import fit_zernike
 from tigro.plots.plot import plot_sag_quicklook
 from tigro.plots.plot import plot_sag
 from tigro.plots.plot import plot_allpolys
+from tigro.plots.plot import plot_polys
 
 from tigro.ui.items import menu_items
 from tigro.ui.items import system_sidebar

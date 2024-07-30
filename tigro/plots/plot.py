@@ -36,13 +36,15 @@ def plot_sag_quicklook(
                 vmin=vmin,
                 vmax=vmax,
             )
-            ax.set_title(f"Map {i+1}")
+            ax.set_title(f"Map {i+1}", fontsize=10)
+            ax.set_xticks([])
+            ax.set_yticks([])
         else:
             ax.axis("off")
 
     figname = phmap[imkey]["name"][0].split("_")
     figname = "_".join([figname[0]] + figname[2:])
-    fig.suptitle(f"{figname}", fontsize=20)
+    fig.suptitle(f"{figname}", fontsize=14)
 
     if outpath is not None:
         plt.savefig(
