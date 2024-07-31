@@ -4,6 +4,9 @@ import numpy as np
 
 from tigro import logger
 
+from tigro.utils.util import get_idx
+from tigro.utils.util import get_colors
+
 
 class Parser:
     def __init__(self, config, outpath=None):
@@ -124,18 +127,3 @@ class Parser:
     @classmethod
     def input_keywords(cls):
         return ["parser", "configparser"]
-
-
-def get_idx(item):
-    ll = []
-    for idx in item.split(","):
-        if "-" in idx:
-            start, end = map(int, idx.split("-"))
-            ll.extend([range(start, end + 1)])
-        else:
-            ll.append([int(idx)])
-    return ll
-
-
-def get_colors(item):
-    return "".join(color[-1] * int(color[:-1]) for color in item.split(","))

@@ -164,3 +164,23 @@ def get_diff_idx(idx0, idx1, colors):
         for j0, j1 in zip(i0, i1):
             diff_idx.append([int(j0), int(j1), color])
     return diff_idx
+
+
+def get_idx(item):
+    ll = []
+
+    item = item.rstrip("-").rstrip(" ").rstrip(",")
+    items = item.split(",")
+
+    for idx in items:
+        if "-" in idx:
+            start, end = map(int, idx.split("-"))
+            ll.extend([range(start, end + 1)])
+        else:
+            ll.append([int(idx)])
+    return ll
+
+
+def get_colors(item):
+    items = item.split(",")
+    return "".join(color[-1] * int(color[:-1]) for color in items)
