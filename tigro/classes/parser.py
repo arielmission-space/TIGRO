@@ -36,6 +36,7 @@ class Parser:
         self.fname_phmap = system.get("fname_phmap")
         self.fname_phmap = os.path.join(self.outpath, self.fname_phmap)
         self.loglevel = system.get("loglevel")
+        logger.setLevel(self.loglevel)
         logger.debug("System parameters read")
 
         # CGVT
