@@ -1,3 +1,4 @@
+import configparser
 import numpy as np
 import faicons as fa
 
@@ -190,3 +191,37 @@ def modal_download(id, ext):
         easy_close=True,
     )
     ui.modal_show(m)
+
+
+def to_configparser(dictionary):
+    """
+    Given a dictionary, it converts it into a :class:`~configparser.ConfigParser` object
+
+    Parameters
+    ----------
+    dictionary: dict
+        input dictionary to be converted
+
+    Returns
+    -------
+    out: :class:`~configparser.ConfigParser`
+    """
+
+    config = configparser.ConfigParser()
+
+    for key, item in dictionary.items():
+        if isinstance(item, dict):
+            config.add_section(key)
+            for subkey, subitem in item.items():
+                if subitem is not None and subitem != "":
+                    if isinstance(subitem, str):
+                        pass
+                    elif isinstance(subitem, (float, bool)):
+                        subitem = str(subitem)
+                    elif isinstance(subitem, (tuple, list)):
+                        subitem = ",".join(subitem)
+                    else:
+                        raise NotImplementedError("item type not supported")
+                config.set(key, subkey, subitem)
+
+    return config

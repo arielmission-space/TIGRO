@@ -35,9 +35,9 @@ def app_elems(pp):
             value=pp._sequence_ids,
         ),
         ui.input_text(
-            "fname_phmap",
-            "Phase map file name",
-            value=pp.fname_phmap,
+            "outpath",
+            "Output path",
+            value=pp.outpath,
         ),
         ui.input_select(
             "loglevel",

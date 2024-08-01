@@ -19,25 +19,24 @@ class Parser:
         self.cparser.read(self.config)
         logger.debug("Config file read")
 
-        # General
-        general = self.cparser["general"]
-        self.project = general.get("project")
-        self.comment = general.get("comment")
-        self.version = general.get("version")
-        self.datapath = general.get("datapath")
+        # System
+        system = self.cparser["system"]
+        self.project = system.get("project")
+        self.comment = system.get("comment")
+        self.version = system.get("version")
+        self.datapath = system.get("datapath")
 
         if outpath is None:
-            outpath = general.get("outpath")
+            outpath = system.get("outpath")
         self.outpath = outpath
 
-        self._sequence_ids = general.get("sequence_ids")
+        self._sequence_ids = system.get("sequence_ids")
         self.sequence_ids = np.concatenate(get_idx(self._sequence_ids))
-        self.n_zernike = general.getint("n_zernike", fallback=15)
-        self.store_phmap = general.getboolean("store_phmap", fallback=False)
-        self.fname_phmap = general.get("fname_phmap")
+        self.store_phmap = system.getboolean("store_phmap", fallback=False)
+        self.fname_phmap = system.get("fname_phmap")
         self.fname_phmap = os.path.join(self.outpath, self.fname_phmap)
-        self.loglevel = general.get("loglevel")
-        logger.debug("General parameters read")
+        self.loglevel = system.get("loglevel")
+        logger.debug("System parameters read")
 
         # CGVT
         cgvt = self.cparser["cgvt"]
@@ -48,6 +47,7 @@ class Parser:
         self.phmap_semi_major = cgvt.getfloat("phmap_semi_major", fallback=451)
         self.phmap_semi_minor = cgvt.getfloat("phmap_semi_minor", fallback=310)
         self.phmap_seq_ref = cgvt.getint("phmap_seq_ref")
+        self.n_zernike = cgvt.getint("n_zernike", fallback=15)
         logger.debug("CGVT parameters read")
 
         # CGVT plots

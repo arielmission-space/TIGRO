@@ -41,6 +41,7 @@ from tigro.ui.elems import app_elems
 from tigro.ui.shared import refresh_ui
 from tigro.ui.shared import nested_div
 from tigro.ui.shared import modal_download
+from tigro.ui.io import update_ini
 
 plt.style.use("default")
 
@@ -79,7 +80,7 @@ def app_ui(request: StarletteRequest) -> Tag:
                 col_widths=(3, 9),
             ),
         ),
-        fillable="TIGRO UI",
+        # fillable="TIGRO UI",
         id="navbar",
         title=ui.popover(
             [
@@ -717,6 +718,44 @@ def server(input, output, session):
         refresh_ui("cgvt_plots", cgvt_plots_elems)
         refresh_ui("zerog_analysis", zerog_analysis_elems)
         refresh_ui("zerog_plots", zerog_plots_elems)
+
+    @reactive.effect
+    @reactive.event(input.save)
+    def _():
+        req(pp.get())
+        req(input.save())
+        m = ui.modal(
+            ui.input_text(
+                id="save_ini",
+                label="Save As",
+                value="filename.ini",
+                placeholder="filename.ini",
+            ),
+            ui.input_action_button("download_ini", "Save"),
+            title="Save INI File",
+            easy_close=True,
+        )
+        ui.modal_show(m)
+
+    @reactive.effect
+    @reactive.event(input.download_ini)
+    def download_ini():
+        req(input.download_ini())
+        outfile: list[FileInfo] | None = input.save_ini()
+
+        if outfile is None:
+            return
+
+        path = os.path.join(pp.get().outpath, f"{outfile}")
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Saving in progress", detail="")
+            time.sleep(1.0)
+
+            update_ini(input, path)
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
 
     @reactive.effect
     @reactive.event(input.close)
