@@ -9,5 +9,5 @@
 To install the tool from GitHub:
 
 ```bash
-pip install git+[repository-url]
+pip install git+https://github.com/arielmission-space/TIGRO.git
 ```
