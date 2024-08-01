@@ -2,7 +2,7 @@ from faicons import icon_svg
 
 from shiny import ui
 
-from tigro.ui.shared import output_text_verbatim
+from tigro.ui.shared import spacer
 from tigro.ui.shared import ICONS
 from tigro.ui.shared import card_header_class_
 
@@ -64,7 +64,7 @@ def app_elems(pp):
                     placement="right",
                 ),
                 ui.popover(
-                    ICONS["ellipsis"],
+                    ICONS["gear"],
                     *[
                         ui.input_select(
                             "select_1_system",
@@ -99,7 +99,7 @@ def app_elems(pp):
         ui.card_header(
             "CGVt analysis",
             ui.popover(
-                ICONS["ellipsis"],
+                ICONS["gear"],
                 *[
                     ui.input_text(
                         "phmap_threshold",
@@ -140,100 +140,132 @@ def app_elems(pp):
         ),
         ui.card(
             ui.card(
-                ui.card_header(
-                    "1. Load",
+                ui.tags.div(
+                    ui.input_action_button(
+                        "run_step1_cgvt",
+                        "1. Load",
+                        icon=ICONS["run"],
+                        class_="ms-2",
+                        width="80%",
+                    ),
                     ui.popover(
                         icon_svg("circle-info").add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
                 ),
-                ui.input_action_button("run_step1_cgvt", "Run", icon=ICONS["run"]),
-                # output_text_verbatim("run_step1_cgvt_output"),
             ),
             ui.card(
-                ui.card_header(
-                    "2. Filter",
+                ui.tags.div(
+                    ui.input_action_button(
+                        "run_step2_cgvt",
+                        "2. Filter",
+                        icon=ICONS["run"],
+                        class_="ms-2",
+                        width="80%",
+                    ),
                     ui.popover(
                         icon_svg("circle-info").add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
                 ),
-                ui.input_action_button("run_step2_cgvt", "Run", icon=ICONS["run"]),
-                # output_text_verbatim("run_step2_cgvt_output"),
             ),
             ui.card(
-                ui.card_header(
-                    "3. Threshold",
+                ui.tags.div(
+                    ui.input_action_button(
+                        "run_step3_cgvt",
+                        "3. Threshold",
+                        icon=ICONS["run"],
+                        class_="ms-2",
+                        width="80%",
+                    ),
                     ui.popover(
                         icon_svg("circle-info").add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
                 ),
-                ui.input_action_button("run_step3_cgvt", "Run", icon=ICONS["run"]),
-                # output_text_verbatim("run_step3_cgvt_output"),
             ),
             ui.card(
-                ui.card_header(
-                    "4. Average",
+                ui.tags.div(
+                    ui.input_action_button(
+                        "run_step4_cgvt",
+                        "4. Average",
+                        icon=ICONS["run"],
+                        class_="ms-2",
+                        width="80%",
+                    ),
                     ui.popover(
                         icon_svg("circle-info").add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
                 ),
-                ui.input_action_button("run_step4_cgvt", "Run", icon=ICONS["run"]),
-                # output_text_verbatim("run_step4_cgvt_output"),
             ),
             ui.card(
-                ui.card_header(
-                    "5. Fit ellipse",
+                ui.tags.div(
+                    ui.input_action_button(
+                        "run_step5_cgvt",
+                        "5. Fit ellipse",
+                        icon=ICONS["run"],
+                        class_="ms-2",
+                        width="80%",
+                    ),
                     ui.popover(
                         icon_svg("circle-info").add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
                 ),
-                ui.input_action_button("run_step5_cgvt", "Run", icon=ICONS["run"]),
-                # output_text_verbatim("run_step5_cgvt_output"),
             ),
             ui.card(
-                ui.card_header(
-                    "6. Register",
+                ui.tags.div(
+                    ui.input_action_button(
+                        "run_step6_cgvt",
+                        "6. Register",
+                        icon=ICONS["run"],
+                        class_="ms-2",
+                        width="80%",
+                    ),
                     ui.popover(
                         icon_svg("circle-info").add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
                 ),
-                ui.input_action_button("run_step6_cgvt", "Run", icon=ICONS["run"]),
-                # output_text_verbatim("run_step6_cgvt_output"),
             ),
             ui.card(
-                ui.card_header(
-                    "7. Reference",
+                ui.tags.div(
+                    ui.input_action_button(
+                        "run_step7_cgvt",
+                        "7. Reference",
+                        icon=ICONS["run"],
+                        class_="ms-2",
+                        width="80%",
+                    ),
                     ui.popover(
                         icon_svg("circle-info").add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
                 ),
-                ui.input_action_button("run_step7_cgvt", "Run", icon=ICONS["run"]),
-                # output_text_verbatim("run_step7_cgvt_output"),
             ),
             ui.card(
-                ui.card_header(
-                    "8. Zernike",
+                ui.tags.div(
+                    ui.input_action_button(
+                        "run_step8_cgvt",
+                        "8. Zernike",
+                        icon=ICONS["run"],
+                        class_="ms-2",
+                        width="80%",
+                    ),
                     ui.popover(
                         icon_svg("circle-info").add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
                 ),
-                ui.input_action_button("run_step8_cgvt", "Run", icon=ICONS["run"]),
-                # output_text_verbatim("run_step8_cgvt_output"),
             ),
         ),
         ui.card_footer(
@@ -259,7 +291,7 @@ def app_elems(pp):
                         placement="right",
                     ),
                     ui.popover(
-                        ICONS["ellipsis"],
+                        ICONS["gear"],
                         *[
                             ui.p(""),
                         ],
@@ -290,7 +322,7 @@ def app_elems(pp):
                         placement="right",
                     ),
                     ui.popover(
-                        ICONS["ellipsis"],
+                        ICONS["gear"],
                         *[
                             ui.input_select(
                                 "plot_regmap_imkey",
@@ -326,7 +358,7 @@ def app_elems(pp):
                         placement="right",
                     ),
                     ui.popover(
-                        ICONS["ellipsis"],
+                        ICONS["gear"],
                         *[
                             ui.input_select(
                                 "plot_regmap_no_pttf_imkey",
@@ -362,7 +394,7 @@ def app_elems(pp):
                         placement="right",
                     ),
                     ui.popover(
-                        ICONS["ellipsis"],
+                        ICONS["gear"],
                         *[
                             ui.input_select(
                                 "plot_allpolys_seq_ref",
@@ -403,7 +435,7 @@ def app_elems(pp):
                         placement="right",
                     ),
                     ui.popover(
-                        ICONS["ellipsis"],
+                        ICONS["gear"],
                         *[
                             ui.input_select(
                                 "plot_polys_seq_ref",
@@ -455,7 +487,7 @@ def app_elems(pp):
         ui.card_header(
             "ZeroG analysis",
             ui.popover(
-                ICONS["ellipsis"],
+                ICONS["gear"],
                 *[
                     ui.input_text(
                         "zerog_idx0",
@@ -571,7 +603,7 @@ def app_elems(pp):
                         placement="right",
                     ),
                     ui.popover(
-                        ICONS["ellipsis"],
+                        ICONS["gear"],
                         *[
                             ui.input_text(
                                 "plot_zerog_ylim",
@@ -608,7 +640,7 @@ def app_elems(pp):
                         placement="right",
                     ),
                     ui.popover(
-                        ICONS["ellipsis"],
+                        ICONS["gear"],
                         *[
                             ui.input_text(
                                 "plot_dphmap_hlines",

@@ -9,6 +9,7 @@ card_header_class_ = "d-flex justify-content-between align-items-center"
 
 ICONS = {
     "ellipsis": fa.icon_svg("ellipsis"),
+    "gear": fa.icon_svg("gear"),
     "open": fa.icon_svg("folder-open"),
     "save": fa.icon_svg("floppy-disk"),
     "close": fa.icon_svg("xmark"),
@@ -227,3 +228,9 @@ def to_configparser(dictionary):
                 config.set(key, subkey, subitem)
 
     return config
+
+
+def spacer():
+    return ui.div(
+        {"style": "width: 10px;"},
+    )
