@@ -41,7 +41,7 @@ from tigro.ui.shared import refresh_ui
 from tigro.ui.shared import nested_div
 from tigro.ui.shared import modal_download
 from tigro.ui.shared import ICONS
-from tigro.ui.io import update_ini
+from tigro.ui.io import to_ini
 
 plt.style.use("default")
 
@@ -136,7 +136,7 @@ def server(input, output, session):
 
         path = os.path.join(pp.get().outpath, "tmp.ini")
 
-        update_ini(input, path)
+        to_ini(input, path)
 
         pp.set(Parser(config=path))
 
@@ -161,6 +161,17 @@ def server(input, output, session):
             phmap.set(retval)
 
             p.set(len(sequence_ids), message="Done!", detail="")
+            time.sleep(1.0)
+
+    def save_generic(save_func, *args):
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Saving in progress", detail="")
+            time.sleep(1.0)
+
+            save_func(*args)
+
+            p.set(15, message="Done!", detail="")
             time.sleep(1.0)
 
     def save_generic_plot(figure, outfile):
@@ -584,15 +595,7 @@ def server(input, output, session):
             outfile = pp.get().outpath
 
         path = os.path.join(pp.get().outpath, f"{outfile}")
-
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Saving in progress", detail="")
-            time.sleep(1.0)
-
-            to_pickle(phmap.get(), path)
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
+        save_generic(to_pickle, phmap.get(), path)
 
     @reactive.effect
     @reactive.event(input.open)
@@ -668,15 +671,7 @@ def server(input, output, session):
             return
 
         path = os.path.join(pp.get().outpath, f"{outfile}")
-
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Saving in progress", detail="")
-            time.sleep(1.0)
-
-            update_ini(input, path)
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
+        save_generic(to_ini, input, path)
 
     @reactive.effect
     @reactive.event(input.close)

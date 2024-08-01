@@ -1,7 +1,7 @@
 from tigro.ui.shared import to_configparser
 
 
-def update_ini(input, tmp):
+def to_ini(input, tmp):
 
     dictionary = {}
 
