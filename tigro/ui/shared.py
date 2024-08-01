@@ -15,6 +15,8 @@ ICONS = {
     "docs": fa.icon_svg("book-open-reader"),
     "about": fa.icon_svg("info"),
     "run": fa.icon_svg("play"),
+    "refresh": fa.icon_svg("arrows-rotate"),
+    "info": fa.icon_svg("circle-info"),
 }
 
 

@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 
 from htmltools import Tag
 from starlette.requests import Request as StarletteRequest
-from faicons import icon_svg
 from shiny import App
 from shiny import ui
 from shiny import reactive
@@ -41,6 +40,7 @@ from tigro.ui.elems import app_elems
 from tigro.ui.shared import refresh_ui
 from tigro.ui.shared import nested_div
 from tigro.ui.shared import modal_download
+from tigro.ui.shared import ICONS
 from tigro.ui.io import update_ini
 
 plt.style.use("default")
@@ -82,13 +82,16 @@ def app_ui(request: StarletteRequest) -> Tag:
         ),
         # fillable="TIGRO UI",
         id="navbar",
-        title=ui.popover(
-            [
-                "TIGRO UI",
-                icon_svg("circle-info").add_class("ms-2"),
-            ],
-            ui.markdown("blabla"),
-            placement="right",
+        title=ui.tags.div(
+            ui.popover(
+                [
+                    "TIGRO UI",
+                    ICONS["info"].add_class("ms-2"),
+                ],
+                ui.markdown("blabla"),
+                placement="right",
+            ),
+            ui.input_action_button("refresh", "", icon=ICONS["refresh"], class_="ms-2"),
         ),
         window_title="TIGRO UI",
         # selected="System",
