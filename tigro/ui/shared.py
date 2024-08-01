@@ -228,9 +228,3 @@ def to_configparser(dictionary):
                 config.set(key, subkey, subitem)
 
     return config
-
-
-def spacer():
-    return ui.div(
-        {"style": "width: 10px;"},
-    )

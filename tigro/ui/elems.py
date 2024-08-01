@@ -1,10 +1,42 @@
-from faicons import icon_svg
-
 from shiny import ui
 
-from tigro.ui.shared import spacer
 from tigro.ui.shared import ICONS
 from tigro.ui.shared import card_header_class_
+
+
+def step_card(id, label, text="blabla"):
+    return (
+        ui.card(
+            ui.tags.div(
+                ui.input_action_button(
+                    id,
+                    label,
+                    icon=ICONS["run"],
+                    class_="ms-2",
+                    width="80%",
+                ),
+                ui.popover(
+                    ICONS["info"].add_class("ms-2"),
+                    ui.markdown(text),
+                    placement="right",
+                ),
+            ),
+        ),
+    )
+
+
+def plot_card(id):
+    return [
+        ui.output_plot(id, width="700px", height="550px", fill=True),
+        ui.card_footer(
+            ui.layout_columns(
+                ui.input_action_button(f"do_{id}", "Plot", icon=ICONS["run"]),
+                ui.input_action_button(
+                    f"download_{id}", "Save", icon=ICONS["save"]
+                ),
+            ),
+        ),
+    ]
 
 
 def app_elems(pp):
@@ -59,7 +91,7 @@ def app_elems(pp):
             ui.card_header(
                 "RawMap",
                 ui.popover(
-                    icon_svg("circle-info").add_class("ms-2"),
+                    ICONS["info"].add_class("ms-2"),
                     ui.markdown("blabla"),
                     placement="right",
                 ),
@@ -95,26 +127,6 @@ def app_elems(pp):
         ),
     ]
 
-    def step_card(step, title, popover_text="blabla"):
-        return (
-            ui.card(
-                ui.tags.div(
-                    ui.input_action_button(
-                        step,
-                        title,
-                        icon=ICONS["run"],
-                        class_="ms-2",
-                        width="80%",
-                    ),
-                    ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
-                        ui.markdown(popover_text),
-                        placement="right",
-                    ),
-                ),
-            ),
-        )
-    
     cgvt_analysis_elems = [
         ui.card_header(
             "CGVt analysis",
@@ -186,7 +198,7 @@ def app_elems(pp):
                 ui.card_header(
                     "Threshold",
                     ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
+                        ICONS["info"].add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
@@ -200,24 +212,14 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot("plot_1_cgvt", width="700px", height="550px", fill=True),
-                ui.card_footer(
-                    ui.layout_columns(
-                        ui.input_action_button(
-                            "do_plot_1_cgvt", "Plot", icon=ICONS["run"]
-                        ),
-                        ui.input_action_button(
-                            "download_plot_1_cgvt", "Save", icon=ICONS["save"]
-                        ),
-                    ),
-                ),
+                plot_card("plot_1_cgvt"),
                 full_screen=True,
             ),
             ui.card(
                 ui.card_header(
                     "RegMap",
                     ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
+                        ICONS["info"].add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
@@ -236,24 +238,14 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot("plot_2_cgvt", width="700px", height="550px", fill=True),
-                ui.card_footer(
-                    ui.layout_columns(
-                        ui.input_action_button(
-                            "do_plot_2_cgvt", "Plot", icon=ICONS["run"]
-                        ),
-                        ui.input_action_button(
-                            "download_plot_2_cgvt", "Save", icon=ICONS["save"]
-                        ),
-                    ),
-                ),
+                plot_card("plot_2_cgvt"),
                 full_screen=True,
             ),
             ui.card(
                 ui.card_header(
                     "RegMap-PTTF",
                     ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
+                        ICONS["info"].add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
@@ -272,24 +264,14 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot("plot_3_cgvt", width="700px", height="550px", fill=True),
-                ui.card_footer(
-                    ui.layout_columns(
-                        ui.input_action_button(
-                            "do_plot_3_cgvt", "Plot", icon=ICONS["run"]
-                        ),
-                        ui.input_action_button(
-                            "download_plot_3_cgvt", "Save", icon=ICONS["save"]
-                        ),
-                    ),
-                ),
+                plot_card("plot_3_cgvt"),
                 full_screen=True,
             ),
             ui.card(
                 ui.card_header(
                     "Allpolys",
                     ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
+                        ICONS["info"].add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
@@ -313,24 +295,14 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot("plot_4_cgvt", width="700px", height="550px", fill=True),
-                ui.card_footer(
-                    ui.layout_columns(
-                        ui.input_action_button(
-                            "do_plot_4_cgvt", "Plot", icon=ICONS["run"]
-                        ),
-                        ui.input_action_button(
-                            "download_plot_4_cgvt", "Save", icon=ICONS["save"]
-                        ),
-                    ),
-                ),
+                plot_card("plot_4_cgvt"),
                 full_screen=True,
             ),
             ui.card(
                 ui.card_header(
                     "Polys",
                     ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
+                        ICONS["info"].add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
@@ -359,17 +331,7 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot("plot_5_cgvt", width="700px", height="550px", fill=True),
-                ui.card_footer(
-                    ui.layout_columns(
-                        ui.input_action_button(
-                            "do_plot_5_cgvt", "Plot", icon=ICONS["run"]
-                        ),
-                        ui.input_action_button(
-                            "download_plot_5_cgvt", "Save", icon=ICONS["save"]
-                        ),
-                    ),
-                ),
+                plot_card("plot_5_cgvt"),
                 full_screen=True,
             ),
         ),
@@ -454,7 +416,7 @@ def app_elems(pp):
                 ui.card_header(
                     "ZeroG",
                     ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
+                        ICONS["info"].add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
@@ -472,26 +434,14 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot(
-                    "plot_1_zerog", width="700px", height="550px", fill=True
-                ),
-                ui.card_footer(
-                    ui.layout_columns(
-                        ui.input_action_button(
-                            "do_plot_1_zerog", "Plot", icon=ICONS["run"]
-                        ),
-                        ui.input_action_button(
-                            "download_plot_1_zerog", "Save", icon=ICONS["save"]
-                        ),
-                    ),
-                ),
+                plot_card("plot_1_zerog"),
                 full_screen=True,
             ),
             ui.card(
                 ui.card_header(
                     "Dphmap",
                     ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
+                        ICONS["info"].add_class("ms-2"),
                         ui.markdown("blabla"),
                         placement="right",
                     ),
@@ -524,19 +474,7 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot(
-                    "plot_2_zerog", width="700px", height="550px", fill=True
-                ),
-                ui.card_footer(
-                    ui.layout_columns(
-                        ui.input_action_button(
-                            "do_plot_2_zerog", "Plot", icon=ICONS["run"]
-                        ),
-                        ui.input_action_button(
-                            "download_plot_2_zerog", "Save", icon=ICONS["save"]
-                        ),
-                    ),
-                ),
+                plot_card("plot_2_zerog"),
                 full_screen=True,
             ),
         ),
