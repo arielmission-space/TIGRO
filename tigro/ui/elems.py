@@ -412,71 +412,77 @@ def app_elems(pp):
             "ZeroG plots",
             class_=card_header_class_,
         ),
-        ui.card(
-            ui.card(
-                ui.card_header(
-                    "ZeroG",
-                    ui.popover(
-                        ICONS["info"].add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
+        ui.navset_card_pill(
+            ui.nav_panel(
+                "ZeroG",
+                ui.card(
+                    ui.card_header(
+                        "ZeroG",
+                        ui.popover(
+                            ICONS["info"].add_class("ms-2"),
+                            ui.markdown("blabla"),
+                            placement="right",
+                        ),
+                        ui.popover(
+                            ICONS["gear"],
+                            *[
+                                ui.input_text(
+                                    "plot_zerog_ylim",
+                                    "Y limits",
+                                    value=pp._plot_zerog_ylim,
+                                ),
+                            ],
+                            title="",
+                            placement="top",
+                        ),
+                        class_=card_header_class_,
                     ),
-                    ui.popover(
-                        ICONS["gear"],
-                        *[
-                            ui.input_text(
-                                "plot_zerog_ylim",
-                                "Y limits",
-                                value=pp._plot_zerog_ylim,
-                            ),
-                        ],
-                        title="",
-                        placement="top",
-                    ),
-                    class_=card_header_class_,
+                    plot_card("plot_1_zerog"),
+                    full_screen=True,
                 ),
-                plot_card("plot_1_zerog"),
-                full_screen=True,
             ),
-            ui.card(
-                ui.card_header(
-                    "Dphmap",
-                    ui.popover(
-                        ICONS["info"].add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
+            ui.nav_panel(
+                "Dphmap",
+                ui.card(
+                    ui.card_header(
+                        "Dphmap",
+                        ui.popover(
+                            ICONS["info"].add_class("ms-2"),
+                            ui.markdown("blabla"),
+                            placement="right",
+                        ),
+                        ui.popover(
+                            ICONS["gear"],
+                            *[
+                                ui.input_text(
+                                    "plot_dphmap_hlines",
+                                    "Horizontal lines",
+                                    value=pp._plot_dphmap_hlines,
+                                ),
+                                ui.input_text(
+                                    "plot_dphmap_vlines",
+                                    "Vertical lines",
+                                    value=pp._plot_dphmap_vlines,
+                                ),
+                                ui.input_text(
+                                    "plot_dphmap_hist_xlim",
+                                    "Histogram: X limits",
+                                    value=pp._plot_dphmap_hist_xlim,
+                                ),
+                                ui.input_text(
+                                    "plot_dphmap_hist_ylim",
+                                    "Histogram: Y limits",
+                                    value=pp._plot_dphmap_hist_ylim,
+                                ),
+                            ],
+                            title="",
+                            placement="top",
+                        ),
+                        class_=card_header_class_,
                     ),
-                    ui.popover(
-                        ICONS["gear"],
-                        *[
-                            ui.input_text(
-                                "plot_dphmap_hlines",
-                                "Horizontal lines",
-                                value=pp._plot_dphmap_hlines,
-                            ),
-                            ui.input_text(
-                                "plot_dphmap_vlines",
-                                "Vertical lines",
-                                value=pp._plot_dphmap_vlines,
-                            ),
-                            ui.input_text(
-                                "plot_dphmap_hist_xlim",
-                                "Histogram: X limits",
-                                value=pp._plot_dphmap_hist_xlim,
-                            ),
-                            ui.input_text(
-                                "plot_dphmap_hist_ylim",
-                                "Histogram: Y limits",
-                                value=pp._plot_dphmap_hist_ylim,
-                            ),
-                        ],
-                        title="",
-                        placement="top",
-                    ),
-                    class_=card_header_class_,
+                    plot_card("plot_2_zerog"),
+                    full_screen=True,
                 ),
-                plot_card("plot_2_zerog"),
-                full_screen=True,
             ),
         ),
         ui.card_footer(
