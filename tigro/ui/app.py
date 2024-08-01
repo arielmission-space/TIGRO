@@ -111,11 +111,41 @@ def server(input, output, session):
     figure_allpolys = reactive.value(None)
     figure_polys = reactive.value(None)
 
+    def full_refresh():
+        req(pp.get())
+        (
+            system_sidebar_elems,
+            system_quicklook_elems,
+            cgvt_analysis_elems,
+            cgvt_plots_elems,
+            zerog_analysis_elems,
+            zerog_plots_elems,
+        ) = app_elems(pp.get())
+
+        refresh_ui("system_sidebar", system_sidebar_elems)
+        refresh_ui("system_quicklook", system_quicklook_elems)
+        refresh_ui("cgvt_analysis", cgvt_analysis_elems)
+        refresh_ui("cgvt_plots", cgvt_plots_elems)
+        refresh_ui("zerog_analysis", zerog_analysis_elems)
+        refresh_ui("zerog_plots", zerog_plots_elems)
+
+    @reactive.effect
+    @reactive.event(input.refresh)
+    def _():
+        req(pp.get())
+
+        path = os.path.join(pp.get().outpath, "tmp.ini")
+
+        update_ini(input, path)
+
+        pp.set(Parser(config=path))
+
+        full_refresh()
+
     @reactive.effect
     @reactive.event(input.run_all_cgvt, input.run_step1_cgvt, input.run_step1_system)
     def _load_phmap_():
         req(pp.get())
-        req(len(phmap.get().keys()) == 0)
 
         sequence_ids = pp.get().sequence_ids
         retval = {}
@@ -706,21 +736,7 @@ def server(input, output, session):
         config.set(file[0]["datapath"])
         pp.set(Parser(config=config.get()))
 
-        (
-            system_sidebar_elems,
-            system_quicklook_elems,
-            cgvt_analysis_elems,
-            cgvt_plots_elems,
-            zerog_analysis_elems,
-            zerog_plots_elems,
-        ) = app_elems(pp.get())
-
-        refresh_ui("system_sidebar", system_sidebar_elems)
-        refresh_ui("system_quicklook", system_quicklook_elems)
-        refresh_ui("cgvt_analysis", cgvt_analysis_elems)
-        refresh_ui("cgvt_plots", cgvt_plots_elems)
-        refresh_ui("zerog_analysis", zerog_analysis_elems)
-        refresh_ui("zerog_plots", zerog_plots_elems)
+        full_refresh()
 
     @reactive.effect
     @reactive.event(input.save)

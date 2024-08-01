@@ -14,7 +14,6 @@ def update_ini(input, tmp):
     system["sequence_ids"] = input.sequence_ids()
     system["outpath"] = input.outpath()
     system["store_phmap"] = False
-    print("save_phmap_pkl" in input.__dict__["_map"])
     try:
         system["fname_phmap"] = input.save_phmap_pkl()
     except:
@@ -75,8 +74,6 @@ def update_ini(input, tmp):
     zerog_plots["plot_dphmap_hist_ylim"] = input.plot_dphmap_hist_ylim()
 
     dictionary.update({"zerog_plots": zerog_plots})
-
-    print(dictionary)
 
     # save to file
     config = to_configparser(dictionary)
