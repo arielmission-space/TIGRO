@@ -163,6 +163,24 @@ def server(input, output, session):
             p.set(len(sequence_ids), message="Done!", detail="")
             time.sleep(1.0)
 
+    def save_generic_plot(figure, outfile):
+
+        fig = figure.get()
+
+        if outfile is None:
+            outfile = fig.get_title()
+
+        path = os.path.join(pp.get().outpath, f"{outfile}")
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Saving in progress", detail="")
+            time.sleep(1.0)
+
+            fig.savefig(path, dpi=300, bbox_inches="tight")
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
+
     @render.plot(alt="Quicklook plot")
     @reactive.event(input.do_plot_1_system)
     def plot_1_system():
@@ -194,22 +212,7 @@ def server(input, output, session):
     @reactive.event(input.download_quicklook_png)
     def download_quicklook_png():
         outfile: list[FileInfo] | None = input.save_quicklook_png()
-
-        fig = figure_quicklook.get()
-
-        if outfile is None:
-            outfile = fig.get_title()
-
-        path = os.path.join(pp.get().outpath, f"{outfile}")
-
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Saving in progress", detail="")
-            time.sleep(1.0)
-
-            fig.savefig(path, dpi=300, bbox_inches="tight")
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
+        save_generic_plot(figure_quicklook, outfile)
 
     @reactive.effect
     @reactive.event(input.run_all_cgvt, input.run_step2_cgvt)
@@ -291,22 +294,7 @@ def server(input, output, session):
     @reactive.event(input.download_threshold_png)
     def download_threshold_png():
         outfile: list[FileInfo] | None = input.save_threshold_png()
-
-        fig = figure_threshold.get()
-
-        if outfile is None:
-            outfile = fig.get_title()
-
-        path = os.path.join(pp.get().outpath, f"{outfile}")
-
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Saving in progress", detail="")
-            time.sleep(1.0)
-
-            fig.savefig(path, dpi=300, bbox_inches="tight")
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
+        save_generic_plot(figure_threshold, outfile)
 
     @reactive.effect
     @reactive.event(input.run_all_cgvt, input.run_step4_cgvt)
@@ -453,22 +441,7 @@ def server(input, output, session):
     @reactive.event(input.download_regmap_png)
     def download_regmap_png():
         outfile: list[FileInfo] | None = input.save_regmap_png()
-
-        fig = figure_regmap.get()
-
-        if outfile is None:
-            outfile = fig.get_title()
-
-        path = os.path.join(pp.get().outpath, f"{outfile}")
-
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Saving in progress", detail="")
-            time.sleep(1.0)
-
-            fig.savefig(path, dpi=300, bbox_inches="tight")
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
+        save_generic_plot(figure_regmap, outfile)
 
     @reactive.effect
     @reactive.event(input.run_all_cgvt, input.run_step8_cgvt)
@@ -535,22 +508,7 @@ def server(input, output, session):
     @reactive.event(input.download_regmap_no_pttf_png)
     def download_regmap_no_pttf_png():
         outfile: list[FileInfo] | None = input.save_regmap_no_pttf_png()
-
-        fig = figure_regmap_no_pttf.get()
-
-        if outfile is None:
-            outfile = fig.get_title()
-
-        path = os.path.join(pp.get().outpath, f"{outfile}")
-
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Saving in progress", detail="")
-            time.sleep(1.0)
-
-            fig.savefig(path, dpi=300, bbox_inches="tight")
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
+        save_generic_plot(figure_regmap_no_pttf, outfile)
 
     @render.plot(alt="Allpolys plot")
     @reactive.event(input.plot_all_cgvt, input.do_plot_3_cgvt)
@@ -592,22 +550,7 @@ def server(input, output, session):
     @reactive.event(input.download_allpolys_png)
     def download_allpolys_png():
         outfile: list[FileInfo] | None = input.save_allpolys_png()
-
-        fig = figure_allpolys.get()
-
-        if outfile is None:
-            outfile = fig.get_title()
-
-        path = os.path.join(pp.get().outpath, f"{outfile}")
-
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Saving in progress", detail="")
-            time.sleep(1.0)
-
-            fig.savefig(path, dpi=300, bbox_inches="tight")
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
+        save_generic_plot(figure_allpolys, outfile)
 
     @render.plot(alt="Polys plot")
     @reactive.event(input.plot_all_cgvt, input.do_plot_4_cgvt)
@@ -649,22 +592,7 @@ def server(input, output, session):
     @reactive.event(input.download_polys_png)
     def download_polys_png():
         outfile: list[FileInfo] | None = input.save_polys_png()
-
-        fig = figure_polys.get()
-
-        if outfile is None:
-            outfile = fig.get_title()
-
-        path = os.path.join(pp.get().outpath, f"{outfile}")
-
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Saving in progress", detail="")
-            time.sleep(1.0)
-
-            fig.savefig(path, dpi=300, bbox_inches="tight")
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
+        save_generic_plot(figure_polys, outfile)
 
     @reactive.effect
     @reactive.event(input.download_phmap)
