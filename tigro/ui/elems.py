@@ -268,14 +268,14 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot("plot_0_cgvt", width="700px", height="550px", fill=True),
+                ui.output_plot("plot_1_cgvt", width="700px", height="550px", fill=True),
                 ui.card_footer(
                     ui.layout_columns(
                         ui.input_action_button(
-                            "do_plot_0_cgvt", "Plot", icon=ICONS["run"]
+                            "do_plot_1_cgvt", "Plot", icon=ICONS["run"]
                         ),
                         ui.input_action_button(
-                            "download_plot_0_cgvt", "Save", icon=ICONS["save"]
+                            "download_plot_1_cgvt", "Save", icon=ICONS["save"]
                         ),
                     ),
                 ),
@@ -304,14 +304,14 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot("plot_1_cgvt", width="700px", height="550px", fill=True),
+                ui.output_plot("plot_2_cgvt", width="700px", height="550px", fill=True),
                 ui.card_footer(
                     ui.layout_columns(
                         ui.input_action_button(
-                            "do_plot_1_cgvt", "Plot", icon=ICONS["run"]
+                            "do_plot_2_cgvt", "Plot", icon=ICONS["run"]
                         ),
                         ui.input_action_button(
-                            "download_plot_1_cgvt", "Save", icon=ICONS["save"]
+                            "download_plot_2_cgvt", "Save", icon=ICONS["save"]
                         ),
                     ),
                 ),
@@ -340,14 +340,14 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot("plot_2_cgvt", width="700px", height="550px", fill=True),
+                ui.output_plot("plot_3_cgvt", width="700px", height="550px", fill=True),
                 ui.card_footer(
                     ui.layout_columns(
                         ui.input_action_button(
-                            "do_plot_2_cgvt", "Plot", icon=ICONS["run"]
+                            "do_plot_3_cgvt", "Plot", icon=ICONS["run"]
                         ),
                         ui.input_action_button(
-                            "download_plot_2_cgvt", "Save", icon=ICONS["save"]
+                            "download_plot_3_cgvt", "Save", icon=ICONS["save"]
                         ),
                     ),
                 ),
@@ -381,14 +381,14 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot("plot_3_cgvt", width="700px", height="550px", fill=True),
+                ui.output_plot("plot_4_cgvt", width="700px", height="550px", fill=True),
                 ui.card_footer(
                     ui.layout_columns(
                         ui.input_action_button(
-                            "do_plot_3_cgvt", "Plot", icon=ICONS["run"]
+                            "do_plot_4_cgvt", "Plot", icon=ICONS["run"]
                         ),
                         ui.input_action_button(
-                            "download_plot_3_cgvt", "Save", icon=ICONS["save"]
+                            "download_plot_4_cgvt", "Save", icon=ICONS["save"]
                         ),
                     ),
                 ),
@@ -427,14 +427,14 @@ def app_elems(pp):
                     ),
                     class_=card_header_class_,
                 ),
-                ui.output_plot("plot_4_cgvt", width="700px", height="550px", fill=True),
+                ui.output_plot("plot_5_cgvt", width="700px", height="550px", fill=True),
                 ui.card_footer(
                     ui.layout_columns(
                         ui.input_action_button(
-                            "do_plot_4_cgvt", "Plot", icon=ICONS["run"]
+                            "do_plot_5_cgvt", "Plot", icon=ICONS["run"]
                         ),
                         ui.input_action_button(
-                            "download_plot_4_cgvt", "Save", icon=ICONS["save"]
+                            "download_plot_5_cgvt", "Save", icon=ICONS["save"]
                         ),
                     ),
                 ),

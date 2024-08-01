@@ -181,24 +181,30 @@ def server(input, output, session):
             p.set(15, message="Done!", detail="")
             time.sleep(1.0)
 
+    def generic_plot(figure, plot_func, *args):
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Plotting in progress", detail="")
+            time.sleep(1.0)
+
+            fig = plot_func(*args)
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(1.0)
+
+        figure.set(fig)
+
     @render.plot(alt="Quicklook plot")
     @reactive.event(input.do_plot_1_system)
     def plot_1_system():
         req(pp.get())
         req(phmap.get())
-
-        imkey = int(input.select_1_system())
-
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Plotting in progress", detail="")
-            time.sleep(1.0)
-
-            fig = plot_sag_quicklook(phmap.get(), imkey, imsubkey="rawmap")
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
-
-        figure_quicklook.set(fig)
+        generic_plot(
+            figure_quicklook,
+            plot_sag_quicklook,
+            phmap.get(),
+            int(input.select_1_system()),
+            "rawmap",
+        )
 
     @reactive.effect
     @reactive.event(input.download_plot_1_system)
@@ -265,25 +271,15 @@ def server(input, output, session):
             time.sleep(1.0)
 
     @render.plot(alt="Threshold plot")
-    @reactive.event(input.plot_all_cgvt, input.do_plot_0_cgvt)
-    def plot_0_cgvt():
+    @reactive.event(input.plot_all_cgvt, input.do_plot_1_cgvt)
+    def plot_1_cgvt():
         req(pp.get())
         req(phmap.get())
         req(threshold.get())
-
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Plotting in progress", detail="")
-            time.sleep(1.0)
-
-            fig = plot_threshold(*threshold.get())
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
-
-        figure_threshold.set(fig)
+        generic_plot(figure_threshold, plot_threshold, *threshold.get())
 
     @reactive.effect
-    @reactive.event(input.download_all_plots_cgvt, input.download_plot_0_cgvt)
+    @reactive.event(input.download_all_plots_cgvt, input.download_plot_1_cgvt)
     def download_threshold():
         req(pp.get())
         req(phmap.get())
@@ -406,8 +402,8 @@ def server(input, output, session):
             time.sleep(1.0)
 
     @render.plot(alt="RegMap plot")
-    @reactive.event(input.plot_all_cgvt, input.do_plot_1_cgvt)
-    def plot_1_cgvt():
+    @reactive.event(input.plot_all_cgvt, input.do_plot_2_cgvt)
+    def plot_2_cgvt():
         req(pp.get())
         req(phmap.get())
 
@@ -416,21 +412,17 @@ def server(input, output, session):
             if "RegMap" not in phmap.get()[seq].keys():
                 return
 
-        imkey = int(input.plot_regmap_imkey())
-
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Plotting in progress", detail="")
-            time.sleep(1.0)
-
-            fig = plot_sag(phmap.get(), uref.get(), imkey, imsubkey="RegMap")
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
-
-        figure_regmap.set(fig)
+        generic_plot(
+            figure_regmap,
+            plot_sag,
+            phmap.get(),
+            uref.get(),
+            int(input.plot_regmap_imkey()),
+            "RegMap",
+        )
 
     @reactive.effect
-    @reactive.event(input.download_all_plots_cgvt, input.download_plot_1_cgvt)
+    @reactive.event(input.download_all_plots_cgvt, input.download_plot_2_cgvt)
     def download_regmap():
         req(pp.get())
         req(phmap.get())
@@ -473,8 +465,8 @@ def server(input, output, session):
             time.sleep(1.0)
 
     @render.plot(alt="RegMap-PTTF plot")
-    @reactive.event(input.plot_all_cgvt, input.do_plot_2_cgvt)
-    def plot_2_cgvt():
+    @reactive.event(input.plot_all_cgvt, input.do_plot_3_cgvt)
+    def plot_3_cgvt():
         req(pp.get())
         req(phmap.get())
 
@@ -483,21 +475,17 @@ def server(input, output, session):
             if "residual" not in phmap.get()[seq].keys():
                 return
 
-        imkey = int(input.plot_regmap_no_pttf_imkey())
-
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Plotting in progress", detail="")
-            time.sleep(1.0)
-
-            fig = plot_sag(phmap.get(), uref.get(), imkey, imsubkey="RegMap-PTTF")
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
-
-        figure_regmap_no_pttf.set(fig)
+        generic_plot(
+            figure_regmap_no_pttf,
+            plot_sag,
+            phmap.get(),
+            uref.get(),
+            int(input.plot_regmap_no_pttf_imkey()),
+            "RegMap-PTTF",
+        )
 
     @reactive.effect
-    @reactive.event(input.download_all_plots_cgvt, input.download_plot_2_cgvt)
+    @reactive.event(input.download_all_plots_cgvt, input.download_plot_3_cgvt)
     def download_regmap_no_pttf():
         req(pp.get())
         req(phmap.get())
@@ -511,8 +499,8 @@ def server(input, output, session):
         save_generic_plot(figure_regmap_no_pttf, outfile)
 
     @render.plot(alt="Allpolys plot")
-    @reactive.event(input.plot_all_cgvt, input.do_plot_3_cgvt)
-    def plot_3_cgvt():
+    @reactive.event(input.plot_all_cgvt, input.do_plot_4_cgvt)
+    def plot_4_cgvt():
         req(pp.get())
         req(phmap.get())
 
@@ -521,25 +509,18 @@ def server(input, output, session):
             if "residual" not in phmap.get()[seq].keys():
                 return
 
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Plotting in progress", detail="")
-            time.sleep(1.0)
-
-            fig = plot_allpolys(
-                phmap.get(),
-                sequence_ids=pp.get().sequence_ids,
-                sequence_ref=pp.get().plot_allpolys_seq_ref,
-                NZernike=pp.get().n_zernike,
-                colors=pp.get().plot_allpolys_colors,
-            )
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
-
-        figure_allpolys.set(fig)
+        generic_plot(
+            figure_allpolys,
+            plot_allpolys,
+            phmap.get(),
+            sequence_ids,
+            pp.get().plot_allpolys_seq_ref,
+            pp.get().n_zernike,
+            pp.get().plot_allpolys_colors,
+        )
 
     @reactive.effect
-    @reactive.event(input.download_all_plots_cgvt, input.download_plot_3_cgvt)
+    @reactive.event(input.download_all_plots_cgvt, input.download_plot_4_cgvt)
     def download_allpolys():
         req(pp.get())
         req(phmap.get())
@@ -553,8 +534,8 @@ def server(input, output, session):
         save_generic_plot(figure_allpolys, outfile)
 
     @render.plot(alt="Polys plot")
-    @reactive.event(input.plot_all_cgvt, input.do_plot_4_cgvt)
-    def plot_4_cgvt():
+    @reactive.event(input.plot_all_cgvt, input.do_plot_5_cgvt)
+    def plot_5_cgvt():
         req(pp.get())
         req(phmap.get())
 
@@ -563,25 +544,18 @@ def server(input, output, session):
             if "residual" not in phmap.get()[seq].keys():
                 return
 
-        with ui.Progress(min=0, max=15) as p:
-            p.set(message="Plotting in progress", detail="")
-            time.sleep(1.0)
-
-            fig = plot_polys(
-                phmap.get(),
-                sequence_ids=pp.get().sequence_ids,
-                sequence_ref=pp.get().plot_polys_seq_ref,
-                poly_order=pp.get().plot_polys_order,
-                colors=pp.get().plot_polys_colors,
-            )
-
-            p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
-
-        figure_polys.set(fig)
+        generic_plot(
+            figure_polys,
+            plot_polys,
+            phmap.get(),
+            sequence_ids,
+            pp.get().plot_polys_seq_ref,
+            pp.get().plot_polys_order,
+            pp.get().plot_polys_colors,
+        )
 
     @reactive.effect
-    @reactive.event(input.download_all_plots_cgvt, input.download_plot_4_cgvt)
+    @reactive.event(input.download_all_plots_cgvt, input.download_plot_5_cgvt)
     def download_polys():
         req(pp.get())
         req(phmap.get())
