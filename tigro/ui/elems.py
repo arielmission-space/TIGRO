@@ -95,6 +95,26 @@ def app_elems(pp):
         ),
     ]
 
+    def step_card(step, title, popover_text="blabla"):
+        return (
+            ui.card(
+                ui.tags.div(
+                    ui.input_action_button(
+                        step,
+                        title,
+                        icon=ICONS["run"],
+                        class_="ms-2",
+                        width="80%",
+                    ),
+                    ui.popover(
+                        icon_svg("circle-info").add_class("ms-2"),
+                        ui.markdown(popover_text),
+                        placement="right",
+                    ),
+                ),
+            ),
+        )
+    
     cgvt_analysis_elems = [
         ui.card_header(
             "CGVt analysis",
@@ -139,134 +159,14 @@ def app_elems(pp):
             class_=card_header_class_,
         ),
         ui.card(
-            ui.card(
-                ui.tags.div(
-                    ui.input_action_button(
-                        "run_step1_cgvt",
-                        "1. Load",
-                        icon=ICONS["run"],
-                        class_="ms-2",
-                        width="80%",
-                    ),
-                    ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
-                    ),
-                ),
-            ),
-            ui.card(
-                ui.tags.div(
-                    ui.input_action_button(
-                        "run_step2_cgvt",
-                        "2. Filter",
-                        icon=ICONS["run"],
-                        class_="ms-2",
-                        width="80%",
-                    ),
-                    ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
-                    ),
-                ),
-            ),
-            ui.card(
-                ui.tags.div(
-                    ui.input_action_button(
-                        "run_step3_cgvt",
-                        "3. Threshold",
-                        icon=ICONS["run"],
-                        class_="ms-2",
-                        width="80%",
-                    ),
-                    ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
-                    ),
-                ),
-            ),
-            ui.card(
-                ui.tags.div(
-                    ui.input_action_button(
-                        "run_step4_cgvt",
-                        "4. Average",
-                        icon=ICONS["run"],
-                        class_="ms-2",
-                        width="80%",
-                    ),
-                    ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
-                    ),
-                ),
-            ),
-            ui.card(
-                ui.tags.div(
-                    ui.input_action_button(
-                        "run_step5_cgvt",
-                        "5. Fit ellipse",
-                        icon=ICONS["run"],
-                        class_="ms-2",
-                        width="80%",
-                    ),
-                    ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
-                    ),
-                ),
-            ),
-            ui.card(
-                ui.tags.div(
-                    ui.input_action_button(
-                        "run_step6_cgvt",
-                        "6. Register",
-                        icon=ICONS["run"],
-                        class_="ms-2",
-                        width="80%",
-                    ),
-                    ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
-                    ),
-                ),
-            ),
-            ui.card(
-                ui.tags.div(
-                    ui.input_action_button(
-                        "run_step7_cgvt",
-                        "7. Reference",
-                        icon=ICONS["run"],
-                        class_="ms-2",
-                        width="80%",
-                    ),
-                    ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
-                    ),
-                ),
-            ),
-            ui.card(
-                ui.tags.div(
-                    ui.input_action_button(
-                        "run_step8_cgvt",
-                        "8. Zernike",
-                        icon=ICONS["run"],
-                        class_="ms-2",
-                        width="80%",
-                    ),
-                    ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
-                    ),
-                ),
-            ),
+            step_card("run_step1_cgvt", "1. Load"),
+            step_card("run_step2_cgvt", "2. Filter"),
+            step_card("run_step3_cgvt", "3. Threshold"),
+            step_card("run_step4_cgvt", "4. Average"),
+            step_card("run_step5_cgvt", "5. Fit ellipse"),
+            step_card("run_step6_cgvt", "6. Register"),
+            step_card("run_step7_cgvt", "7. Reference"),
+            step_card("run_step8_cgvt", "8. Zernike"),
         ),
         ui.card_footer(
             ui.layout_columns(
@@ -531,54 +431,10 @@ def app_elems(pp):
             class_=card_header_class_,
         ),
         ui.card(
-            ui.card(
-                ui.card_header(
-                    "1. Load",
-                    ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
-                    ),
-                ),
-                ui.input_action_button("run_step1_zerog", "Run", icon=ICONS["run"]),
-                # output_text_verbatim("run_step1_zerog_output"),
-            ),
-            ui.card(
-                ui.card_header(
-                    "2. Get indices",
-                    ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
-                    ),
-                ),
-                ui.input_action_button("run_step2_zerog", "Run", icon=ICONS["run"]),
-                # output_text_verbatim("run_step2_zerog_output"),
-            ),
-            ui.card(
-                ui.card_header(
-                    "3. ZeroG",
-                    ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
-                    ),
-                ),
-                ui.input_action_button("run_step3_zerog", "Run", icon=ICONS["run"]),
-                # output_text_verbatim("run_step3_zerog_output"),
-            ),
-            ui.card(
-                ui.card_header(
-                    "4. Dphmap",
-                    ui.popover(
-                        icon_svg("circle-info").add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
-                    ),
-                ),
-                ui.input_action_button("run_step4_zerog", "Run", icon=ICONS["run"]),
-                # output_text_verbatim("run_step4_zerog_output"),
-            ),
+            step_card("run_step1_zerog", "1. Load"),
+            step_card("run_step2_zerog", "2. Get indices"),
+            step_card("run_step3_zerog", "3. ZeroG"),
+            step_card("run_step4_zerog", "4. Dphmap"),
         ),
         ui.card_footer(
             ui.layout_columns(
