@@ -31,9 +31,7 @@ def plot_card(id):
         ui.card_footer(
             ui.layout_columns(
                 ui.input_action_button(f"do_{id}", "Plot", icon=ICONS["run"]),
-                ui.input_action_button(
-                    f"download_{id}", "Save", icon=ICONS["save"]
-                ),
+                ui.input_action_button(f"download_{id}", "Save", icon=ICONS["save"]),
             ),
         ),
     ]
@@ -87,6 +85,7 @@ def app_elems(pp):
             "Quicklook",
             class_=card_header_class_,
         ),
+        step_card("run_step1_system", "Load"),
         ui.card(
             ui.card_header(
                 "RawMap",
@@ -109,20 +108,7 @@ def app_elems(pp):
                 ),
                 class_=card_header_class_,
             ),
-            ui.output_plot("plot_1_system", width="700px", height="550px", fill=True),
-            ui.card_footer(
-                ui.layout_columns(
-                    ui.input_action_button(
-                        "run_step1_system", "Load", icon=ICONS["run"]
-                    ),
-                    ui.input_action_button(
-                        "do_plot_1_system", "Plot", icon=ICONS["run"]
-                    ),
-                    ui.input_action_button(
-                        "download_plot_1_system", "Save", icon=ICONS["save"]
-                    ),
-                ),
-            ),
+            plot_card("plot_1_system"),
             full_screen=True,
         ),
     ]
@@ -193,146 +179,161 @@ def app_elems(pp):
             "CGVt plots",
             class_=card_header_class_,
         ),
-        ui.card(
-            ui.card(
-                ui.card_header(
-                    "Threshold",
-                    ui.popover(
-                        ICONS["info"].add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
+        ui.navset_card_pill(
+            ui.nav_panel(
+                "Threshold",
+                ui.card(
+                    ui.card_header(
+                        "Threshold",
+                        ui.popover(
+                            ICONS["info"].add_class("ms-2"),
+                            ui.markdown("blabla"),
+                            placement="right",
+                        ),
+                        ui.popover(
+                            ICONS["gear"],
+                            *[
+                                ui.p(""),
+                            ],
+                            title="",
+                            placement="top",
+                        ),
+                        class_=card_header_class_,
                     ),
-                    ui.popover(
-                        ICONS["gear"],
-                        *[
-                            ui.p(""),
-                        ],
-                        title="",
-                        placement="top",
-                    ),
-                    class_=card_header_class_,
+                    plot_card("plot_1_cgvt"),
+                    full_screen=True,
                 ),
-                plot_card("plot_1_cgvt"),
-                full_screen=True,
             ),
-            ui.card(
-                ui.card_header(
-                    "RegMap",
-                    ui.popover(
-                        ICONS["info"].add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
+            ui.nav_panel(
+                "RegMap",
+                ui.card(
+                    ui.card_header(
+                        "RegMap",
+                        ui.popover(
+                            ICONS["info"].add_class("ms-2"),
+                            ui.markdown("blabla"),
+                            placement="right",
+                        ),
+                        ui.popover(
+                            ICONS["gear"],
+                            *[
+                                ui.input_select(
+                                    "plot_regmap_imkey",
+                                    "Map",
+                                    choices=list(pp.sequence_ids.astype(str)),
+                                    selected=pp.plot_regmap_imkey,
+                                ),
+                            ],
+                            title="",
+                            placement="top",
+                        ),
+                        class_=card_header_class_,
                     ),
-                    ui.popover(
-                        ICONS["gear"],
-                        *[
-                            ui.input_select(
-                                "plot_regmap_imkey",
-                                "Map",
-                                choices=list(pp.sequence_ids.astype(str)),
-                                selected=pp.plot_regmap_imkey,
-                            ),
-                        ],
-                        title="",
-                        placement="top",
-                    ),
-                    class_=card_header_class_,
+                    plot_card("plot_2_cgvt"),
+                    full_screen=True,
                 ),
-                plot_card("plot_2_cgvt"),
-                full_screen=True,
             ),
-            ui.card(
-                ui.card_header(
-                    "RegMap-PTTF",
-                    ui.popover(
-                        ICONS["info"].add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
+            ui.nav_panel(
+                "RegMap-PTTF",
+                ui.card(
+                    ui.card_header(
+                        "RegMap-PTTF",
+                        ui.popover(
+                            ICONS["info"].add_class("ms-2"),
+                            ui.markdown("blabla"),
+                            placement="right",
+                        ),
+                        ui.popover(
+                            ICONS["gear"],
+                            *[
+                                ui.input_select(
+                                    "plot_regmap_no_pttf_imkey",
+                                    "Map",
+                                    choices=list(pp.sequence_ids.astype(str)),
+                                    selected=pp.plot_regmap_no_pttf_imkey,
+                                ),
+                            ],
+                            title="",
+                            placement="top",
+                        ),
+                        class_=card_header_class_,
                     ),
-                    ui.popover(
-                        ICONS["gear"],
-                        *[
-                            ui.input_select(
-                                "plot_regmap_no_pttf_imkey",
-                                "Map",
-                                choices=list(pp.sequence_ids.astype(str)),
-                                selected=pp.plot_regmap_no_pttf_imkey,
-                            ),
-                        ],
-                        title="",
-                        placement="top",
-                    ),
-                    class_=card_header_class_,
+                    plot_card("plot_3_cgvt"),
+                    full_screen=True,
                 ),
-                plot_card("plot_3_cgvt"),
-                full_screen=True,
             ),
-            ui.card(
-                ui.card_header(
-                    "Allpolys",
-                    ui.popover(
-                        ICONS["info"].add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
+            ui.nav_panel(
+                "Allpolys",
+                ui.card(
+                    ui.card_header(
+                        "Allpolys",
+                        ui.popover(
+                            ICONS["info"].add_class("ms-2"),
+                            ui.markdown("blabla"),
+                            placement="right",
+                        ),
+                        ui.popover(
+                            ICONS["gear"],
+                            *[
+                                ui.input_select(
+                                    "plot_allpolys_seq_ref",
+                                    "Reference map",
+                                    choices=list(pp.sequence_ids.astype(str)),
+                                    selected=pp.plot_allpolys_seq_ref,
+                                ),
+                                ui.input_text(
+                                    "plot_allpolys_colors",
+                                    "Colors",
+                                    value=pp._plot_allpolys_colors,
+                                ),
+                            ],
+                            title="",
+                            placement="top",
+                        ),
+                        class_=card_header_class_,
                     ),
-                    ui.popover(
-                        ICONS["gear"],
-                        *[
-                            ui.input_select(
-                                "plot_allpolys_seq_ref",
-                                "Reference map",
-                                choices=list(pp.sequence_ids.astype(str)),
-                                selected=pp.plot_allpolys_seq_ref,
-                            ),
-                            ui.input_text(
-                                "plot_allpolys_colors",
-                                "Colors",
-                                value=pp._plot_allpolys_colors,
-                            ),
-                        ],
-                        title="",
-                        placement="top",
-                    ),
-                    class_=card_header_class_,
+                    plot_card("plot_4_cgvt"),
+                    full_screen=True,
                 ),
-                plot_card("plot_4_cgvt"),
-                full_screen=True,
             ),
-            ui.card(
-                ui.card_header(
-                    "Polys",
-                    ui.popover(
-                        ICONS["info"].add_class("ms-2"),
-                        ui.markdown("blabla"),
-                        placement="right",
+            ui.nav_panel(
+                "Polys",
+                ui.card(
+                    ui.card_header(
+                        "Polys",
+                        ui.popover(
+                            ICONS["info"].add_class("ms-2"),
+                            ui.markdown("blabla"),
+                            placement="right",
+                        ),
+                        ui.popover(
+                            ICONS["gear"],
+                            *[
+                                ui.input_select(
+                                    "plot_polys_seq_ref",
+                                    "Reference map",
+                                    choices=list(pp.sequence_ids.astype(str)),
+                                    selected=pp.plot_polys_seq_ref,
+                                ),
+                                ui.input_text(
+                                    "plot_polys_order",
+                                    "Colors",
+                                    value=pp._plot_polys_order,
+                                ),
+                                ui.input_text(
+                                    "plot_polys_colors",
+                                    "Colors",
+                                    value=pp._plot_polys_colors,
+                                ),
+                            ],
+                            title="",
+                            placement="top",
+                        ),
+                        class_=card_header_class_,
                     ),
-                    ui.popover(
-                        ICONS["gear"],
-                        *[
-                            ui.input_select(
-                                "plot_polys_seq_ref",
-                                "Reference map",
-                                choices=list(pp.sequence_ids.astype(str)),
-                                selected=pp.plot_polys_seq_ref,
-                            ),
-                            ui.input_text(
-                                "plot_polys_order",
-                                "Colors",
-                                value=pp._plot_polys_order,
-                            ),
-                            ui.input_text(
-                                "plot_polys_colors",
-                                "Colors",
-                                value=pp._plot_polys_colors,
-                            ),
-                        ],
-                        title="",
-                        placement="top",
-                    ),
-                    class_=card_header_class_,
+                    plot_card("plot_5_cgvt"),
+                    full_screen=True,
                 ),
-                plot_card("plot_5_cgvt"),
-                full_screen=True,
             ),
         ),
         ui.card_footer(
