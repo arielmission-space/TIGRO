@@ -32,8 +32,8 @@ dependencies = [
     "lsq-ellipse>=2.2.1",
     "opencv-python>=4.10.0",
     "shiny>=0.10.2",
-    "shinywidgets>=0.3.2",
     "faicons>=0.2.2",
+    "mpld3>=0.5.10",
 ]
 
 [project.readme]

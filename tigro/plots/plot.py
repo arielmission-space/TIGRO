@@ -5,13 +5,25 @@ from matplotlib.gridspec import GridSpec
 from matplotlib.patches import Ellipse
 
 
-def plot_threshold(ncounts, lo, threshold, med, hi):
-    fig = plt.figure()
+figsize = (8, 8 / 1.618)
+
+
+def plot_threshold(ncounts, lo, threshold, med, hi, outpath=None):
+    fig = plt.figure(figsize=figsize)
     plt.plot(ncounts)
     plt.ylim(lo, hi)
     xlim = plt.xlim()
     plt.hlines([threshold, med], *xlim)
     plt.title("Check threshold by eye!!!")
+    plt.grid(which="both", linestyle="--", alpha=0.5)
+
+    if outpath is not None:
+        plt.savefig(
+            f"{outpath}/threshold.png",
+            dpi=300,
+            bbox_inches="tight",
+        )
+    
     return fig
 
 
@@ -24,7 +36,7 @@ def plot_sag_quicklook(
     nkeys = len(phmap[imkey][imsubkey])
     ncols = 6
     nrows = int(np.ceil(nkeys / ncols))
-    fig = plt.figure(figsize=(6 * ncols, 6 * nrows))
+    fig = plt.figure(figsize=(4 * ncols, 5 * nrows))
 
     vmin, vmax = [], []
     for i in range(nkeys):
@@ -73,7 +85,7 @@ def plot_sag(
     imsubkey="RegMap",
     outpath=None,
 ):
-    fig = plt.figure(111, figsize=(7, 5))
+    fig = plt.figure(111, figsize=figsize)
     ax = fig.add_subplot(111)
     img = ax.imshow(
         phmap[imkey][imsubkey],
@@ -112,7 +124,7 @@ def plot_sag(
     figname = "_".join([figname[0]] + figname[2:])
     ax.set_title(f"{figname}", fontsize=14)
     ax.legend(loc=1, fontsize=10)
-    ax.grid(which="both")
+    ax.grid(which="both", linestyle="--", alpha=0.5)
 
     if outpath is not None:
         plt.savefig(
@@ -132,7 +144,7 @@ def plot_allpolys(
     colors,
     outpath=None,
 ):
-    fig, ax0 = plt.subplots(1, 1, figsize=(12, 12 / 1.618))
+    fig, ax0 = plt.subplots(1, 1, figsize=figsize)
 
     ipol = np.arange(5, NZernike + 1)
     for k, seq in enumerate(sequence_ids):
@@ -149,7 +161,7 @@ def plot_allpolys(
     # set xticklabels
     ax0.set_xticks(k)
     ax0.set_ylim(*ylim)
-    ax0.grid()
+    ax0.grid(which="both", linestyle="--", alpha=0.5)
     ax0.set_ylabel("Amplitude [nm]")
     ax0.set_xlabel("Poly order")
 
@@ -171,7 +183,7 @@ def plot_polys(
     colors="rb",
     outpath=None,
 ):
-    fig, ax0 = plt.subplots(1, 1, figsize=(12, 12 / 1.618))
+    fig, ax0 = plt.subplots(1, 1, figsize=figsize)
 
     for seq, k in itertools.product(sequence_ids, poly_order):
         ax0.plot(
@@ -193,7 +205,7 @@ def plot_polys(
     )
     ax0.set_xlim(xlim)
     ax0.set_ylim(ylim)
-    ax0.grid()
+    ax0.grid(which="both", linestyle="--", alpha=0.5)
 
     ax0.set_xlabel("Sequence")
     ax0.set_ylabel("Amplitude [nm]")
@@ -218,7 +230,7 @@ def plot_zerog(
     ylim=(-50, 50),
     outpath=None,
 ):
-    fig = plt.figure(123, figsize=(12, 12 / 1.618))
+    fig = plt.figure(123, figsize=figsize)
     gs = GridSpec(4, 4, figure=fig)
     ax = fig.add_subplot(gs[0:4, 0:3])
     fig.subplots_adjust(wspace=0.5)
@@ -231,7 +243,7 @@ def plot_zerog(
 
     ax.set_xlim(4.9, npoly + 0.9)
     ax.set_ylim(*ylim)
-    ax.grid()
+    ax.grid(which="both", linestyle="--", alpha=0.5)
     ax.set_ylabel("Amplitude [nm]")
     ax.set_xlabel("Poly order")
     ax.vlines(np.arange(5, 16), *ylim, alpha=1, color="0.8")
@@ -260,7 +272,7 @@ def plot_map(
     hist_ylim=(-200, 200),
     outpath=None,
 ):
-    fig = plt.figure(figsize=(8, 6))
+    fig = plt.figure(figsize=figsize)
     gs = fig.add_gridspec(
         6,
         6,  # width_ratios=(4, 1, 1), height_ratios=(1, 4),

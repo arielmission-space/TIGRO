@@ -2,6 +2,7 @@ import os
 import time
 
 import matplotlib.pyplot as plt
+import mpld3
 
 from htmltools import Tag
 from starlette.requests import Request as StarletteRequest
@@ -165,7 +166,7 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Loading sequences", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
             # phmap = load_phmap(pp.get().datapath, sequence_ids)
             retval = {}
@@ -176,17 +177,17 @@ def server(input, output, session):
             phmap.set(retval)
 
             p.set(len(sequence_ids), message="Done!", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
     def save_generic(save_func, *args):
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Saving in progress", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
             save_func(*args)
 
             p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
     def save_generic_plot(figure, outfile):
         fig = figure.get()
@@ -198,24 +199,36 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Saving in progress", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
             fig.savefig(path, dpi=300, bbox_inches="tight")
 
             p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
-    def generic_plot(figure, plot_func, *args):
+    def generic_plot(figure, plot_func, *args, interactive=False):
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Plotting in progress", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
             fig = plot_func(*args)
+            figure.set(fig)
+
+            if interactive:
+                p.set(message="Creating interactive plot", detail="")
+                time.sleep(0.5)
+
+                mpld3.plugins.connect(fig, mpld3.plugins.MousePosition())
+                html = mpld3.fig_to_html(fig)
+                plt.close(fig)
+
+                p.set(15, message="Done!", detail="")
+                time.sleep(0.5)
+
+                return ui.HTML(html)
 
             p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
-
-        figure.set(fig)
+            time.sleep(0.5)
 
     @render.plot(alt="Quicklook plot")
     @reactive.event(input.do_plot_1_system)
@@ -257,7 +270,7 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Filtering in progress", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
             retval = {}
             for i, sequence_id in enumerate(sequence_ids):
@@ -268,7 +281,7 @@ def server(input, output, session):
             phmap.set(retval)
 
             p.set(len(sequence_ids), message="Done!", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
     @reactive.effect(priority=-2)
     @reactive.event(input.run_all_cgvt, input.run_step3_cgvt)
@@ -283,7 +296,7 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Thresholding in progress", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
             threshold.set(
                 get_threshold(
@@ -295,15 +308,21 @@ def server(input, output, session):
             )
 
             p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
-    @render.plot(alt="Threshold plot")
+    @output
+    @render.ui
     @reactive.event(input.plot_all_cgvt, input.do_plot_1_cgvt)
     def plot_1_cgvt():
         req(pp.get())
         req(phmap.get())
         req(threshold.get())
-        generic_plot(figure_threshold, plot_threshold, *threshold.get())
+        return generic_plot(
+            figure_threshold,
+            plot_threshold,
+            *threshold.get(),
+            interactive=True,
+        )
 
     @reactive.effect
     @reactive.event(input.download_all_plots_cgvt, input.download_plot_1_cgvt)
@@ -330,7 +349,7 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Averaging in progress", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
             retval = {}
             for i, sequence_id in enumerate(sequence_ids):
@@ -347,7 +366,7 @@ def server(input, output, session):
             phmap.set(retval)
 
             p.set(len(sequence_ids), message="Done!", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
     @reactive.effect(priority=-4)
     @reactive.event(input.run_all_cgvt, input.run_step5_cgvt)
@@ -362,7 +381,7 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Ellipse fit in progress", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
             retval = {}
             for i, sequence_id in enumerate(sequence_ids):
@@ -373,7 +392,7 @@ def server(input, output, session):
             phmap.set(retval)
 
             p.set(len(sequence_ids), message="Done!", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
     @reactive.effect(priority=-5)
     @reactive.event(input.run_all_cgvt, input.run_step6_cgvt)
@@ -388,7 +407,7 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Registration in progress", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
             retval = {}
             for i, sequence_id in enumerate(sequence_ids):
@@ -399,7 +418,7 @@ def server(input, output, session):
             phmap.set(retval)
 
             p.set(len(sequence_ids), message="Done!", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
     @reactive.effect(priority=-6)
     @reactive.event(input.run_all_cgvt, input.run_step7_cgvt)
@@ -414,7 +433,7 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Getting reference in progress", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
             uref.set(
                 get_uref(
@@ -426,9 +445,10 @@ def server(input, output, session):
             )
 
             p.set(15, message="Done!", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
-    @render.plot(alt="RegMap plot")
+    @output
+    @render.ui
     @reactive.event(input.plot_all_cgvt, input.do_plot_2_cgvt)
     def plot_2_cgvt():
         req(pp.get())
@@ -439,13 +459,14 @@ def server(input, output, session):
             if "RegMap" not in phmap.get()[seq].keys():
                 return
 
-        generic_plot(
+        return generic_plot(
             figure_regmap,
             plot_sag,
             phmap.get(),
             uref.get(),
             int(input.plot_regmap_imkey()),
             "RegMap",
+            interactive=True,
         )
 
     @reactive.effect
@@ -474,7 +495,7 @@ def server(input, output, session):
 
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Zernike fitting in progress", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
             retval = {}
             for i, sequence_id in enumerate(sequence_ids):
@@ -489,9 +510,10 @@ def server(input, output, session):
             phmap.set(retval)
 
             p.set(len(sequence_ids), message="Done!", detail="")
-            time.sleep(1.0)
+            time.sleep(0.5)
 
-    @render.plot(alt="RegMap-PTTF plot")
+    @output
+    @render.ui
     @reactive.event(input.plot_all_cgvt, input.do_plot_3_cgvt)
     def plot_3_cgvt():
         req(pp.get())
@@ -502,13 +524,14 @@ def server(input, output, session):
             if "residual" not in phmap.get()[seq].keys():
                 return
 
-        generic_plot(
+        return generic_plot(
             figure_regmap_no_pttf,
             plot_sag,
             phmap.get(),
             uref.get(),
             int(input.plot_regmap_no_pttf_imkey()),
             "RegMap-PTTF",
+            interactive=True,
         )
 
     @reactive.effect
@@ -525,7 +548,8 @@ def server(input, output, session):
         outfile: list[FileInfo] | None = input.save_regmap_no_pttf_png()
         save_generic_plot(figure_regmap_no_pttf, outfile)
 
-    @render.plot(alt="Allpolys plot")
+    @output
+    @render.ui
     @reactive.event(input.plot_all_cgvt, input.do_plot_4_cgvt)
     def plot_4_cgvt():
         req(pp.get())
@@ -536,7 +560,7 @@ def server(input, output, session):
             if "residual" not in phmap.get()[seq].keys():
                 return
 
-        generic_plot(
+        return generic_plot(
             figure_allpolys,
             plot_allpolys,
             phmap.get(),
@@ -544,6 +568,7 @@ def server(input, output, session):
             pp.get().plot_allpolys_seq_ref,
             pp.get().n_zernike,
             pp.get().plot_allpolys_colors,
+            interactive=True,
         )
 
     @reactive.effect
@@ -560,7 +585,8 @@ def server(input, output, session):
         outfile: list[FileInfo] | None = input.save_allpolys_png()
         save_generic_plot(figure_allpolys, outfile)
 
-    @render.plot(alt="Polys plot")
+    @output
+    @render.ui
     @reactive.event(input.plot_all_cgvt, input.do_plot_5_cgvt)
     def plot_5_cgvt():
         req(pp.get())
@@ -571,7 +597,7 @@ def server(input, output, session):
             if "residual" not in phmap.get()[seq].keys():
                 return
 
-        generic_plot(
+        return generic_plot(
             figure_polys,
             plot_polys,
             phmap.get(),
@@ -579,6 +605,7 @@ def server(input, output, session):
             pp.get().plot_polys_seq_ref,
             pp.get().plot_polys_order,
             pp.get().plot_polys_colors,
+            interactive=True,
         )
 
     @reactive.effect
@@ -725,4 +752,4 @@ def server(input, output, session):
         ui.modal_show(m)
 
 
-app = App(app_ui, server, debug=True)
+app = App(app_ui, server, debug=False)

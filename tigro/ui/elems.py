@@ -24,16 +24,26 @@ def step_card(id, label, text="blabla", width="80%"):
     )
 
 
-def plot_card(id):
+def plot_card(id, interactive=False):
+
+    if interactive:
+        out = ui.output_ui(
+            id,
+            width="100%",
+            height="550px",
+            fill=True,
+        )
+    else:
+        out = ui.output_plot(
+            id,
+            width="100%",
+            height="550px",
+            fill=True,
+        )
+
     return [
         ui.layout_columns(
-            ui.output_plot(
-                id,
-                width="100%",
-                height="550px",
-                fill=True,
-                brush=True,
-            ),
+            out,
             vline,
             [
                 ui.input_action_button(f"do_{id}", "Plot", icon=ICONS["run"]),
@@ -222,7 +232,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    plot_card("plot_1_cgvt"),
+                    plot_card("plot_1_cgvt", interactive=True),
                     full_screen=True,
                 ),
             ),
@@ -252,7 +262,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    plot_card("plot_2_cgvt"),
+                    plot_card("plot_2_cgvt", interactive=True),
                     full_screen=True,
                 ),
             ),
@@ -282,7 +292,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    plot_card("plot_3_cgvt"),
+                    plot_card("plot_3_cgvt", interactive=True),
                     full_screen=True,
                 ),
             ),
@@ -317,7 +327,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    plot_card("plot_4_cgvt"),
+                    plot_card("plot_4_cgvt", interactive=True),
                     full_screen=True,
                 ),
             ),
@@ -357,7 +367,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    plot_card("plot_5_cgvt"),
+                    plot_card("plot_5_cgvt", interactive=True),
                     full_screen=True,
                 ),
             ),
@@ -465,7 +475,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    plot_card("plot_1_zerog"),
+                    plot_card("plot_1_zerog", interactive=True),
                     full_screen=True,
                 ),
             ),
@@ -509,7 +519,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    plot_card("plot_2_zerog"),
+                    plot_card("plot_2_zerog", interactive=True),
                     full_screen=True,
                 ),
             ),
