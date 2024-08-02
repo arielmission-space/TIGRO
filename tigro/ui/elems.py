@@ -2,20 +2,22 @@ from shiny import ui
 
 from tigro.ui.shared import ICONS
 from tigro.ui.shared import card_header_class_
+from tigro.ui.shared import hline
 
 
-def step_card(id, label, text="blabla"):
+def step_card(id, label, text="blabla", width="80%"):
     return ui.tags.div(
         ui.input_action_button(
             id,
             label,
             icon=ICONS["run"],
             class_="ms-2",
-            width="80%",
+            width=width,
         ),
         ui.popover(
             ICONS["info"].add_class("ms-2"),
             ui.markdown(text),
+            title="Info",
             placement="right",
         ),
     )
@@ -27,7 +29,7 @@ def plot_card(id):
             ui.output_plot(
                 id,
                 width="100%",
-                height="500px",
+                height="550px",
                 fill=True,
                 brush=True,
             ),
@@ -86,15 +88,16 @@ def app_elems(pp):
     system_quicklook_elems = [
         ui.card_header(
             "Quicklook",
+            step_card("run_step1_system", "1. Load", width=None),
             class_=card_header_class_,
         ),
-        step_card("run_step1_system", "Load"),
         ui.card(
             ui.card_header(
                 "RawMap",
                 ui.popover(
                     ICONS["info"].add_class("ms-2"),
                     ui.markdown("blabla"),
+                    title="Options",
                     placement="right",
                 ),
                 ui.popover(
@@ -106,7 +109,7 @@ def app_elems(pp):
                             choices=list(pp.sequence_ids.astype(str)),
                         ),
                     ],
-                    title="",
+                    title="Options",
                     placement="top",
                 ),
                 class_=card_header_class_,
@@ -118,7 +121,10 @@ def app_elems(pp):
 
     cgvt_analysis_elems = [
         ui.card_header(
-            "CGVt analysis",
+            ui.tags.div(
+                ui.input_action_button("run_all_cgvt", "Run all", icon=ICONS["run"]),
+                ui.input_action_button("download_phmap", "Save", icon=ICONS["save"]),
+            ),
             ui.popover(
                 ICONS["gear"],
                 *[
@@ -154,11 +160,12 @@ def app_elems(pp):
                         value=pp.n_zernike,
                     ),
                 ],
-                title="",
+                title="Options",
                 placement="top",
             ),
             class_=card_header_class_,
         ),
+        hline,
         ui.card(
             step_card("run_step1_cgvt", "1. Load"),
             step_card("run_step2_cgvt", "2. Filter"),
@@ -169,17 +176,11 @@ def app_elems(pp):
             step_card("run_step7_cgvt", "7. Reference"),
             step_card("run_step8_cgvt", "8. Zernike"),
         ),
-        ui.card_footer(
-            ui.layout_columns(
-                ui.input_action_button("run_all_cgvt", "Run all", icon=ICONS["run"]),
-                ui.input_action_button("download_phmap", "Save", icon=ICONS["save"]),
-            ),
-        ),
     ]
 
     cgvt_plots_elems = [
         ui.card_header(
-            "CGVt plots",
+            "CGVt Plots",
             ui.tags.div(
                 ui.input_action_button("plot_all_cgvt", "Plot all", icon=ICONS["run"]),
                 ui.input_action_button(
@@ -197,6 +198,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
+                            title="Options",
                             placement="right",
                         ),
                         ui.popover(
@@ -204,7 +206,7 @@ def app_elems(pp):
                             *[
                                 ui.p(""),
                             ],
-                            title="",
+                            title="Options",
                             placement="top",
                         ),
                         class_=card_header_class_,
@@ -221,6 +223,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
+                            title="Options",
                             placement="right",
                         ),
                         ui.popover(
@@ -233,7 +236,7 @@ def app_elems(pp):
                                     selected=pp.plot_regmap_imkey,
                                 ),
                             ],
-                            title="",
+                            title="Options",
                             placement="top",
                         ),
                         class_=card_header_class_,
@@ -250,6 +253,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
+                            title="Options",
                             placement="right",
                         ),
                         ui.popover(
@@ -262,7 +266,7 @@ def app_elems(pp):
                                     selected=pp.plot_regmap_no_pttf_imkey,
                                 ),
                             ],
-                            title="",
+                            title="Options",
                             placement="top",
                         ),
                         class_=card_header_class_,
@@ -279,6 +283,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
+                            title="Options",
                             placement="right",
                         ),
                         ui.popover(
@@ -296,7 +301,7 @@ def app_elems(pp):
                                     value=pp._plot_allpolys_colors,
                                 ),
                             ],
-                            title="",
+                            title="Options",
                             placement="top",
                         ),
                         class_=card_header_class_,
@@ -313,6 +318,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
+                            title="Options",
                             placement="right",
                         ),
                         ui.popover(
@@ -335,7 +341,7 @@ def app_elems(pp):
                                     value=pp._plot_polys_colors,
                                 ),
                             ],
-                            title="",
+                            title="Options",
                             placement="top",
                         ),
                         class_=card_header_class_,
@@ -345,19 +351,14 @@ def app_elems(pp):
                 ),
             ),
         ),
-        # ui.card_footer(
-        #     ui.layout_columns(
-        #         ui.input_action_button("plot_all_cgvt", "Plot all", icon=ICONS["run"]),
-        #         ui.input_action_button(
-        #             "download_all_plots_cgvt", "Save all", icon=ICONS["save"]
-        #         ),
-        #     ),
-        # ),
     ]
 
     zerog_analysis_elems = [
         ui.card_header(
-            "ZeroG analysis",
+            ui.tags.div(
+                ui.input_action_button("run_all_zerog", "Run all", icon=ICONS["run"]),
+                ui.input_action_button("download_zerogmap", "Save", icon=ICONS["save"]),
+            ),
             ui.popover(
                 ICONS["gear"],
                 *[
@@ -397,28 +398,27 @@ def app_elems(pp):
                         value=pp._dphmap_idx1,
                     ),
                 ],
-                title="",
+                title="Options",
                 placement="top",
             ),
             class_=card_header_class_,
         ),
+        hline,
         ui.card(
             step_card("run_step1_zerog", "1. Load"),
             step_card("run_step2_zerog", "2. Get indices"),
             step_card("run_step3_zerog", "3. ZeroG"),
             step_card("run_step4_zerog", "4. Dphmap"),
         ),
-        ui.card_footer(
-            ui.layout_columns(
-                ui.input_action_button("run_all_zerog", "Run all", icon=ICONS["run"]),
-                ui.input_action_button("download_zerogmap", "Save", icon=ICONS["save"]),
-            ),
-        ),
     ]
 
     zerog_plots_elems = [
         ui.card_header(
-            "ZeroG plots",
+            ui.markdown(
+                """
+                    ##### ZeroG Plots
+                """
+            ),
             ui.tags.div(
                 ui.input_action_button("plot_all_zerog", "Plot all", icon=ICONS["run"]),
                 ui.input_action_button(
@@ -436,6 +436,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
+                            title="Options",
                             placement="right",
                         ),
                         ui.popover(
@@ -447,7 +448,7 @@ def app_elems(pp):
                                     value=pp._plot_zerog_ylim,
                                 ),
                             ],
-                            title="",
+                            title="Options",
                             placement="top",
                         ),
                         class_=card_header_class_,
@@ -464,6 +465,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
+                            title="Options",
                             placement="right",
                         ),
                         ui.popover(
@@ -490,7 +492,7 @@ def app_elems(pp):
                                     value=pp._plot_dphmap_hist_ylim,
                                 ),
                             ],
-                            title="",
+                            title="Options",
                             placement="top",
                         ),
                         class_=card_header_class_,

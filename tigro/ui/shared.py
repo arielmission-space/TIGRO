@@ -20,6 +20,12 @@ ICONS = {
     "info": fa.icon_svg("circle-info"),
 }
 
+hline = ui.markdown(
+    """
+        <hr style="height:1px; border:none; color:lightgrey; background-color:lightgrey;">
+        """
+)
+
 
 def menu_panel(id):
     return ui.nav_panel(

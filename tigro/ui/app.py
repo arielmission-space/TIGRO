@@ -35,7 +35,6 @@ from tigro.plots.plot import plot_allpolys
 from tigro.plots.plot import plot_polys
 
 from tigro.ui.items import menu_items
-from tigro.ui.items import system_sidebar
 from tigro.ui.elems import app_elems
 from tigro.ui.shared import refresh_ui
 from tigro.ui.shared import nested_div
@@ -55,7 +54,8 @@ def app_ui(request: StarletteRequest) -> Tag:
             "System",
             ui.layout_sidebar(
                 ui.sidebar(
-                    ui.accordion(*system_sidebar, open=False),
+                    nested_div("system_sidebar"),
+                    title="System Explorer",
                     width=350,
                 ),
                 ui.card(
@@ -66,21 +66,30 @@ def app_ui(request: StarletteRequest) -> Tag:
         ),
         ui.nav_panel(
             "CGVt",
-            ui.layout_columns(
-                ui.card(nested_div("cgvt_analysis"), full_screen=True),
-                ui.card(nested_div("cgvt_plots"), full_screen=True),
-                col_widths=(3, 9),
+            ui.layout_sidebar(
+                ui.sidebar(
+                    nested_div("cgvt_analysis"),
+                    title="CGVt Analysis",
+                    width=350,
+                ),
+                ui.card(
+                    nested_div("cgvt_plots"),
+                ),
             ),
         ),
         ui.nav_panel(
             "ZeroG",
-            ui.layout_columns(
-                ui.card(nested_div("zerog_analysis"), full_screen=True),
-                ui.card(nested_div("zerog_plots"), full_screen=True),
-                col_widths=(3, 9),
+            ui.layout_sidebar(
+                ui.sidebar(
+                    nested_div("zerog_analysis"),
+                    title="ZeroG Analysis",
+                    width=350,
+                ),
+                ui.card(
+                    nested_div("zerog_plots"),
+                ),
             ),
         ),
-        # fillable="TIGRO UI",
         id="navbar",
         title=ui.tags.div(
             ui.popover(
