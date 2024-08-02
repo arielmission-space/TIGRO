@@ -5,57 +5,35 @@ from tigro.ui.shared import card_header_class_
 
 
 def step_card(id, label, text="blabla"):
-    return (
-        ui.card(
-            ui.tags.div(
-                ui.input_action_button(
-                    id,
-                    label,
-                    icon=ICONS["run"],
-                    class_="ms-2",
-                    width="80%",
-                ),
-                ui.popover(
-                    ICONS["info"].add_class("ms-2"),
-                    ui.markdown(text),
-                    placement="right",
-                ),
-            ),
+    return ui.tags.div(
+        ui.input_action_button(
+            id,
+            label,
+            icon=ICONS["run"],
+            class_="ms-2",
+            width="80%",
+        ),
+        ui.popover(
+            ICONS["info"].add_class("ms-2"),
+            ui.markdown(text),
+            placement="right",
         ),
     )
 
 
-# def plot_card(id, height=400):
-#     return [
-#         ui.output_plot(
-#             id,
-#             width=f"{height*1.618}px",
-#             height=f"{height}px",
-#             fill=True,
-#             brush=True,
-#         ),
-#         ui.card_footer(
-#             ui.layout_columns(
-#                 ui.input_action_button(f"do_{id}", "Plot", icon=ICONS["run"]),
-#                 ui.input_action_button(f"download_{id}", "Save", icon=ICONS["save"]),
-#             ),
-#         ),
-#     ]
-
-
-def plot_card(id, height=400):
+def plot_card(id):
     return [
         ui.layout_columns(
             ui.output_plot(
                 id,
-                width=f"{height*1.618}px",
-                height=f"{height}px",
+                width="100%",
+                height="500px",
                 fill=True,
                 brush=True,
             ),
             [
                 ui.input_action_button(f"do_{id}", "Plot", icon=ICONS["run"]),
-                ui.input_action_button(f"download_{id}", "Save", icon=ICONS["save"]),   
+                ui.input_action_button(f"download_{id}", "Save", icon=ICONS["save"]),
             ],
             col_widths=(10, 2),
         ),
@@ -202,6 +180,12 @@ def app_elems(pp):
     cgvt_plots_elems = [
         ui.card_header(
             "CGVt plots",
+            ui.tags.div(
+                ui.input_action_button("plot_all_cgvt", "Plot all", icon=ICONS["run"]),
+                ui.input_action_button(
+                    "download_all_plots_cgvt", "Save all", icon=ICONS["save"]
+                ),
+            ),
             class_=card_header_class_,
         ),
         ui.navset_card_pill(
@@ -361,14 +345,14 @@ def app_elems(pp):
                 ),
             ),
         ),
-        ui.card_footer(
-            ui.layout_columns(
-                ui.input_action_button("plot_all_cgvt", "Plot all", icon=ICONS["run"]),
-                ui.input_action_button(
-                    "download_all_plots_cgvt", "Save all", icon=ICONS["save"]
-                ),
-            ),
-        ),
+        # ui.card_footer(
+        #     ui.layout_columns(
+        #         ui.input_action_button("plot_all_cgvt", "Plot all", icon=ICONS["run"]),
+        #         ui.input_action_button(
+        #             "download_all_plots_cgvt", "Save all", icon=ICONS["save"]
+        #         ),
+        #     ),
+        # ),
     ]
 
     zerog_analysis_elems = [
@@ -435,6 +419,12 @@ def app_elems(pp):
     zerog_plots_elems = [
         ui.card_header(
             "ZeroG plots",
+            ui.tags.div(
+                ui.input_action_button("plot_all_zerog", "Plot all", icon=ICONS["run"]),
+                ui.input_action_button(
+                    "download_all_plots_zerog", "Save all", icon=ICONS["save"]
+                ),
+            ),
             class_=card_header_class_,
         ),
         ui.navset_card_pill(
@@ -507,14 +497,6 @@ def app_elems(pp):
                     ),
                     plot_card("plot_2_zerog"),
                     full_screen=True,
-                ),
-            ),
-        ),
-        ui.card_footer(
-            ui.layout_columns(
-                ui.input_action_button("plot_all_zerog", "Plot all", icon=ICONS["run"]),
-                ui.input_action_button(
-                    "download_all_plots_zerog", "Save all", icon=ICONS["save"]
                 ),
             ),
         ),
