@@ -25,20 +25,39 @@ def step_card(id, label, text="blabla"):
     )
 
 
+# def plot_card(id, height=400):
+#     return [
+#         ui.output_plot(
+#             id,
+#             width=f"{height*1.618}px",
+#             height=f"{height}px",
+#             fill=True,
+#             brush=True,
+#         ),
+#         ui.card_footer(
+#             ui.layout_columns(
+#                 ui.input_action_button(f"do_{id}", "Plot", icon=ICONS["run"]),
+#                 ui.input_action_button(f"download_{id}", "Save", icon=ICONS["save"]),
+#             ),
+#         ),
+#     ]
+
+
 def plot_card(id, height=400):
     return [
-        ui.output_plot(
-            id,
-            width=f"{height*1.618}px",
-            height=f"{height}px",
-            fill=True,
-            brush=True,
-        ),
-        ui.card_footer(
-            ui.layout_columns(
-                ui.input_action_button(f"do_{id}", "Plot", icon=ICONS["run"]),
-                ui.input_action_button(f"download_{id}", "Save", icon=ICONS["save"]),
+        ui.layout_columns(
+            ui.output_plot(
+                id,
+                width=f"{height*1.618}px",
+                height=f"{height}px",
+                fill=True,
+                brush=True,
             ),
+            [
+                ui.input_action_button(f"do_{id}", "Plot", icon=ICONS["run"]),
+                ui.input_action_button(f"download_{id}", "Save", icon=ICONS["save"]),   
+            ],
+            col_widths=(10, 2),
         ),
     ]
 
