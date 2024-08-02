@@ -142,18 +142,26 @@ def server(input, output, session):
 
         full_refresh()
 
-    @reactive.effect
+    @reactive.effect(priority=0)
     @reactive.event(input.run_all_cgvt, input.run_step1_cgvt, input.run_step1_system)
     def _load_phmap_():
         req(pp.get())
 
         sequence_ids = pp.get().sequence_ids
-        retval = {}
+        for seq in sequence_ids:
+            if seq not in phmap.get().keys():
+                print("phmap not found")
+                break
+        else:
+            print("phmap already loaded")
+            return
+
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Loading sequences", detail="")
             time.sleep(1.0)
 
             # phmap = load_phmap(pp.get().datapath, sequence_ids)
+            retval = {}
             for i, sequence_id in enumerate(sequence_ids):
                 p.set(i, message=f"Loading sequence {sequence_id}", detail="")
                 retval.update(load_phmap(pp.get().datapath, [sequence_id]))
@@ -231,13 +239,16 @@ def server(input, output, session):
         outfile: list[FileInfo] | None = input.save_quicklook_png()
         save_generic_plot(figure_quicklook, outfile)
 
-    @reactive.effect
+    @reactive.effect(priority=-1)
     @reactive.event(input.run_all_cgvt, input.run_step2_cgvt)
     def _filter_phmap_():
         req(pp.get())
         req(phmap.get())
 
         sequence_ids = pp.get().sequence_ids
+        for seq in sequence_ids:
+            if "rawmap" not in phmap.get()[seq].keys():
+                return
 
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Filtering in progress", detail="")
@@ -254,7 +265,7 @@ def server(input, output, session):
             p.set(len(sequence_ids), message="Done!", detail="")
             time.sleep(1.0)
 
-    @reactive.effect
+    @reactive.effect(priority=-2)
     @reactive.event(input.run_all_cgvt, input.run_step3_cgvt)
     def _get_threshold_():
         req(pp.get())
@@ -303,7 +314,7 @@ def server(input, output, session):
         outfile: list[FileInfo] | None = input.save_threshold_png()
         save_generic_plot(figure_threshold, outfile)
 
-    @reactive.effect
+    @reactive.effect(priority=-3)
     @reactive.event(input.run_all_cgvt, input.run_step4_cgvt)
     def _med_phmap_():
         req(pp.get())
@@ -333,7 +344,7 @@ def server(input, output, session):
             p.set(len(sequence_ids), message="Done!", detail="")
             time.sleep(1.0)
 
-    @reactive.effect
+    @reactive.effect(priority=-4)
     @reactive.event(input.run_all_cgvt, input.run_step5_cgvt)
     def _fit_ellipse_():
         req(pp.get())
@@ -359,7 +370,7 @@ def server(input, output, session):
             p.set(len(sequence_ids), message="Done!", detail="")
             time.sleep(1.0)
 
-    @reactive.effect
+    @reactive.effect(priority=-5)
     @reactive.event(input.run_all_cgvt, input.run_step6_cgvt)
     def _register_phmap_():
         req(pp.get())
@@ -385,7 +396,7 @@ def server(input, output, session):
             p.set(len(sequence_ids), message="Done!", detail="")
             time.sleep(1.0)
 
-    @reactive.effect
+    @reactive.effect(priority=-6)
     @reactive.event(input.run_all_cgvt, input.run_step7_cgvt)
     def _get_uref_():
         req(pp.get())
@@ -446,7 +457,7 @@ def server(input, output, session):
         outfile: list[FileInfo] | None = input.save_regmap_png()
         save_generic_plot(figure_regmap, outfile)
 
-    @reactive.effect
+    @reactive.effect(priority=-7)
     @reactive.event(input.run_all_cgvt, input.run_step8_cgvt)
     def _fit_zernike_():
         req(pp.get())
