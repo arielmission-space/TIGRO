@@ -26,6 +26,12 @@ hline = ui.markdown(
         """
 )
 
+vline = ui.markdown(
+    """
+    <div style="border-left: 1px solid lightgrey; height: 100%;"></div>
+    """
+)
+
 
 def menu_panel(id):
     return ui.nav_panel(

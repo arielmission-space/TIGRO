@@ -3,6 +3,7 @@ from shiny import ui
 from tigro.ui.shared import ICONS
 from tigro.ui.shared import card_header_class_
 from tigro.ui.shared import hline
+from tigro.ui.shared import vline
 
 
 def step_card(id, label, text="blabla", width="80%"):
@@ -33,11 +34,12 @@ def plot_card(id):
                 fill=True,
                 brush=True,
             ),
+            vline,
             [
                 ui.input_action_button(f"do_{id}", "Plot", icon=ICONS["run"]),
                 ui.input_action_button(f"download_{id}", "Save", icon=ICONS["save"]),
             ],
-            col_widths=(10, 2),
+            col_widths=(9, 1, 2),
         ),
     ]
 
@@ -87,7 +89,11 @@ def app_elems(pp):
 
     system_quicklook_elems = [
         ui.card_header(
-            "Quicklook",
+            ui.markdown(
+                """
+                    ##### Quicklook
+                """
+            ),
             step_card("run_step1_system", "1. Load", width=None),
             class_=card_header_class_,
         ),
@@ -180,7 +186,11 @@ def app_elems(pp):
 
     cgvt_plots_elems = [
         ui.card_header(
-            "CGVt Plots",
+            ui.markdown(
+                """
+                    ##### CGVt Plots
+                """
+            ),
             ui.tags.div(
                 ui.input_action_button("plot_all_cgvt", "Plot all", icon=ICONS["run"]),
                 ui.input_action_button(
