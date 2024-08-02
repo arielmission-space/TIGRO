@@ -29,14 +29,14 @@ def plot_card(id, interactive=False):
     if interactive:
         out = ui.output_ui(
             id,
-            width="100%",
+            width="80%",
             height="550px",
             fill=True,
         )
     else:
         out = ui.output_plot(
             id,
-            width="100%",
+            width="80%",
             height="550px",
             fill=True,
         )
