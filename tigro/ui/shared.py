@@ -28,7 +28,7 @@ hline = ui.markdown(
 
 vline = ui.markdown(
     """
-    <div style="border-left: 1px solid lightgrey; height: 100%;"></div>
+    <div style="border-right: 1px solid lightgrey; height: 100%;"></div>
     """
 )
 

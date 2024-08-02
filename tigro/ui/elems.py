@@ -199,6 +199,7 @@ def app_elems(pp):
             ),
             class_=card_header_class_,
         ),
+        ui.tags.div(style="height: 5px;"),
         ui.navset_card_pill(
             ui.nav_panel(
                 "Threshold",
@@ -437,6 +438,7 @@ def app_elems(pp):
             ),
             class_=card_header_class_,
         ),
+        ui.tags.div(style="height: 5px;"),
         ui.navset_card_pill(
             ui.nav_panel(
                 "ZeroG",
