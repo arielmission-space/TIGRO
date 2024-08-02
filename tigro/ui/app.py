@@ -129,17 +129,15 @@ def server(input, output, session):
         refresh_ui("zerog_analysis", zerog_analysis_elems)
         refresh_ui("zerog_plots", zerog_plots_elems)
 
-    @reactive.effect
+    @reactive.effect(priority=99)
     @reactive.event(input.refresh)
     def _():
         req(pp.get())
 
         path = os.path.join(pp.get().outpath, "tmp.ini")
-
         to_ini(input, path)
 
         pp.set(Parser(config=path))
-
         full_refresh()
 
     @reactive.effect(priority=0)
@@ -172,7 +170,6 @@ def server(input, output, session):
             time.sleep(1.0)
 
     def save_generic(save_func, *args):
-
         with ui.Progress(min=0, max=15) as p:
             p.set(message="Saving in progress", detail="")
             time.sleep(1.0)
@@ -183,7 +180,6 @@ def server(input, output, session):
             time.sleep(1.0)
 
     def save_generic_plot(figure, outfile):
-
         fig = figure.get()
 
         if outfile is None:
@@ -632,7 +628,7 @@ def server(input, output, session):
         )
         ui.modal_show(m)
 
-    @reactive.effect
+    @reactive.effect(priority=100)
     @reactive.event(input.open_ini)
     def open_ini():
         req(input.open_ini())

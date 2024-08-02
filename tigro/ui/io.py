@@ -2,7 +2,6 @@ from tigro.ui.shared import to_configparser
 
 
 def to_ini(input, tmp):
-
     dictionary = {}
 
     # system

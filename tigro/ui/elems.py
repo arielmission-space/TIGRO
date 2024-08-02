@@ -25,9 +25,15 @@ def step_card(id, label, text="blabla"):
     )
 
 
-def plot_card(id):
+def plot_card(id, height=400):
     return [
-        ui.output_plot(id, width="700px", height="550px", fill=True),
+        ui.output_plot(
+            id,
+            width=f"{height*1.618}px",
+            height=f"{height}px",
+            fill=True,
+            brush=True,
+        ),
         ui.card_footer(
             ui.layout_columns(
                 ui.input_action_button(f"do_{id}", "Plot", icon=ICONS["run"]),

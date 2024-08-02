@@ -131,7 +131,7 @@ def get_threshold(phmap, level=0.1, plot=True, full_return=False):
 
     if full_return:
         return ncounts, lo, threshold, med, hi
-    
+
     return threshold
 
 

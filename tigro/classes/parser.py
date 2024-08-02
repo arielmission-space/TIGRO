@@ -86,7 +86,7 @@ class Parser:
         self._dphmap_idx1 = zerog.get("dphmap_idx1")
         self.dphmap_idx0 = np.concatenate(get_idx(self._dphmap_idx0))
         self.dphmap_idx1 = np.concatenate(get_idx(self._dphmap_idx1))
-        self.dphmap_gain = zerog.get("dphmap_gain", fallback='')
+        self.dphmap_gain = zerog.get("dphmap_gain", fallback="")
         self.dphmap_gain = float(self.dphmap_gain) if self.dphmap_gain else None
 
         # Zerog plots
