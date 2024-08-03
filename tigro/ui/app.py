@@ -31,15 +31,15 @@ from tigro.io.save import to_pickle
 from tigro.io.load import from_pickle
 from tigro.utils.util import get_diff_idx
 from tigro.core.process import zerog_phmap
-# from tigro.core.process import delta_phmap
+from tigro.core.process import delta_phmap
 
 from tigro.plots.plot import plot_sag_quicklook
 from tigro.plots.plot import plot_threshold
 from tigro.plots.plot import plot_sag
 from tigro.plots.plot import plot_allpolys
 from tigro.plots.plot import plot_polys
-# from tigro.plots.plot import plot_zerog
-# from tigro.plots.plot import plot_map
+from tigro.plots.plot import plot_zerog
+from tigro.plots.plot import plot_map
 
 from tigro.ui.items import menu_items
 from tigro.ui.elems import app_elems
@@ -130,6 +130,9 @@ def server(input, output, session):
     figure_polys = reactive.value(None)
     diff_idx = reactive.value(None)
     zerog = reactive.value(None)
+    figure_zerog = reactive.value(None)
+    delta_phmap = reactive.value(None)
+    figure_delta_phmap = reactive.value(None)
 
     def full_refresh():
         req(pp.get())
@@ -746,6 +749,61 @@ def server(input, output, session):
 
             p.set(15, message="Done!", detail="")
             time.sleep(0.5)
+
+    @output
+    @render.ui
+    @reactive.event(input.plot_all_zerog, input.do_plot_1_zerog)
+    def plot_1_zerog():
+        req(pp.get())
+        req(zerog.get())
+
+        medmap, zerogmap, coeff_med, cmed, rms, color = zerog.get()
+
+        return generic_plot(
+            figure_zerog,
+            plot_zerog,
+            coeff_med,
+            cmed,
+            rms,
+            color,
+            pp.get().plot_zerog_ylim,
+            interactive=True,
+        )
+
+    @reactive.effect
+    @reactive.event(input.download_all_plots_zerog, input.download_plot_1_zerog)
+    def download_zerog():
+        req(pp.get())
+        req(zerog.get())
+        req(figure_zerog.get())
+        modal_download("zerog", "png")
+
+    @reactive.effect
+    @reactive.event(input.download_zerog_png)
+    def download_zerog_png():
+        outfile: list[FileInfo] | None = input.save_zerog_png()
+        save_generic_plot(figure_zerog, outfile)
+
+    @reactive.effect(priority=-3)
+    @reactive.event(input.run_all_zerog, input.run_step4_zerog)
+    def _delta_phmap_():
+        logger.warning("NotImplemented")
+    
+    @output
+    @render.ui
+    @reactive.event(input.plot_all_zerog, input.do_plot_2_zerog)
+    def plot_2_zerog():
+        logger.warning("NotImplemented")
+    
+    @reactive.effect
+    @reactive.event(input.download_all_plots_zerog, input.download_plot_2_zerog)
+    def download_delta_phmap():
+        logger.warning("NotImplemented")
+
+    @reactive.effect
+    @reactive.event(input.download_delta_phmap_png)
+    def download_delta_phmap_png():
+        logger.warning("NotImplemented")
 
     @reactive.effect
     @reactive.event(input.open)
