@@ -52,13 +52,13 @@ def to_ini(input, tmp):
     # zerog
     zerog = {}
     zerog["run_zerog"] = True
-    zerog["zerog_idx0"] = input.zerog_idx0()
-    zerog["zerog_idx1"] = input.zerog_idx1()
+    zerog["idx_gplus"] = input.idx_gplus()
+    zerog["idx_gminus"] = input.idx_gminus()
     zerog["zerog_colors"] = input.zerog_colors()
     zerog["dphmap_filter_type"] = input.dphmap_filter_type()
     zerog["dphmap_gain"] = input.dphmap_gain()
-    zerog["dphmap_idx0"] = input.dphmap_idx0()
-    zerog["dphmap_idx1"] = input.dphmap_idx1()
+    zerog["dphmap0_idx"] = input.dphmap0_idx()
+    zerog["dphmap1_idx"] = input.dphmap1_idx()
 
     dictionary.update({"zerog": zerog})
 

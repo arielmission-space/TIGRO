@@ -133,7 +133,7 @@ def run_zerog(pp, phmap=None):
             return
 
     logger.info("Getting diff indices")
-    diff_idx = get_diff_idx(pp.zerog_idx0, pp.zerog_idx1, pp.zerog_colors)
+    diff_idx = get_diff_idx(pp.idx_gplus, pp.idx_gminus, pp.zerog_colors)
 
     logger.info("ZeroG-ing phase maps")
     medmap, zerogmap, coeff_med, cmed, rms, color = zerog_phmap(phmap, diff_idx)
@@ -152,8 +152,8 @@ def run_zerog(pp, phmap=None):
     logger.info("Computing delta phase map")
     dphmap = delta_phmap(
         zerogmap,
-        idx0=pp.dphmap_idx0,
-        idx1=pp.dphmap_idx1,
+        idx0=pp.dphmap0_idx,
+        idx1=pp.dphmap1_idx,
         gain=pp.dphmap_gain,
         filter_type=pp.dphmap_filter_type,
     )

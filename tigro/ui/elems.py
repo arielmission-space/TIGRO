@@ -387,14 +387,14 @@ def app_elems(pp):
                 ICONS["gear"],
                 *[
                     ui.input_text(
-                        "zerog_idx0",
-                        "ZeroG index 0",
-                        value=pp._zerog_idx0,
+                        "idx_gplus",
+                        "+g sequences",
+                        value=pp._idx_gplus,
                     ),
                     ui.input_text(
-                        "zerog_idx1",
-                        "ZeroG index 1",
-                        value=pp._zerog_idx1,
+                        "idx_gminus",
+                        "-g sequences",
+                        value=pp._idx_gminus,
                     ),
                     ui.input_text(
                         "zerog_colors",
@@ -412,14 +412,14 @@ def app_elems(pp):
                         value=pp.dphmap_gain,
                     ),
                     ui.input_text(
-                        "dphmap_idx0",
-                        "Dphmap index 0",
-                        value=pp._dphmap_idx0,
+                        "dphmap0_idx",
+                        "Dphmap 0 index",
+                        value=pp._dphmap0_idx,
                     ),
                     ui.input_text(
-                        "dphmap_idx1",
-                        "Dphmap index 1",
-                        value=pp._dphmap_idx1,
+                        "dphmap1_idx",
+                        "Dphmap 1 index",
+                        value=pp._dphmap1_idx,
                     ),
                 ],
                 title="Options",

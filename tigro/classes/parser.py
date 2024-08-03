@@ -80,18 +80,18 @@ class Parser:
         # ZeroG options
         zerog = self.cparser["zerog"]
         self.run_zerog = zerog.getboolean("run_zerog")
-        self._zerog_idx0 = zerog.get("zerog_idx0")
-        self._zerog_idx1 = zerog.get("zerog_idx1")
-        self.zerog_idx0 = get_idx(self._zerog_idx0)
-        self.zerog_idx1 = get_idx(self._zerog_idx1)
+        self._idx_gplus = zerog.get("idx_gplus")
+        self._idx_gminus = zerog.get("idx_gminus")
+        self.idx_gplus = get_idx(self._idx_gplus)
+        self.idx_gminus = get_idx(self._idx_gminus)
         self._zerog_colors = zerog.get("zerog_colors")
         self.zerog_colors = get_colors(self._zerog_colors)
         self._dphmap_filter_type = zerog.get("dphmap_filter_type", fallback="mean")
         self.dphmap_filter_type = getattr(np.ma, self._dphmap_filter_type)
-        self._dphmap_idx0 = zerog.get("dphmap_idx0")
-        self._dphmap_idx1 = zerog.get("dphmap_idx1")
-        self.dphmap_idx0 = np.concatenate(get_idx(self._dphmap_idx0))
-        self.dphmap_idx1 = np.concatenate(get_idx(self._dphmap_idx1))
+        self._dphmap0_idx = zerog.get("dphmap0_idx")
+        self._dphmap1_idx = zerog.get("dphmap1_idx")
+        self.dphmap0_idx = np.concatenate(get_idx(self._dphmap0_idx))
+        self.dphmap1_idx = np.concatenate(get_idx(self._dphmap1_idx))
         self.dphmap_gain = zerog.get("dphmap_gain", fallback="")
         self.dphmap_gain = float(self.dphmap_gain) if self.dphmap_gain else None
 

@@ -721,8 +721,8 @@ def server(input, output, session):
 
             diff_idx.set(
                 get_diff_idx(
-                    pp.get().zerog_idx0,
-                    pp.get().zerog_idx1,
+                    pp.get().idx_gplus,
+                    pp.get().idx_gminus,
                     pp.get().zerog_colors,
                 )
             )
@@ -790,8 +790,8 @@ def server(input, output, session):
             dphmap.set(
                 delta_phmap(
                     zerogmap,
-                    idx0=pp.get().dphmap_idx0,
-                    idx1=pp.get().dphmap_idx1,
+                    idx0=pp.get().dphmap0_idx,
+                    idx1=pp.get().dphmap1_idx,
                     gain=pp.get().dphmap_gain,
                     filter_type=pp.get().dphmap_filter_type,
                 )
