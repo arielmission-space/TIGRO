@@ -131,8 +131,8 @@ def server(input, output, session):
     diff_idx = reactive.value(None)
     zerog = reactive.value(None)
     figure_zerog = reactive.value(None)
-    delta_phmap = reactive.value(None)
-    figure_delta_phmap = reactive.value(None)
+    dphmap = reactive.value(None)
+    figure_dphmap = reactive.value(None)
 
     def full_refresh():
         req(pp.get())
@@ -359,6 +359,7 @@ def server(input, output, session):
         req(threshold.get())
 
         sequence_ids = pp.get().sequence_ids
+        ncounts, lo, thresh, med, hi = threshold.get()
 
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
             p.set(message="Averaging in progress", detail="")
@@ -371,7 +372,7 @@ def server(input, output, session):
                 retval.update(
                     med_phmap(
                         _phmap,
-                        threshold.get()[2],
+                        thresh,
                         filter_type=pp.get().phmap_filter_type,
                     )
                 )
@@ -787,23 +788,57 @@ def server(input, output, session):
     @reactive.effect(priority=-3)
     @reactive.event(input.run_all_zerog, input.run_step4_zerog)
     def _delta_phmap_():
-        logger.warning("NotImplemented")
-    
-    @output
-    @render.ui
+        req(pp.get())
+        req(zerog.get())
+
+        medmap, zerogmap, coeff_med, cmed, rms, color = zerog.get()
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Computing delta phase map.", detail="")
+            time.sleep(0.5)
+
+            dphmap.set(
+                delta_phmap(
+                    zerogmap,
+                    idx0=pp.get().dphmap_idx0,
+                    idx1=pp.get().dphmap_idx1,
+                    gain=pp.get().dphmap_gain,
+                    filter_type=pp.get().dphmap_filter_type,
+                )
+            )
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(0.5)
+
+    @render.plot(alt="Dphmap plot")
     @reactive.event(input.plot_all_zerog, input.do_plot_2_zerog)
     def plot_2_zerog():
-        logger.warning("NotImplemented")
+        req(pp.get())
+        req(dphmap.get().all())
+
+        generic_plot(
+            figure_dphmap,
+            plot_map,
+            dphmap.get(),
+            pp.get().plot_dphmap_hlines,
+            pp.get().plot_dphmap_vlines,
+            pp.get().plot_dphmap_hist_xlim,
+            pp.get().plot_dphmap_hist_ylim,
+        )
     
     @reactive.effect
     @reactive.event(input.download_all_plots_zerog, input.download_plot_2_zerog)
     def download_delta_phmap():
-        logger.warning("NotImplemented")
+        req(pp.get())
+        req(dphmap.get())
+        req(figure_dphmap.get())
+        modal_download("dphmap", "png")
 
     @reactive.effect
     @reactive.event(input.download_delta_phmap_png)
     def download_delta_phmap_png():
-        logger.warning("NotImplemented")
+        outfile: list[FileInfo] | None = input.save_delta_phmap_png()
+        save_generic_plot(figure_dphmap, outfile)
 
     @reactive.effect
     @reactive.event(input.open)

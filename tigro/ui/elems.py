@@ -24,20 +24,25 @@ def step_card(id, label, text="blabla", width="80%"):
     )
 
 
-def plot_card(id, interactive=False):
+def plot_card(
+    id,
+    interactive=False,
+    width="80%",
+    height="550px",
+):
 
     if interactive:
         out = ui.output_ui(
             id,
-            width="80%",
-            height="550px",
+            width=width,
+            height=height,
             fill=True,
         )
     else:
         out = ui.output_plot(
             id,
-            width="80%",
-            height="550px",
+            width=width,
+            height=height,
             fill=True,
         )
 
@@ -519,7 +524,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    plot_card("plot_2_zerog", interactive=True),
+                    plot_card("plot_2_zerog", width="100%"),
                     full_screen=True,
                 ),
             ),
