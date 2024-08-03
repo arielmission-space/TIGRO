@@ -1,6 +1,5 @@
 from shiny import ui
 
-from tigro.ui.shared import nested_div
 from tigro.ui.shared import menu_panel
 
 

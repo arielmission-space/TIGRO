@@ -57,8 +57,6 @@ plt.style.use("default")
 def app_ui(request: StarletteRequest) -> Tag:
     return ui.page_navbar(
         ui.nav_spacer(),
-        *menu_items,
-        ui.nav_spacer(),
         ui.nav_panel(
             "System",
             ui.layout_sidebar(
@@ -110,6 +108,12 @@ def app_ui(request: StarletteRequest) -> Tag:
                 placement="right",
             ),
             ui.input_action_button("refresh", "", icon=ICONS["refresh"], class_="ms-2"),
+        ),
+        header=ui.page_navbar(
+                *menu_items,
+            ),
+        footer=ui.page_navbar(
+            ui.nav_spacer(),
         ),
         window_title="TIGRO UI",
         # selected="System",
