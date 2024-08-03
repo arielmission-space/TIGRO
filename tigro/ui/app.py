@@ -110,8 +110,8 @@ def app_ui(request: StarletteRequest) -> Tag:
             ui.input_action_button("refresh", "", icon=ICONS["refresh"], class_="ms-2"),
         ),
         header=ui.page_navbar(
-                *menu_items,
-            ),
+            *menu_items,
+        ),
         footer=ui.page_navbar(
             ui.nav_spacer(),
         ),
