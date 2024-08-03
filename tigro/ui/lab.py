@@ -10,9 +10,10 @@ app_ui = ui.page_fluid(
         ui.sidebar(
             ui.input_slider("num_points", "Number of points", min=10, max=100, value=50)
         ),
-            ui.output_ui("scatter_plot")
-    )
+        ui.output_ui("scatter_plot"),
+    ),
 )
+
 
 # Define the server logic
 def server(input, output, session):
@@ -24,7 +25,7 @@ def server(input, output, session):
         y = np.random.rand(num_points)
 
         fig, ax = plt.subplots()
-        scatter = ax.scatter(x, y, c='blue', s=50, alpha=0.7)
+        scatter = ax.scatter(x, y, c="blue", s=50, alpha=0.7)
         ax.set_title("Interactive Scatter Plot")
         ax.set_xlabel("X-axis")
         ax.set_ylabel("Y-axis")
@@ -35,6 +36,7 @@ def server(input, output, session):
         plt.close(fig)
 
         return ui.HTML(html)
+
 
 # Create the Shiny app
 app = App(app_ui, server)

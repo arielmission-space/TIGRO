@@ -720,7 +720,7 @@ def server(input, output, session):
             time.sleep(0.5)
 
             diff_idx.set(
-                    get_diff_idx(
+                get_diff_idx(
                     pp.get().zerog_idx0,
                     pp.get().zerog_idx1,
                     pp.get().zerog_colors,
@@ -739,11 +739,7 @@ def server(input, output, session):
             p.set(message="ZeroG-ing phase maps.", detail="")
             time.sleep(0.5)
 
-            zerog.set(
-                zerog_phmap(
-                    phmap.get(), diff_idx.get()
-                )
-            )
+            zerog.set(zerog_phmap(phmap.get(), diff_idx.get()))
 
             p.set(15, message="Done!", detail="")
             time.sleep(0.5)
@@ -819,7 +815,7 @@ def server(input, output, session):
             pp.get().plot_dphmap_hist_xlim,
             pp.get().plot_dphmap_hist_ylim,
         )
-    
+
     @reactive.effect
     @reactive.event(input.download_all_plots_zerog, input.download_plot_2_zerog)
     def download_delta_phmap():

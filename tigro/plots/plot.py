@@ -23,7 +23,7 @@ def plot_threshold(ncounts, lo, threshold, med, hi, outpath=None):
             dpi=300,
             bbox_inches="tight",
         )
-    
+
     return fig
 
 

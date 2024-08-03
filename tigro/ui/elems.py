@@ -30,7 +30,6 @@ def plot_card(
     width="80%",
     height="550px",
 ):
-
     if interactive:
         out = ui.output_ui(
             id,
