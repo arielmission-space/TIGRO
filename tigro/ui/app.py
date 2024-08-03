@@ -713,7 +713,6 @@ def server(input, output, session):
     @reactive.effect(priority=-1)
     @reactive.event(input.run_all_zerog, input.run_step2_zerog)
     def _get_diff_idx_():
-        req(pp.get())
         req(phmap.get())
 
         with ui.Progress(min=0, max=15) as p:
@@ -734,8 +733,6 @@ def server(input, output, session):
     @reactive.effect(priority=-2)
     @reactive.event(input.run_all_zerog, input.run_step3_zerog)
     def _zerog_phmap_():
-        req(pp.get())
-        req(phmap.get())
         req(diff_idx.get())
 
         with ui.Progress(min=0, max=15) as p:
@@ -755,7 +752,6 @@ def server(input, output, session):
     @render.ui
     @reactive.event(input.plot_all_zerog, input.do_plot_1_zerog)
     def plot_1_zerog():
-        req(pp.get())
         req(zerog.get())
 
         medmap, zerogmap, coeff_med, cmed, rms, color = zerog.get()
@@ -774,7 +770,6 @@ def server(input, output, session):
     @reactive.effect
     @reactive.event(input.download_all_plots_zerog, input.download_plot_1_zerog)
     def download_zerog():
-        req(pp.get())
         req(zerog.get())
         req(figure_zerog.get())
         modal_download("zerog", "png")
@@ -788,7 +783,6 @@ def server(input, output, session):
     @reactive.effect(priority=-3)
     @reactive.event(input.run_all_zerog, input.run_step4_zerog)
     def _delta_phmap_():
-        req(pp.get())
         req(zerog.get())
 
         medmap, zerogmap, coeff_med, cmed, rms, color = zerog.get()
@@ -829,8 +823,6 @@ def server(input, output, session):
     @reactive.effect
     @reactive.event(input.download_all_plots_zerog, input.download_plot_2_zerog)
     def download_delta_phmap():
-        req(pp.get())
-        req(dphmap.get())
         req(figure_dphmap.get())
         modal_download("dphmap", "png")
 
