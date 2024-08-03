@@ -823,9 +823,9 @@ def server(input, output, session):
         modal_download("dphmap", "png")
 
     @reactive.effect
-    @reactive.event(input.download_delta_phmap_png)
-    def download_delta_phmap_png():
-        outfile: list[FileInfo] | None = input.save_delta_phmap_png()
+    @reactive.event(input.download_dphmap_png)
+    def download_dphmap_png():
+        outfile: list[FileInfo] | None = input.save_dphmap_png()
         save_generic_plot(figure_dphmap, outfile)
 
     @reactive.effect
