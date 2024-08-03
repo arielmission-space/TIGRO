@@ -48,6 +48,8 @@ class Parser:
         self.phmap_semi_major = cgvt.getfloat("phmap_semi_major", fallback=451)
         self.phmap_semi_minor = cgvt.getfloat("phmap_semi_minor", fallback=310)
         self.phmap_seq_ref = cgvt.getint("phmap_seq_ref")
+        if self.phmap_seq_ref not in self.sequence_ids:
+            self.phmap_seq_ref = self.sequence_ids[0]
         self.n_zernike = cgvt.getint("n_zernike", fallback=15)
         logger.debug("CGVT parameters read")
 
@@ -59,10 +61,14 @@ class Parser:
         self.plot_regmap_no_pttf_imkey = cgvt_plots.getint("plot_regmap_no_pttf_imkey")
         self.plot_allpolys = cgvt_plots.getboolean("plot_allpolys")
         self.plot_allpolys_seq_ref = cgvt_plots.getint("plot_allpolys_seq_ref")
+        if self.plot_allpolys_seq_ref not in self.sequence_ids:
+            self.plot_allpolys_seq_ref = self.sequence_ids[0]
         self._plot_allpolys_colors = cgvt_plots.get("plot_allpolys_colors")
         self.plot_allpolys_colors = get_colors(self._plot_allpolys_colors)
         self.plot_polys = cgvt_plots.getboolean("plot_polys")
         self.plot_polys_seq_ref = cgvt_plots.getint("plot_polys_seq_ref")
+        if self.plot_polys_seq_ref not in self.sequence_ids:
+            self.plot_polys_seq_ref = self.sequence_ids[0]
         self._plot_polys_order = cgvt_plots.get("plot_polys_order")
         self.plot_polys_order = [
             int(order) for order in self._plot_polys_order.split(",")

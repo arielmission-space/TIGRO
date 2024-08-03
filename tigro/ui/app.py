@@ -28,12 +28,18 @@ from tigro.utils.util import get_uref
 from tigro.core.fit import calculate_zernike
 from tigro.core.fit import fit_zernike
 from tigro.io.save import to_pickle
+from tigro.io.load import from_pickle
+from tigro.utils.util import get_diff_idx
+from tigro.core.process import zerog_phmap
+# from tigro.core.process import delta_phmap
 
 from tigro.plots.plot import plot_sag_quicklook
 from tigro.plots.plot import plot_threshold
 from tigro.plots.plot import plot_sag
 from tigro.plots.plot import plot_allpolys
 from tigro.plots.plot import plot_polys
+# from tigro.plots.plot import plot_zerog
+# from tigro.plots.plot import plot_map
 
 from tigro.ui.items import menu_items
 from tigro.ui.elems import app_elems
@@ -42,6 +48,8 @@ from tigro.ui.shared import nested_div
 from tigro.ui.shared import modal_download
 from tigro.ui.shared import ICONS
 from tigro.ui.io import to_ini
+
+from tigro import logger
 
 plt.style.use("default")
 
@@ -120,6 +128,8 @@ def server(input, output, session):
     figure_regmap_no_pttf = reactive.value(None)
     figure_allpolys = reactive.value(None)
     figure_polys = reactive.value(None)
+    diff_idx = reactive.value(None)
+    zerog = reactive.value(None)
 
     def full_refresh():
         req(pp.get())
@@ -158,10 +168,10 @@ def server(input, output, session):
         sequence_ids = pp.get().sequence_ids
         for seq in sequence_ids:
             if seq not in phmap.get().keys():
-                print("phmap not found")
+                logger.debug("phmap not found: loading")
                 break
         else:
-            print("phmap already loaded")
+            logger.debug("phmap already loaded: skipping")
             return
 
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
@@ -181,7 +191,7 @@ def server(input, output, session):
 
     def save_generic(save_func, *args):
         with ui.Progress(min=0, max=15) as p:
-            p.set(message="Saving in progress", detail="")
+            p.set(message="Saving in progress.", detail="This could take a while.")
             time.sleep(0.5)
 
             save_func(*args)
@@ -453,6 +463,7 @@ def server(input, output, session):
     def plot_2_cgvt():
         req(pp.get())
         req(phmap.get())
+        req(uref.get())
 
         sequence_ids = pp.get().sequence_ids
         for seq in sequence_ids:
@@ -518,6 +529,7 @@ def server(input, output, session):
     def plot_3_cgvt():
         req(pp.get())
         req(phmap.get())
+        req(uref.get())
 
         sequence_ids = pp.get().sequence_ids
         for seq in sequence_ids:
@@ -639,6 +651,101 @@ def server(input, output, session):
 
         path = os.path.join(pp.get().outpath, f"{outfile}")
         save_generic(to_pickle, phmap.get(), path)
+
+    @reactive.effect(priority=0)
+    @reactive.event(input.run_all_zerog, input.run_step1_zerog)
+    def _reload_phmap_():
+        req(pp.get())
+
+        sequence_ids = pp.get().sequence_ids
+        for seq in sequence_ids:
+            if seq not in phmap.get().keys():
+                logger.debug("phmap not found: loading")
+                break
+            elif "residual" not in phmap.get()[seq].keys():
+                logger.debug("phmap not found: loading")
+                break
+        else:
+            logger.debug("phmap already loaded: skipping")
+            return
+
+        with ui.Progress(min=0, max=len(sequence_ids)) as p:
+            p.set(message="Loading phmap.", detail="This could take a while.")
+            time.sleep(0.5)
+
+            try:
+                phmap.set(from_pickle(pp.get().fname_phmap))
+            except FileNotFoundError:
+                logger.error("File not found")
+                return
+
+            for seq in sequence_ids:
+                if "residual" not in phmap.get()[seq].keys():
+                    raise ValueError("Residuals not found in phmap. Run CGVT first.")
+
+            if threshold.get() is None:
+                threshold.set(
+                    get_threshold(
+                        phmap.get(),
+                        level=pp.get().phmap_threshold,
+                        plot=False,
+                        full_return=True,
+                    )
+                )
+
+            if uref.get() is None:
+                uref.set(
+                    get_uref(
+                        phmap.get(),
+                        pp.get().phmap_semi_major,
+                        pp.get().phmap_semi_minor,
+                        pp.get().phmap_seq_ref,
+                    )
+                )
+
+            p.set(len(sequence_ids), message="Done!", detail="")
+            time.sleep(0.5)
+
+    @reactive.effect(priority=-1)
+    @reactive.event(input.run_all_zerog, input.run_step2_zerog)
+    def _get_diff_idx_():
+        req(pp.get())
+        req(phmap.get())
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="Getting diff indices.", detail="")
+            time.sleep(0.5)
+
+            diff_idx.set(
+                    get_diff_idx(
+                    pp.get().zerog_idx0,
+                    pp.get().zerog_idx1,
+                    pp.get().zerog_colors,
+                )
+            )
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(0.5)
+
+    @reactive.effect(priority=-2)
+    @reactive.event(input.run_all_zerog, input.run_step3_zerog)
+    def _zerog_phmap_():
+        req(pp.get())
+        req(phmap.get())
+        req(diff_idx.get())
+
+        with ui.Progress(min=0, max=15) as p:
+            p.set(message="ZeroG-ing phase maps.", detail="")
+            time.sleep(0.5)
+
+            zerog.set(
+                zerog_phmap(
+                    phmap.get(), diff_idx.get()
+                )
+            )
+
+            p.set(15, message="Done!", detail="")
+            time.sleep(0.5)
 
     @reactive.effect
     @reactive.event(input.open)

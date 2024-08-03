@@ -353,7 +353,7 @@ def app_elems(pp):
                                 ),
                                 ui.input_text(
                                     "plot_polys_order",
-                                    "Colors",
+                                    "Orders",
                                     value=pp._plot_polys_order,
                                 ),
                                 ui.input_text(
