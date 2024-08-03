@@ -13,6 +13,7 @@ from shiny import render
 from shiny import req
 from shiny.types import FileInfo
 
+from tigro import __pkg_name__
 from tigro import __author__
 from tigro import __version__
 from tigro import __license__
@@ -52,6 +53,8 @@ from tigro.ui.io import to_ini
 from tigro import logger
 
 plt.style.use("default")
+
+pkg_name = __pkg_name__.upper()
 
 
 def app_ui(request: StarletteRequest) -> Tag:
@@ -101,7 +104,7 @@ def app_ui(request: StarletteRequest) -> Tag:
         title=ui.tags.div(
             ui.popover(
                 [
-                    "TIGRO UI",
+                    f"{pkg_name} UI",
                     ICONS["info"].add_class("ms-2"),
                 ],
                 ui.markdown("blabla"),
@@ -115,7 +118,7 @@ def app_ui(request: StarletteRequest) -> Tag:
         footer=ui.page_navbar(
             ui.nav_spacer(),
         ),
-        window_title="TIGRO UI",
+        window_title=f"{pkg_name} UI",
         # selected="System",
     )
 
@@ -841,7 +844,7 @@ def server(input, output, session):
                 id="open_ini",
                 label=ui.markdown(
                     "Input files must be in the INI format.  \n"
-                    "Example files can be found in the TIGRO [GitHub repository](https://github.com/arielmission-space/TIGRO)."
+                    f"Example files can be found in the {pkg_name} [GitHub repository](https://github.com/arielmission-space/{pkg_name})."
                 ),
                 accept=[".ini"],
                 multiple=False,
@@ -919,9 +922,7 @@ def server(input, output, session):
         req(input.docs())
         m = ui.modal(
             ui.markdown(
-                """
-                Click [here](https://tigro.readthedocs.io/en/latest/) to access the TIGRO documentation.
-                """
+                f"Click [here](https://tigro.readthedocs.io/en/latest/) to access the {pkg_name} documentation."
             ),
             title="Documentation",
             easy_close=True,
@@ -934,7 +935,7 @@ def server(input, output, session):
         req(input.about())
         m = ui.modal(
             ui.markdown(
-                f"SOFTWARE: TIGRO UI v{__version__}  \n"
+                f"SOFTWARE: {pkg_name} UI v{__version__}  \n"
                 f"AUTHOR: {__author__}  \n"
                 f"LICENSE: {__license__}  \n"
             ),
