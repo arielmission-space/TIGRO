@@ -813,7 +813,7 @@ def server(input, output, session):
         req(pp.get())
         req(dphmap.get().all())
 
-        return generic_plot(
+        generic_plot(
             figure_dphmap,
             plot_map,
             dphmap.get(),

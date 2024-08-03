@@ -134,7 +134,7 @@ def app_elems(pp):
                 ),
                 class_=card_header_class_,
             ),
-            plot_card("plot_1_system"),
+            plot_card("plot_1_system", width="75%"),
             full_screen=True,
         ),
     ]
