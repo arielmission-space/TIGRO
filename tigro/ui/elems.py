@@ -27,7 +27,7 @@ def step_card(id, label, text="blabla", width="80%"):
 def plot_card(
     id,
     interactive=False,
-    width="80%",
+    width="100%",
     height="550px",
 ):
     if interactive:
@@ -382,7 +382,6 @@ def app_elems(pp):
         ui.card_header(
             ui.tags.div(
                 ui.input_action_button("run_all_zerog", "Run all", icon=ICONS["run"]),
-                ui.input_action_button("download_zerogmap", "Save", icon=ICONS["save"]),
             ),
             ui.popover(
                 ICONS["gear"],
@@ -523,7 +522,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    plot_card("plot_2_zerog", width="100%"),
+                    plot_card("plot_2_zerog"),
                     full_screen=True,
                 ),
             ),

@@ -806,7 +806,7 @@ def server(input, output, session):
         req(pp.get())
         req(dphmap.get().all())
 
-        generic_plot(
+        return generic_plot(
             figure_dphmap,
             plot_map,
             dphmap.get(),

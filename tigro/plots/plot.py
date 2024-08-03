@@ -285,8 +285,8 @@ def plot_map(
     )
 
     ax0 = fig.add_subplot(gs[2:, 0:3])
-    ax1 = fig.add_subplot(gs[1, 0:3], sharex=ax0)
-    ax2 = fig.add_subplot(gs[2:, 3], sharey=ax0)
+    ax1 = fig.add_subplot(gs[1, 0:3])#, sharex=ax0)
+    ax2 = fig.add_subplot(gs[2:, 3])#, sharey=ax0)
 
     ax1.set_xticklabels("")
     ax2.set_yticklabels("")
@@ -306,6 +306,7 @@ def plot_map(
     ax0.set_xlim(0, M.shape[1])
     ax1.set_ylim(*hist_ylim)
     ax2.set_xlim(*hist_xlim)
+
     # print((M10).std(), M20.std(), M.std(), gain)
 
     if outpath is not None:
