@@ -117,7 +117,7 @@ def app_elems(pp):
                 ui.popover(
                     ICONS["info"].add_class("ms-2"),
                     ui.markdown("blabla"),
-                    title="Options",
+                    title="Info",
                     placement="right",
                 ),
                 ui.popover(
@@ -223,7 +223,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
-                            title="Options",
+                            title="Info",
                             placement="right",
                         ),
                         ui.popover(
@@ -248,7 +248,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
-                            title="Options",
+                            title="Info",
                             placement="right",
                         ),
                         ui.popover(
@@ -278,7 +278,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
-                            title="Options",
+                            title="Info",
                             placement="right",
                         ),
                         ui.popover(
@@ -308,7 +308,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
-                            title="Options",
+                            title="Info",
                             placement="right",
                         ),
                         ui.popover(
@@ -343,7 +343,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
-                            title="Options",
+                            title="Info",
                             placement="right",
                         ),
                         ui.popover(
@@ -461,7 +461,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
-                            title="Options",
+                            title="Info",
                             placement="right",
                         ),
                         ui.popover(
@@ -490,7 +490,7 @@ def app_elems(pp):
                         ui.popover(
                             ICONS["info"].add_class("ms-2"),
                             ui.markdown("blabla"),
-                            title="Options",
+                            title="Info",
                             placement="right",
                         ),
                         ui.popover(
