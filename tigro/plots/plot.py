@@ -267,6 +267,7 @@ def plot_zerog(
 
 def plot_map(
     M,
+    Mlim=[-50, 50],
     hlines=[240, 512],
     vlines=[512],
     hist_xlim=(-200, 200),
@@ -286,7 +287,7 @@ def plot_map(
     ax2.set_yticklabels([])
     ax2.xaxis.tick_top()
 
-    im0 = ax0.imshow(M, origin="lower", cmap="Reds")
+    im0 = ax0.imshow(M, origin="lower", cmap="Reds", vmin=Mlim[0], vmax=Mlim[1])
 
     cbax = plt.subplot(gs[1, 2])
     cb = Colorbar(

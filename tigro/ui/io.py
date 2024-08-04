@@ -67,6 +67,7 @@ def to_ini(input, tmp):
     zerog_plots["plot_zerog"] = True
     zerog_plots["plot_zerog_ylim"] = input.plot_zerog_ylim()
     zerog_plots["plot_dphmap"] = True
+    zerog_plots["plot_dphmap_vmin_vmax"] = input.plot_dphmap_vmin_vmax()
     zerog_plots["plot_dphmap_hlines"] = input.plot_dphmap_hlines()
     zerog_plots["plot_dphmap_vlines"] = input.plot_dphmap_vlines()
     zerog_plots["plot_dphmap_hist_xlim"] = input.plot_dphmap_hist_xlim()

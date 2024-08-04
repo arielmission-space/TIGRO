@@ -497,6 +497,11 @@ def app_elems(pp):
                             ICONS["gear"],
                             *[
                                 ui.input_text(
+                                    "plot_dphmap_vmin_vmax",
+                                    "Vmin, Vmax",
+                                    value=pp._plot_dphmap_vmin_vmax,
+                                ),
+                                ui.input_text(
                                     "plot_dphmap_hlines",
                                     "Horizontal lines",
                                     value=pp._plot_dphmap_hlines,

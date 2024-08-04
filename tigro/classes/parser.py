@@ -101,6 +101,15 @@ class Parser:
         self._plot_zerog_ylim = zerog_plots.get("plot_zerog_ylim", fallback="-40, 40")
         self.plot_zerog_ylim = tuple(map(float, self._plot_zerog_ylim.split(",")))
         self.plot_dphmap = zerog_plots.getboolean("plot_dphmap")
+        self._plot_dphmap_vmin_vmax = zerog_plots.get(
+            "plot_dphmap_vmin_vmax", fallback="-50, 50"
+        )
+        self.plot_dphmap_vmin_vmax = tuple(
+            map(
+                float,
+                self._plot_dphmap_vmin_vmax.split(","),
+            )
+        )
         self._plot_dphmap_hlines = zerog_plots.get(
             "plot_dphmap_hlines", fallback="240, 512"
         )

@@ -822,6 +822,7 @@ def server(input, output, session):
             figure_dphmap,
             plot_map,
             dphmap.get(),
+            pp.get().plot_dphmap_vmin_vmax,
             pp.get().plot_dphmap_hlines,
             pp.get().plot_dphmap_vlines,
             pp.get().plot_dphmap_hist_xlim,
