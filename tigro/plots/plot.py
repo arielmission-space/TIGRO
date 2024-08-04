@@ -37,7 +37,7 @@ def plot_sag_quicklook(
     nkeys = len(phmap[imkey][imsubkey])
     ncols = 6
     nrows = int(np.ceil(nkeys / ncols))
-    fig = plt.figure(figsize=figsize)
+    fig = plt.figure(figsize=(3 * ncols, 3 * nrows))
 
     vmin, vmax = [], []
     for i in range(nkeys):
