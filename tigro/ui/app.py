@@ -745,7 +745,7 @@ def server(input, output, session):
             p.set(15, message="Done!", detail="")
             time.sleep(0.5)
 
-    @reactive.effect(priority=-1)
+    @reactive.effect(priority=0)
     @reactive.event(input.run_all_zerog, input.run_step1_zerog)
     def _get_diff_idx_():
         req(phmap.get())
@@ -765,7 +765,7 @@ def server(input, output, session):
             p.set(15, message="Done!", detail="")
             time.sleep(0.5)
 
-    @reactive.effect(priority=-2)
+    @reactive.effect(priority=-1)
     @reactive.event(input.run_all_zerog, input.run_step2_zerog)
     def _zerog_phmap_():
         req(diff_idx.get())
@@ -812,7 +812,7 @@ def server(input, output, session):
         outfile: list[FileInfo] | None = input.save_zerog_png()
         save_generic_plot(figure_zerog, outfile)
 
-    @reactive.effect(priority=-3)
+    @reactive.effect(priority=-2)
     @reactive.event(input.run_all_zerog, input.run_step3_zerog)
     def _delta_phmap_():
         req(zerog.get())
