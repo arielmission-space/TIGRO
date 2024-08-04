@@ -143,9 +143,15 @@ def plot_allpolys(
     sequence_ref,
     NZernike,
     colors,
+    ylim=None,
     outpath=None,
 ):
-    fig, ax0 = plt.subplots(1, 1, figsize=figsize)
+    fig = plt.figure(figsize=figsize)
+    gs = GridSpec(4, 4)
+    gs.update(left=0.08, right=0.90, bottom=0.05, top=0.95, wspace=0.1, hspace=0.04)
+
+    ax0 = plt.subplot(gs[0:4, 0:3])
+    ax1 = plt.subplot(gs[0:4, 3:])
 
     ipol = np.arange(5, NZernike + 1)
     for k, seq in enumerate(sequence_ids):
@@ -153,18 +159,32 @@ def plot_allpolys(
             ipol + k / 20 / 2,
             phmap[seq]["coeff"][4:] - phmap[sequence_ref]["coeff"][4:],
             "." + colors[k],
-            markersize=10,
+            markersize=5,
+        )
+        ax1.plot(
+            seq,
+            phmap[seq]["residual"].std(),
+            "." + colors[k],
+            markersize=5,
         )
 
-    k = np.arange(5, 16, 1)
-    ylim = ax0.get_ylim()
+    k = np.arange(5, NZernike + 1, 1)
+    if ylim is None:
+        ylim = ax0.get_ylim()
     ax0.vlines(k, *ylim)
-    # set xticklabels
     ax0.set_xticks(k)
     ax0.set_ylim(*ylim)
     ax0.grid(which="both", linestyle="--", alpha=0.5)
     ax0.set_ylabel("Amplitude [nm]")
     ax0.set_xlabel("Poly order")
+
+    ax1.set_ylabel("Residual RMS [nm]")
+    ax1.set_xlabel("Sequence number")
+    ax1.grid(which="both", linestyle="--", alpha=0.5)
+    ax1.set_xticks(np.arange(sequence_ids[0], sequence_ids[-1], 4).astype(int))
+    ax1.tick_params(axis="x", rotation=45)
+    ax1.yaxis.tick_right()
+    ax1.yaxis.set_label_position("right")
 
     if outpath is not None:
         plt.savefig(
@@ -254,6 +274,7 @@ def plot_zerog(
     ax.plot(rms, "x")
     ax.set_ylabel("RMS [nm]")
     ax.set_xlabel("Sequence")
+    ax.grid(which="both", linestyle="--", alpha=0.5)
 
     if outpath is not None:
         plt.savefig(
@@ -308,8 +329,13 @@ def plot_map(
 
     ax0.set_ylim(0, M.shape[0])
     ax0.set_xlim(0, M.shape[1])
+    ax0.grid(which="both", linestyle="--", alpha=0.5)
+
     ax1.set_ylim(*hist_ylim)
+    ax1.grid(which="both", linestyle="--", alpha=0.5)
+
     ax2.set_xlim(*hist_xlim)
+    ax2.grid(which="both", linestyle="--", alpha=0.5)
 
     # print((M10).std(), M20.std(), M.std(), gain)
 
