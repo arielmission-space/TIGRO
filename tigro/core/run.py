@@ -144,6 +144,7 @@ def run_zerog(pp, phmap=None):
             coeff_med=coeff_med,
             cmed=cmed,
             rms=rms,
+            NZernike=pp.n_zernike,
             color=color,
             ylim=pp.plot_zerog_ylim,
             outpath=pp.outpath,

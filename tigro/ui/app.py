@@ -110,14 +110,25 @@ def app_ui(request: StarletteRequest) -> Tag:
                 ui.markdown("blabla"),
                 placement="right",
             ),
-            ui.input_action_button("refresh", "", icon=ICONS["refresh"], class_="ms-2"),
         ),
         header=ui.page_navbar(
             [
                 ui.nav_menu(
-                    "File", menu_panel("open"), menu_panel("save"), menu_panel("close")
+                    "File",
+                    menu_panel("open"),
+                    menu_panel("save"),
+                    menu_panel("close"),
                 ),
-                ui.nav_menu("Help", menu_panel("docs"), menu_panel("about")),
+                ui.nav_menu(
+                    "Edit",
+                    menu_panel("load"),
+                    menu_panel("refresh"),
+                ),
+                ui.nav_menu(
+                    "Help",
+                    menu_panel("docs"),
+                    menu_panel("about"),
+                ),
             ],
         ),
         footer=ui.page_navbar(
@@ -668,8 +679,8 @@ def server(input, output, session):
         path = os.path.join(pp.get().outpath, f"{outfile}")
         save_generic(to_pickle, phmap.get(), path)
 
-    @reactive.effect(priority=0)
-    @reactive.event(input.run_all_zerog, input.run_step1_zerog)
+    @reactive.effect(priority=98)
+    @reactive.event(input.load)
     def _reload_phmap_():
         req(pp.get())
 
@@ -723,7 +734,7 @@ def server(input, output, session):
             time.sleep(0.5)
 
     @reactive.effect(priority=-1)
-    @reactive.event(input.run_all_zerog, input.run_step2_zerog)
+    @reactive.event(input.run_all_zerog, input.run_step1_zerog)
     def _get_diff_idx_():
         req(phmap.get())
 
@@ -743,7 +754,7 @@ def server(input, output, session):
             time.sleep(0.5)
 
     @reactive.effect(priority=-2)
-    @reactive.event(input.run_all_zerog, input.run_step3_zerog)
+    @reactive.event(input.run_all_zerog, input.run_step2_zerog)
     def _zerog_phmap_():
         req(diff_idx.get())
 
@@ -770,6 +781,7 @@ def server(input, output, session):
             coeff_med,
             cmed,
             rms,
+            pp.get().n_zernike,
             color,
             pp.get().plot_zerog_ylim,
             interactive=True,
@@ -789,7 +801,7 @@ def server(input, output, session):
         save_generic_plot(figure_zerog, outfile)
 
     @reactive.effect(priority=-3)
-    @reactive.event(input.run_all_zerog, input.run_step4_zerog)
+    @reactive.event(input.run_all_zerog, input.run_step3_zerog)
     def _delta_phmap_():
         req(zerog.get())
 

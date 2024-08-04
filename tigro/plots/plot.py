@@ -247,34 +247,39 @@ def plot_zerog(
     coeff_med,
     cmed,
     rms,
+    NZernike,
     color,
     ylim=(-50, 50),
     outpath=None,
 ):
-    fig = plt.figure(123, figsize=figsize)
-    gs = GridSpec(4, 4, figure=fig)
-    ax = fig.add_subplot(gs[0:4, 0:3])
-    fig.subplots_adjust(wspace=0.5)
+    fig = plt.figure(figsize=figsize)
+    gs = GridSpec(4, 4)
+    gs.update(left=0.08, right=0.90, bottom=0.05, top=0.95, wspace=0.1, hspace=0.04)
+
+    ax0 = plt.subplot(gs[0:4, 0:3])
+    ax1 = plt.subplot(gs[0:4, 3:])
 
     nseq, npoly = coeff_med.shape
     for k, cseries in enumerate(coeff_med):
-        ax.plot(
+        ax0.plot(
             np.arange(cseries.size) + 1 + k / (nseq + 5), cseries - cmed, "x" + color[k]
         )
 
-    ax.set_xlim(4.9, npoly + 0.9)
-    ax.set_ylim(*ylim)
-    ax.grid(which="both", linestyle="--", alpha=0.5)
-    ax.set_ylabel("Amplitude [nm]")
-    ax.set_xlabel("Poly order")
-    ax.vlines(np.arange(5, 16), *ylim, alpha=1, color="0.8")
-    ax.hlines([-5, 5], 0, 16)
+    ax0.set_xlim(4.9, npoly + 0.9)
+    ax0.set_ylim(*ylim)
+    ax0.grid(which="both", linestyle="--", alpha=0.5)
+    ax0.set_ylabel("Amplitude [nm]")
+    ax0.set_xlabel("Poly order")
+    ax0.vlines(np.arange(5, NZernike + 1), *ylim, alpha=1, color="0.8")
+    ax0.hlines([-5, 5], 0, NZernike + 1)
 
-    ax = fig.add_subplot(gs[0:4, 3:])
-    ax.plot(rms, "x")
-    ax.set_ylabel("RMS [nm]")
-    ax.set_xlabel("Sequence")
-    ax.grid(which="both", linestyle="--", alpha=0.5)
+    ax1.plot(rms, "x")
+    ax1.set_ylabel("RMS [nm]")
+    ax1.set_xlabel("Sequence")
+    ax1.grid(which="both", linestyle="--", alpha=0.5)
+    ax1.set_xticks(np.arange(0, cseries.size + 1, 4).astype(int))
+    ax1.yaxis.tick_right()
+    ax1.yaxis.set_label_position("right")
 
     if outpath is not None:
         plt.savefig(

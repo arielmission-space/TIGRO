@@ -18,6 +18,7 @@ ICONS = {
     "run": fa.icon_svg("play"),
     "refresh": fa.icon_svg("arrows-rotate"),
     "info": fa.icon_svg("circle-info"),
+    "load": fa.icon_svg("cloud-arrow-up"),
 }
 
 hline = ui.markdown(
@@ -31,6 +32,9 @@ vline = ui.markdown(
     <div style="border-right: 1px solid lightgrey; height: 100%;"></div>
     """
 )
+
+
+vspace = ui.tags.div(style="height: 5px;")
 
 
 def menu_panel(id):

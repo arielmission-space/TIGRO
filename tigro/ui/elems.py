@@ -4,6 +4,7 @@ from tigro.ui.shared import ICONS
 from tigro.ui.shared import card_header_class_
 from tigro.ui.shared import hline
 from tigro.ui.shared import vline
+from tigro.ui.shared import vspace
 
 
 def step_card(id, label, text="blabla", width="80%"):
@@ -196,6 +197,10 @@ def app_elems(pp):
             step_card("run_step7_cgvt", "7. Reference"),
             step_card("run_step8_cgvt", "8. Zernike"),
         ),
+        # hline,
+        # ui.card(
+        #     step_card("run_reload_cgvt", "Re-Load"),
+        # ),
     ]
 
     cgvt_plots_elems = [
@@ -213,7 +218,7 @@ def app_elems(pp):
             ),
             class_=card_header_class_,
         ),
-        ui.tags.div(style="height: 5px;"),
+        vspace,
         ui.navset_card_pill(
             ui.nav_panel(
                 "Threshold",
@@ -429,10 +434,9 @@ def app_elems(pp):
         ),
         hline,
         ui.card(
-            step_card("run_step1_zerog", "1. Load"),
-            step_card("run_step2_zerog", "2. Get indices"),
-            step_card("run_step3_zerog", "3. ZeroG"),
-            step_card("run_step4_zerog", "4. Dphmap"),
+            step_card("run_step1_zerog", "1. Index"),
+            step_card("run_step2_zerog", "2. ZeroG"),
+            step_card("run_step3_zerog", "3. Dphmap"),
         ),
     ]
 
