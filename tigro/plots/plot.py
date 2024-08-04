@@ -148,7 +148,7 @@ def plot_allpolys(
 ):
     fig = plt.figure(figsize=figsize)
     gs = GridSpec(4, 4)
-    gs.update(left=0.08, right=0.90, bottom=0.05, top=0.95, wspace=0.1, hspace=0.04)
+    gs.update(left=0.08, right=0.90, bottom=0.12, top=0.95, wspace=0.1, hspace=0.04)
 
     ax0 = plt.subplot(gs[0:4, 0:3])
     ax1 = plt.subplot(gs[0:4, 3:])
@@ -254,7 +254,7 @@ def plot_zerog(
 ):
     fig = plt.figure(figsize=figsize)
     gs = GridSpec(4, 4)
-    gs.update(left=0.08, right=0.90, bottom=0.05, top=0.95, wspace=0.1, hspace=0.04)
+    gs.update(left=0.08, right=0.90, bottom=0.12, top=0.95, wspace=0.1, hspace=0.04)
 
     ax0 = plt.subplot(gs[0:4, 0:3])
     ax1 = plt.subplot(gs[0:4, 3:])
