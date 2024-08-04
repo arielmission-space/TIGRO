@@ -134,7 +134,7 @@ def app_elems(pp):
                 ),
                 class_=card_header_class_,
             ),
-            plot_card("plot_1_system", width="75%"),
+            plot_card("plot_1_system"),
             full_screen=True,
         ),
     ]
@@ -522,7 +522,7 @@ def app_elems(pp):
                         ),
                         class_=card_header_class_,
                     ),
-                    plot_card("plot_2_zerog"),
+                    plot_card("plot_2_zerog", width="550px"),
                     full_screen=True,
                 ),
             ),

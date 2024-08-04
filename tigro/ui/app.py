@@ -42,7 +42,7 @@ from tigro.plots.plot import plot_polys
 from tigro.plots.plot import plot_zerog
 from tigro.plots.plot import plot_map
 
-from tigro.ui.items import menu_items
+from tigro.ui.shared import menu_panel
 from tigro.ui.elems import app_elems
 from tigro.ui.shared import refresh_ui
 from tigro.ui.shared import nested_div
@@ -113,7 +113,12 @@ def app_ui(request: StarletteRequest) -> Tag:
             ui.input_action_button("refresh", "", icon=ICONS["refresh"], class_="ms-2"),
         ),
         header=ui.page_navbar(
-            *menu_items,
+            [
+                ui.nav_menu(
+                    "File", menu_panel("open"), menu_panel("save"), menu_panel("close")
+                ),
+                ui.nav_menu("Help", menu_panel("docs"), menu_panel("about")),
+            ],
         ),
         footer=ui.page_navbar(
             ui.nav_spacer(),

@@ -2,6 +2,7 @@ import itertools
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
+from matplotlib.colorbar import Colorbar
 from matplotlib.patches import Ellipse
 
 
@@ -270,29 +271,31 @@ def plot_map(
     vlines=[512],
     hist_xlim=(-200, 200),
     hist_ylim=(-200, 200),
+    title=None,
     outpath=None,
 ):
-    fig = plt.figure(figsize=figsize)
-    gs = fig.add_gridspec(
-        6,
-        6,  # width_ratios=(4, 1, 1), height_ratios=(1, 4),
-        left=0.1,
-        right=0.9,
-        bottom=0.1,
-        top=0.9,
-        wspace=0.05,
-        hspace=0.05,
+    fig = plt.figure(figsize=(8, 8))
+    gs = GridSpec(3, 3, height_ratios=[0.05, 0.95, 0.2], width_ratios=[0.2, 0.95, 0.05])
+    gs.update(left=0.03, right=0.85, bottom=0.03, top=0.85, wspace=0.04, hspace=0.04)
+
+    ax0 = plt.subplot(gs[1, 1])
+    ax1 = plt.subplot(gs[2, 1], sharex=ax0)
+    ax2 = plt.subplot(gs[1, 0], sharey=ax0)
+
+    ax1.set_xticklabels([])
+    ax2.set_yticklabels([])
+    ax2.xaxis.tick_top()
+
+    im0 = ax0.imshow(M, origin="lower", cmap="Reds")
+
+    cbax = plt.subplot(gs[1, 2])
+    cb = Colorbar(
+        ax=cbax,
+        mappable=im0,
+        orientation="vertical",
+        ticklocation="right",
     )
-
-    ax0 = fig.add_subplot(gs[2:, 0:3])
-    ax1 = fig.add_subplot(gs[1, 0:3], sharex=ax0)
-    ax2 = fig.add_subplot(gs[2:, 3], sharey=ax0)
-
-    ax1.set_xticklabels("")
-    ax2.set_yticklabels("")
-
-    im0 = ax0.imshow(M, origin="lower", vmin=-50, vmax=50, cmap="Reds")
-    plt.colorbar(im0, ax=ax2)
+    cb.set_label("Sag [nm]")
 
     ax0.hlines(hlines, 0, M.shape[1], "b")
     for hline in hlines:
@@ -308,6 +311,9 @@ def plot_map(
     ax2.set_xlim(*hist_xlim)
 
     # print((M10).std(), M20.std(), M.std(), gain)
+
+    if title is not None:
+        fig.suptitle(title, fontsize=20, y=0.93)
 
     if outpath is not None:
         plt.savefig(
