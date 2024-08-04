@@ -303,6 +303,7 @@ def server(input, output, session):
         sequence_ids = pp.get().sequence_ids
         for seq in sequence_ids:
             if "rawmap" not in phmap.get()[seq].keys():
+                logger.warning("rawmap not found: skipping")
                 return
 
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
@@ -329,6 +330,7 @@ def server(input, output, session):
         sequence_ids = pp.get().sequence_ids
         for seq in sequence_ids:
             if "cleanmap" not in phmap.get()[seq].keys():
+                logger.warning("cleanmap not found: skipping")
                 return
 
         with ui.Progress(min=0, max=15) as p:
@@ -415,6 +417,7 @@ def server(input, output, session):
         sequence_ids = pp.get().sequence_ids
         for seq in sequence_ids:
             if "medmap" not in phmap.get()[seq].keys():
+                logger.warning("medmap not found: skipping")
                 return
 
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
@@ -441,6 +444,7 @@ def server(input, output, session):
         sequence_ids = pp.get().sequence_ids
         for seq in sequence_ids:
             if "ellipse" not in phmap.get()[seq].keys():
+                logger.warning("ellipse not found: skipping")
                 return
 
         with ui.Progress(min=0, max=len(sequence_ids)) as p:
@@ -467,6 +471,7 @@ def server(input, output, session):
         sequence_ids = pp.get().sequence_ids
         for seq in sequence_ids:
             if "RegMap" not in phmap.get()[seq].keys():
+                logger.warning("RegMap not found: skipping")
                 return
 
         with ui.Progress(min=0, max=15) as p:
@@ -496,6 +501,7 @@ def server(input, output, session):
         sequence_ids = pp.get().sequence_ids
         for seq in sequence_ids:
             if "RegMap" not in phmap.get()[seq].keys():
+                logger.warning("RegMap not found: skipping")
                 return
 
         return generic_plot(
@@ -562,6 +568,7 @@ def server(input, output, session):
         sequence_ids = pp.get().sequence_ids
         for seq in sequence_ids:
             if "residual" not in phmap.get()[seq].keys():
+                logger.warning("residual not found: skipping")
                 return
 
         return generic_plot(
@@ -598,6 +605,7 @@ def server(input, output, session):
         sequence_ids = pp.get().sequence_ids
         for seq in sequence_ids:
             if "residual" not in phmap.get()[seq].keys():
+                logger.warning("residual not found: skipping")
                 return
 
         return generic_plot(
@@ -635,6 +643,7 @@ def server(input, output, session):
         sequence_ids = pp.get().sequence_ids
         for seq in sequence_ids:
             if "residual" not in phmap.get()[seq].keys():
+                logger.warning("residual not found: skipping")
                 return
 
         return generic_plot(
@@ -706,11 +715,13 @@ def server(input, output, session):
                 phmap.set(from_pickle(path))
             except FileNotFoundError:
                 logger.error("File not found")
+                p.set(15, message="Error!", detail="File not found.")
                 return
 
             sequence_ids = pp.get().sequence_ids
             if set(phmap.get().keys()) != set(sequence_ids):
                 logger.error("Sequence IDs do not match loaded phmap keys")
+                p.set(15, message="Error!", detail="Sequence IDs do not match loaded phmap keys.")
                 return
 
             threshold.set(
