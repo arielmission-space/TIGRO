@@ -178,19 +178,6 @@ def refresh_ui(name, items, mode=None, key=""):
     )
 
 
-def output_text_verbatim(id, placeholder=True):
-    return ui.div(
-        {"id": f"{id}-editor"},
-        ui.div(
-            {"id": f"inserted-{id}-editor"},
-            ui.output_text_verbatim(
-                id,
-                placeholder=placeholder,
-            ),
-        ),
-    )
-
-
 def modal_download(id, ext):
     m = ui.modal(
         *[
@@ -204,9 +191,28 @@ def modal_download(id, ext):
                 f"download_{id}_{ext}",
                 "Save",
             ),
-            # ui.output_text(f"download_{ext}_progress"),
         ],
-        title=f"Save {id} to {ext.upper()} File",
+        title=f"Save {id} to .{ext.upper()} File",
+        easy_close=True,
+    )
+    ui.modal_show(m)
+
+
+def modal_upload(id, ext):
+    m = ui.modal(
+        *[
+            ui.input_text(
+                id=f"load_{id}_{ext}",
+                label="Load",
+                value=f"filename.{ext}",
+                placeholder=f"filename.{ext}",
+            ),
+            ui.input_action_button(
+                f"upload_{id}_{ext}",
+                "Upload",
+            ),
+        ],
+        title=f"Upload .{ext.upper()} file",
         easy_close=True,
     )
     ui.modal_show(m)

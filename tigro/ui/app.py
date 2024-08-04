@@ -47,6 +47,7 @@ from tigro.ui.elems import app_elems
 from tigro.ui.shared import refresh_ui
 from tigro.ui.shared import nested_div
 from tigro.ui.shared import modal_download
+from tigro.ui.shared import modal_upload
 from tigro.ui.shared import ICONS
 from tigro.ui.io import to_ini
 
@@ -679,58 +680,58 @@ def server(input, output, session):
         path = os.path.join(pp.get().outpath, f"{outfile}")
         save_generic(to_pickle, phmap.get(), path)
 
-    @reactive.effect(priority=98)
+    @reactive.effect
     @reactive.event(input.load)
     def _reload_phmap_():
+        req(input.load())
         req(pp.get())
+        modal_upload("phmap", "pkl")
 
-        sequence_ids = pp.get().sequence_ids
-        for seq in sequence_ids:
-            if seq not in phmap.get().keys():
-                logger.debug("phmap not found: loading")
-                break
-            elif "residual" not in phmap.get()[seq].keys():
-                logger.debug("phmap not found: loading")
-                break
-        else:
-            logger.debug("phmap already loaded: skipping")
+    @reactive.effect
+    @reactive.event(input.upload_phmap_pkl)
+    def upload_phmap_pkl():
+        req(input.upload_phmap_pkl())
+        infile: list[FileInfo] | None = input.load_phmap_pkl()
+
+        if infile is None:
             return
 
-        with ui.Progress(min=0, max=len(sequence_ids)) as p:
+        path = os.path.join(pp.get().outpath, f"{infile}")
+
+        with ui.Progress(min=0, max=15) as p:
             p.set(message="Loading phmap.", detail="This could take a while.")
             time.sleep(0.5)
 
             try:
-                phmap.set(from_pickle(pp.get().fname_phmap))
+                phmap.set(from_pickle(path))
             except FileNotFoundError:
                 logger.error("File not found")
                 return
 
-            for seq in sequence_ids:
-                if "residual" not in phmap.get()[seq].keys():
-                    raise ValueError("Residuals not found in phmap. Run CGVT first.")
+            sequence_ids = pp.get().sequence_ids
+            if set(phmap.get().keys()) != set(sequence_ids):
+                logger.error("Sequence IDs do not match loaded phmap keys")
+                return
 
-            if threshold.get() is None:
-                threshold.set(
-                    get_threshold(
-                        phmap.get(),
-                        level=pp.get().phmap_threshold,
-                        plot=False,
-                        full_return=True,
-                    )
+            threshold.set(
+                get_threshold(
+                    phmap.get(),
+                    level=pp.get().phmap_threshold,
+                    plot=False,
+                    full_return=True,
                 )
+            )
 
-            if uref.get() is None:
-                uref.set(
-                    get_uref(
-                        phmap.get(),
-                        pp.get().phmap_semi_major,
-                        pp.get().phmap_semi_minor,
-                        pp.get().phmap_seq_ref,
-                    )
+            uref.set(
+                get_uref(
+                    phmap.get(),
+                    pp.get().phmap_semi_major,
+                    pp.get().phmap_semi_minor,
+                    pp.get().phmap_seq_ref,
                 )
+            )
 
-            p.set(len(sequence_ids), message="Done!", detail="")
+            p.set(15, message="Done!", detail="")
             time.sleep(0.5)
 
     @reactive.effect(priority=-1)
@@ -868,7 +869,7 @@ def server(input, output, session):
                 multiple=False,
                 button_label="Browse",
             ),
-            title="Open INI File",
+            title="Open input .INI File",
             easy_close=True,
             footer=ui.markdown(
                 "Note: you may only open one file per session.  \n"
@@ -901,27 +902,16 @@ def server(input, output, session):
 
     @reactive.effect
     @reactive.event(input.save)
-    def _():
+    def download_input():
         req(pp.get())
         req(input.save())
-        m = ui.modal(
-            ui.input_text(
-                id="save_ini",
-                label="Save As",
-                value="filename.ini",
-                placeholder="filename.ini",
-            ),
-            ui.input_action_button("download_ini", "Save"),
-            title="Save INI File",
-            easy_close=True,
-        )
-        ui.modal_show(m)
+        modal_download("input", "ini")
 
     @reactive.effect
-    @reactive.event(input.download_ini)
-    def download_ini():
-        req(input.download_ini())
-        outfile: list[FileInfo] | None = input.save_ini()
+    @reactive.event(input.download_input_ini)
+    def download_input_ini():
+        req(input.download_input_ini())
+        outfile: list[FileInfo] | None = input.save_input_ini()
 
         if outfile is None:
             return
