@@ -716,12 +716,14 @@ def server(input, output, session):
             except FileNotFoundError:
                 logger.error("File not found")
                 p.set(15, message="Error!", detail="File not found.")
+                time.sleep(0.5)
                 return
 
             sequence_ids = pp.get().sequence_ids
             if set(phmap.get().keys()) != set(sequence_ids):
                 logger.error("Sequence IDs do not match loaded phmap keys")
                 p.set(15, message="Error!", detail="Sequence IDs do not match loaded phmap keys.")
+                time.sleep(0.5)
                 return
 
             threshold.set(
