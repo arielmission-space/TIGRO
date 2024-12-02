@@ -176,7 +176,6 @@ def plot_allpolys(
     k = np.arange(5, NZernike + 1, 1)
     if ylim is None:
         ylim = ax0.get_ylim()
-    print("ylim", ylim)
     ax0.vlines(k, *ylim, lw=0.5)
     ax0.set_xticks(k)
     ax0.set_ylim(*ylim)
