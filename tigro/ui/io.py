@@ -42,6 +42,7 @@ def to_ini(input, tmp):
     cgvt_plots["plot_allpolys"] = True
     cgvt_plots["plot_allpolys_seq_ref"] = input.plot_allpolys_seq_ref()
     cgvt_plots["plot_allpolys_colors"] = input.plot_allpolys_colors()
+    cgvt_plots["plot_allpolys_separator"] = input.plot_allpolys_separator()
     cgvt_plots["plot_polys"] = True
     cgvt_plots["plot_polys_seq_ref"] = input.plot_polys_seq_ref()
     cgvt_plots["plot_polys_order"] = input.plot_polys_order()

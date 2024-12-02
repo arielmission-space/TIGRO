@@ -85,6 +85,8 @@ def plot_sag(
     imkey,
     imsubkey="RegMap",
     outpath=None,
+    vmin=None,
+    vmax=None,
 ):
     fig = plt.figure(111, figsize=figsize)
     ax = fig.add_subplot(111)
@@ -96,6 +98,8 @@ def plot_sag(
         zorder=0,
         alpha=1,
         cmap="Reds",
+        vmin=vmin,
+        vmax=vmax,
     )
 
     bar = plt.colorbar(img)
@@ -145,6 +149,7 @@ def plot_allpolys(
     colors,
     ylim=None,
     outpath=None,
+    separator=40,
 ):
     fig = plt.figure(figsize=figsize)
     gs = GridSpec(4, 4)
@@ -156,7 +161,7 @@ def plot_allpolys(
     ipol = np.arange(5, NZernike + 1)
     for k, seq in enumerate(sequence_ids):
         ax0.plot(
-            ipol + k / 20 / 2,
+            ipol + k / separator / 2,
             phmap[seq]["coeff"][4:] - phmap[sequence_ref]["coeff"][4:],
             "." + colors[k],
             markersize=5,
@@ -171,7 +176,7 @@ def plot_allpolys(
     k = np.arange(5, NZernike + 1, 1)
     if ylim is None:
         ylim = ax0.get_ylim()
-    ax0.vlines(k, *ylim)
+    ax0.vlines(k, *ylim, lw=0.5)
     ax0.set_xticks(k)
     ax0.set_ylim(*ylim)
     ax0.grid(which="both", linestyle="--", alpha=0.5)
@@ -209,7 +214,7 @@ def plot_polys(
     for seq, k in itertools.product(sequence_ids, poly_order):
         ax0.plot(
             seq,
-            phmap[seq]["coeff"][k] - phmap[sequence_ref]["coeff"][k],
+            phmap[seq]["coeff"][k-1] - phmap[sequence_ref]["coeff"][k-1],
             "." + colors[poly_order.index(k)],
             markersize=10,
         )
@@ -221,9 +226,6 @@ def plot_polys(
     xlim = ax0.get_xlim()
     ylim = ax0.get_ylim()
 
-    ax0.vlines(
-        np.arange(xlim[0], xlim[1]), *ylim, color="0.5", lw=1, ls="-.", alpha=0.5
-    )
     ax0.set_xlim(xlim)
     ax0.set_ylim(ylim)
     ax0.grid(which="both", linestyle="--", alpha=0.5)

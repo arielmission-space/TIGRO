@@ -61,6 +61,7 @@ class Parser:
         self.plot_regmap_no_pttf_imkey = cgvt_plots.getint("plot_regmap_no_pttf_imkey")
         self.plot_allpolys = cgvt_plots.getboolean("plot_allpolys")
         self.plot_allpolys_seq_ref = cgvt_plots.getint("plot_allpolys_seq_ref")
+        self.plot_allpolys_separator = cgvt_plots.getint("plot_allpolys_separator")
         if self.plot_allpolys_seq_ref not in self.sequence_ids:
             self.plot_allpolys_seq_ref = self.sequence_ids[0]
         self._plot_allpolys_colors = cgvt_plots.get("plot_allpolys_colors")

@@ -100,6 +100,7 @@ def run_cgvt(pp):
             NZernike=pp.n_zernike,
             colors=pp.plot_allpolys_colors,
             outpath=pp.outpath,
+            separator=pp.plot_allpolys_separator,
         )
 
     if pp.plot_polys:

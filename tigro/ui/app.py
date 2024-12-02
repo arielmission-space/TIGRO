@@ -616,6 +616,7 @@ def server(input, output, session):
             pp.get().plot_allpolys_seq_ref,
             pp.get().n_zernike,
             pp.get().plot_allpolys_colors,
+            pp.get().plot_allpolys_separator,
             interactive=True,
         )
 

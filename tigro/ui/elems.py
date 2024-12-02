@@ -330,6 +330,11 @@ def app_elems(pp):
                                     "Colors",
                                     value=pp._plot_allpolys_colors,
                                 ),
+                                ui.input_text(
+                                    "plot_allpolys_separator",
+                                    "Separator",
+                                    value=pp.plot_allpolys_separator,
+                                ),
                             ],
                             title="Options",
                             placement="top",
