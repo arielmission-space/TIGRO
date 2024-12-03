@@ -7,32 +7,35 @@ from tigro import logger
 
 
 def fit_ellipse(phmap):
+
     # Edge ellipse fit
     for seq in phmap.keys():
         # data_mask= 1-phmap[seq]['medmap'].mask.astype(float)
         data_mask = 1 - phmap[seq]["supermask"].astype(float)
-
         Grad = np.gradient(data_mask)
         boundary = np.sqrt(Grad[0] ** 2 + Grad[1] ** 2)
         idx = np.where(boundary.flatten() > 0.65)[0]
         XX = idx % boundary.shape[1]
         YY = idx // boundary.shape[1]
-        _ellipse = myLsqEllipse().fit(np.c_[XX, YY])
-        (xc, yc), a, b, phi = _ellipse.as_parameters()
         # Remove outliers inside the edge
-        cond = _ellipse.inside(XX, YY)
-        if np.any(cond):
-            XX = XX[~cond]
-            YY = YY[~cond]
+        for _iter_ in range(20):
             _ellipse = myLsqEllipse().fit(np.c_[XX, YY])
-
+            cond = _ellipse.inside(XX, YY)
+            if np.any(cond):
+                XX = XX[~cond]
+                YY = YY[~cond]
+            else:
+                break
         (xc, yc), a, b, phi = _ellipse.as_parameters()
-
+        # if it is a circular puplil, reset rotation angle
+        if np.abs(1 - a / b) < 0.01:
+            phi = 0.0
         if np.abs(phi - 0.5 * np.pi) < np.deg2rad(5.0):
             logger.debug("** Sequence: {:3d} is outlier".format(seq))
             a, b = b, a
             phi -= 0.5 * np.pi
-
+        else:
+            print("   ", end="")
         phmap[seq]["ellipse"] = {
             "a": a,
             "b": b,
@@ -41,8 +44,7 @@ def fit_ellipse(phmap):
             "yc": yc,
             "phi": phi,
         }
-
-        logger.debug(f"{seq} ({xc:.1f} {yc:.1f}) {a:.1f} {b:.1f} {np.rad2deg(phi):.1f}")
+        logger.debug(f"{seq} [{_iter_}] ({xc:.1f} {yc:.1f}) {a:.1f} {b:.1f} {np.rad2deg(phi):.1f}")
 
     return phmap
 
