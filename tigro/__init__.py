@@ -12,11 +12,26 @@ __license__ = metadata.metadata("tigro")["license"]
 __copyright__ = "2024-{:d}, {}".format(date.today().year, __author__)
 __summary__ = metadata.metadata("tigro")["Summary"]
 
-# initialise logger
-import logging
-from paos.log import setLogLevel
+import matplotlib.pyplot as plt
+from loguru import logger
 
-logger = logging.getLogger("paos")
-setLogLevel(logging.DEBUG)
+# logger.level("Announce", no=100, color="<magenta>")
 
-logger.name = __pkg_name__
+# initialise plotter
+plt.rcParams["figure.facecolor"] = "white"
+plt.rc("lines", linewidth=1.5)
+plt.rc(
+    "axes",
+    axisbelow=True,
+    titleweight="bold",
+    labelcolor="dimgray",
+    labelweight="bold",
+)
+plt.rc("font", size=12)
+
+import shutil
+
+has_latex = shutil.which("latex") is not None
+has_renderer = shutil.which("dvipng") is not None or shutil.which("dvisvgm") is not None
+
+plt.rc("text", usetex=(has_latex and has_renderer))

@@ -1,5 +1,7 @@
 import shutil
 
+from paos.log.logger import addLogFile, setLogLevel
+
 from tigro import __pkg_name__
 from tigro import __version__
 from tigro import logger
@@ -65,14 +67,13 @@ def main():
     logger.info(f"Configuration file copied to {args.outpath}")
 
     if args.debug:
-        logger.setLevel("DEBUG")
+        setLogLevel("DEBUG")
         logger.info("Debug mode enabled")
 
     if args.log:
         logfile = Path(args.outpath) / f"{__pkg_name__}.log"
-        from paos.log import addLogFile
 
-        addLogFile(fname=logfile, reset=True, level=logger.level)
+        addLogFile(fname=logfile)
         logger.info("Logging to file enabled")
 
     run(args.config, args.outpath)
