@@ -1,5 +1,6 @@
 import importlib.metadata as metadata
 from datetime import date
+import sys
 
 from .__version__ import __version__
 
@@ -13,10 +14,20 @@ __copyright__ = "2024-{:d}, {}".format(date.today().year, __author__)
 __summary__ = metadata.metadata("tigro")["Summary"]
 
 # initialise logger
-import logging
-from paos.log import setLogLevel
+# from loguru import logger
+# logger.remove()
+# logger.add(sys.stdout, format="{time:YYYYMMDD HH:mm:ss} | {message}")
 
-logger = logging.getLogger("paos")
-setLogLevel(logging.DEBUG)
 
-logger.name = __pkg_name__
+from .logging import logger
+from . import io
+from . import utils
+from . import core
+
+
+
+__all__ = ["io", "utils", "logger", "core"]
+
+
+
+

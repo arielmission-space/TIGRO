@@ -1,65 +1,104 @@
-import os
-import glob
-import pickle
 import numpy as np
 from prysm.interferogram import Interferogram
-
-from tigro import logger
-
-
-def load_phmap(dir_path, sequence_ids):
-    # Read and organise data
-
-    namelist = sorted(glob.glob(os.path.join(dir_path, "*.dat")))
-
-    phmap = {}
-    logger.debug("Loading files ...")
-    for k, fname in enumerate(namelist):
-        # print(' {:d}/{:d}'.format(k+1, len(namelist)), end="\r" )
-        name = os.path.splitext(os.path.basename(fname))[0]
-        sequence, number, date, *_ = name.split("_")
-        sequence, number = int(sequence), int(number)
-
-        if sequence not in sequence_ids:
-            continue
-
-        if not sequence in phmap:
-            phmap[sequence] = {}
-
-        ima = Interferogram.from_zygo_dat(fname)
-
-        phmap[sequence][number] = {"ima": ima.copy()}
-
-        phmap[sequence][number]["name"] = name
-        phmap[sequence][number]["rawmap"] = np.ma.masked_array(
-            data=ima.data, mask=np.isnan(ima.data), fill_value=0.0
-        )
-        logger.debug(f"{sequence:03d} {number:03d} {date} {name} {_}")
-
-    for sequence in phmap.keys():
-        _phmap = phmap[sequence]
-        numbers = sorted([num for num in _phmap.keys()])
-
-        rawmap = np.ma.stack([_phmap[num]["rawmap"] for num in numbers])
-        names = [_phmap[num]["name"] for num in numbers]
-
-        for num in numbers:
-            del _phmap[num]
-        _phmap["rawmap"] = rawmap
-        _phmap["number"] = numbers
-        _phmap["name"] = names
-
-        if "-g" in names[0] or "-1g" in names[0]:
-            _phmap["phi_offs"] = 0.0
-        elif "+g" in names[0] or "1g" in names[0] or "+1g" in names[0]:
-            _phmap["phi_offs"] = np.pi
-        else:
-            _phmap["phi_offs"] = 0.0
-
-    return phmap
+import os, glob, h5py
+from tigro.logging import logger
 
 
-def from_pickle(path):
-    with open(path, "rb") as fs:
-        phmap = pickle.load(fs)
-    return phmap
+
+def load_phmap( dir_path, sequence_ids):
+
+    allowed_extensions = '.h5', '.dat', '.4D'
+    namelist = []
+
+    for fextension in allowed_extensions:
+        namelist = namelist + glob.glob(os.path.join(dir_path, '*'+fextension))
+
+    namelist = sorted(namelist)
+    list_of_sequences = []
+    for fname in namelist:
+        basename, fextension = os.path.splitext(os.path.basename(fname))
+        
+        sequence, number, *_ = basename.split("_")
+        sequence = int(sequence)
+        try:
+            number = int(number)
+        except ValueError:
+            number = ''
+
+        list_of_sequences.append([sequence, number, basename, fextension, fname])
+
+    retval = {}; metadata = {}
+    for seq in sequence_ids:
+        sequence_files = [x for x in list_of_sequences if x[0] == seq]
+        
+        for seq in sequence_files:
+            sequence, number, name, fextension, full_path_name = seq
+            logger.info('Reading {:s}'.format(name))
+        
+            if not sequence in retval: 
+                retval[sequence] = {}    
+                metadata[sequence] = {}
+            
+            if fextension == '.dat':
+                number = int(number)
+                ima = Interferogram.from_zygo_dat(full_path_name)
+                data = np.array(ima.data)
+                data = np.ma.masked_array(
+                                data = data,
+                                mask = np.isnan(data),
+                                fill_value = 0.0)
+                
+                retval[sequence][number] = data
+                metadata[sequence][number] = {'name':name}
+            elif fextension == '.4D':
+                with h5py.File(full_path_name, 'r') as fs:
+                    if 'NumOfMeasurements' in fs['Measurement'].attrs.keys():
+                        Nmeas = fs['Measurement'].attrs['NumOfMeasurements']
+                        for key, item in fs['Measurement'].items():
+                            if 'Measurement' not in key: continue
+                            _, number = key.split('_')
+                            wav = fs['Measurement'][key].attrs['WavelengthInNanometers']
+                            data = np.array(
+                                    fs['Measurement'][key]['SurfaceInWaves']['Data'],
+                                    #fs['Measurement'][key]['UnprocessedUnwrappedPhase']['Data'],
+                                    dtype = np.float64
+                                    )*wav
+                            retval[sequence][number] = np.ma.masked_array(
+                                            data = data,
+                                            mask = np.isnan(data),
+                                            fill_value = 0.0)
+                            metadata[sequence][number] = {'name':name}
+                    else:
+                        raise Exception("4D single measurement reading not implemented yet.")
+    return retval, metadata
+   
+
+def sort_phmap(data, meta):
+    retval = {}
+    metadata = {}
+
+    for sequence in data.keys():
+        _data = data[sequence]
+        _meta = meta[sequence]
+
+        numbers = sorted([num for num in _data.keys()])
+
+        rawmap = np.ma.stack([_data[num] for num in numbers])
+        names = [_meta[num]['name'] for num in numbers]
+        retval[sequence] = rawmap
+        
+        if "-g" in names[0] or "-1g" in names[0] or 'ng'  in names[0]:
+            phi_offs = np.pi
+        elif "+g" in names[0] or "1g" in names[0] or "+1g" in names[0] or "pg" in names[0]:
+            phi_offs = 0.0
+        else: 
+            phi_offs = 0.0
+
+        metadata[sequence] = {'numbers' : numbers, \
+                              'names' : names,
+                              'phi_offs' : phi_offs                      
+                              }
+        
+        
+
+    return retval, metadata
