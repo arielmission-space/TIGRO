@@ -5,13 +5,13 @@ from tigro.logging import logger
 
 
 
-def load_phmap( dir_path, sequence_ids):
+def load_phmap( dir_path, sequence_ids, down_sampling=None):
 
     allowed_extensions = '.h5', '.dat', '.4D'
     namelist = []
 
     for fextension in allowed_extensions:
-        namelist = namelist + glob.glob(os.path.join(dir_path, '*'+fextension))
+        namelist = namelist + glob.glob(os.path.expanduser(os.path.join(dir_path, '*'+fextension)))
 
     namelist = sorted(namelist)
     list_of_sequences = []
@@ -47,7 +47,7 @@ def load_phmap( dir_path, sequence_ids):
                                 data = data,
                                 mask = np.isnan(data),
                                 fill_value = 0.0)
-                
+                if down_sampling: data = data[::down_sampling, ::down_sampling]
                 retval[sequence][number] = data
                 metadata[sequence][number] = {'name':name}
             elif fextension == '.4D':
@@ -63,13 +63,29 @@ def load_phmap( dir_path, sequence_ids):
                                     #fs['Measurement'][key]['UnprocessedUnwrappedPhase']['Data'],
                                     dtype = np.float64
                                     )*wav
+                            if down_sampling: data = data[::down_sampling, ::down_sampling]
                             retval[sequence][number] = np.ma.masked_array(
                                             data = data,
                                             mask = np.isnan(data),
                                             fill_value = 0.0)
                             metadata[sequence][number] = {'name':name}
                     else:
-                        raise Exception("4D single measurement reading not implemented yet.")
+                        number = int(number)
+                        wav = fs['Measurement'].attrs['WavelengthInNanometers']
+                        data = np.array(
+                                fs['Measurement']['SurfaceInWaves']['Data'],
+                                #fs['Measurement'][key]['UnprocessedUnwrappedPhase']['Data'],
+                                dtype = np.float64
+                            )*wav
+                        if down_sampling: data = data[::down_sampling, ::down_sampling]
+                        retval[sequence][number] = np.ma.masked_array(
+                                            data = data,
+                                            mask = np.isnan(data),
+                                            fill_value = 0.0)
+                        metadata[sequence][number] = {'name':name}
+                        
+
+
     return retval, metadata
    
 
