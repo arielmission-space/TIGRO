@@ -2,6 +2,7 @@ from astropy.stats import sigma_clip
 from tigro.logging import logger
 from tigro.utils import median_filter
 
+
 def flag_outliers(sequence, rawmap, kernel_size=3, sigma=100):
     """
     Flag outlier pixels in a sequence of 2D maps using median filtering
@@ -55,4 +56,4 @@ def flag_outliers(sequence, rawmap, kernel_size=3, sigma=100):
         mm = sigma_clip(mm, sigma=sigma, masked=True)
         retval[num].mask |= mm.mask
 
-    return retval    
+    return retval

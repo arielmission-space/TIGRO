@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 
+
 def transform(map, xc, yc, Dx, Dy, phi, flags=cv2.INTER_AREA, borderValue=np.nan):
     """
     Apply a rigid 2D transformation (rotation + translation) to a masked image.
@@ -34,5 +35,7 @@ def transform(map, xc, yc, Dx, Dy, phi, flags=cv2.INTER_AREA, borderValue=np.nan
     """
     RM = cv2.getRotationMatrix2D((xc, yc), np.rad2deg(phi), 1.0)
     RM[:, -1] += Dx, Dy
-    M_ = cv2.warpAffine(map.filled(np.nan), RM, map.shape, flags=flags, borderValue=borderValue)
+    M_ = cv2.warpAffine(
+        map.filled(np.nan), RM, map.shape, flags=flags, borderValue=borderValue
+    )
     return np.ma.MaskedArray(M_, np.isnan(M_))

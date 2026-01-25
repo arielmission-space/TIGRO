@@ -1,6 +1,7 @@
 import numpy as np
 from photutils.aperture import EllipticalAperture
 
+
 def common_reference_frame(meta, shape, crop_factor=0.0):
     """
     Construct a common reference frame based on the average ellipse parameters
@@ -29,50 +30,49 @@ def common_reference_frame(meta, shape, crop_factor=0.0):
     dict
         Dictionary containing the reference geometry and coordinate mappings:
 
-        - ``pupil_mask`` : 2D bool array  
+        - ``pupil_mask`` : 2D bool array
           Mask defining the valid elliptical aperture region.
-        - ``xc``, ``yc`` : int  
+        - ``xc``, ``yc`` : int
           Pixel coordinates of the aperture center.
-        - ``a``, ``b`` : float  
+        - ``a``, ``b`` : float
           Mean semi-major and semi-minor axes of the ellipse.
-        - ``yx`` : list of ndarray  
+        - ``yx`` : list of ndarray
           Normalized coordinate vectors ``[y, x]``.
-        - ``polar_rho`` : np.ma.MaskedArray  
+        - ``polar_rho`` : np.ma.MaskedArray
           Radial coordinate normalized to the semi-major axis.
-        - ``polar_phi`` : np.ma.MaskedArray  
+        - ``polar_phi`` : np.ma.MaskedArray
           Angular coordinate (radians).
-        - ``extent`` : list of float  
+        - ``extent`` : list of float
           Plotting extent ``[xmin, xmax, ymin, ymax]`` in normalized units.
     """
-    xc = shape[1]//2; yc = shape[0]//2
-    semi_major = np.mean([meta[key]['ellipse']['a'] for key in meta.keys()])
-    semi_minor = np.mean([meta[key]['ellipse']['b'] for key in meta.keys()])
-    aperture = EllipticalAperture( (xc, yc), 
-                               (1.0 - crop_factor) * semi_major, 
-                               (1.0 - crop_factor) * semi_minor, 
-                               theta=0.0)
-    mask = ~aperture.to_mask('center').to_image(shape).astype(bool)
-    x = (np.arange(shape[1])-xc)/semi_major
-    y = (np.arange(shape[0])-yc)/semi_major
+    xc = shape[1] // 2
+    yc = shape[0] // 2
+    semi_major = np.mean([meta[key]["ellipse"]["a"] for key in meta.keys()])
+    semi_minor = np.mean([meta[key]["ellipse"]["b"] for key in meta.keys()])
+    aperture = EllipticalAperture(
+        (xc, yc),
+        (1.0 - crop_factor) * semi_major,
+        (1.0 - crop_factor) * semi_minor,
+        theta=0.0,
+    )
+    mask = ~aperture.to_mask("center").to_image(shape).astype(bool)
+    x = (np.arange(shape[1]) - xc) / semi_major
+    y = (np.arange(shape[0]) - yc) / semi_major
 
     xx, yy = np.meshgrid(x, y)
-    rho = np.ma.MaskedArray(data = np.sqrt(xx**2 + yy**2), 
-                            mask = mask, 
-                            fill_value = 0.0)
-    phi = np.ma.MaskedArray(data = np.arctan2(yy, xx), 
-                            mask = mask, 
-                            fill_value = 0.0)
-    
+    rho = np.ma.MaskedArray(data=np.sqrt(xx**2 + yy**2), mask=mask, fill_value=0.0)
+    phi = np.ma.MaskedArray(data=np.arctan2(yy, xx), mask=mask, fill_value=0.0)
+
     retval = {
-        'pupil_mask':mask,
-        'xc':xc,
-        'yc':yc,
-        'a':semi_major,
-        'b':semi_minor,
-        'yx':[y, x],
-        'polar_rho':rho,
-        'polar_phi':phi,
-        'extent' : [x.min(), x.max(), y.min(), y.max()]
+        "pupil_mask": mask,
+        "xc": xc,
+        "yc": yc,
+        "a": semi_major,
+        "b": semi_minor,
+        "yx": [y, x],
+        "polar_rho": rho,
+        "polar_phi": phi,
+        "extent": [x.min(), x.max(), y.min(), y.max()],
     }
 
     return retval

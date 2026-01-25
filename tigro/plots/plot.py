@@ -214,7 +214,7 @@ def plot_polys(
     for seq, k in itertools.product(sequence_ids, poly_order):
         ax0.plot(
             seq,
-            phmap[seq]["coeff"][k-1] - phmap[sequence_ref]["coeff"][k-1],
+            phmap[seq]["coeff"][k - 1] - phmap[sequence_ref]["coeff"][k - 1],
             "." + colors[poly_order.index(k)],
             markersize=10,
         )

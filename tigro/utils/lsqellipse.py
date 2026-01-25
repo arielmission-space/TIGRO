@@ -55,6 +55,7 @@ class LsqEllipseNew(LsqE):
         Original ellipse fitting implementation upon which this class
         is based.
     """
+
     def as_parameters(self):
         """
         Return ellipse parameters in Wolfram MathWorld convention.
@@ -81,21 +82,27 @@ class LsqEllipseNew(LsqE):
         # a*x^2 + 2*b*x*y + c*y^2 + 2*d*x + 2*f*y + g = 0  (**) Eqn 15
         # We'll use (**) to follow their documentation
         a = self.coefficients[0]
-        b = self.coefficients[1] / 2.
+        b = self.coefficients[1] / 2.0
         c = self.coefficients[2]
-        d = self.coefficients[3] / 2.
-        f = self.coefficients[4] / 2.
+        d = self.coefficients[3] / 2.0
+        f = self.coefficients[4] / 2.0
         g = self.coefficients[5]
 
         # Finding center of ellipse [eqn.19 and 20] from (**)
-        x0 = (c*d - b*f) / (b**2 - a*c)
-        y0 = (a*f - b*d) / (b**2 - a*c)
+        x0 = (c * d - b * f) / (b**2 - a * c)
+        y0 = (a * f - b * d) / (b**2 - a * c)
         center = (x0, y0)
 
         # Find the semi-axes lengths [eqn. 21 and 22] from (**)
-        numerator = 2 * (a*f**2 + c*d**2 + g*b**2 - 2*b*d*f - a*c*g)
-        denominator1 = (b**2 - a*c) * ( np.sqrt((a-c)**2+4*b**2) - (c+a))  # noqa: E201
-        denominator2 = (b**2 - a*c) * (-np.sqrt((a-c)**2+4*b**2) - (c+a))
+        numerator = 2 * (
+            a * f**2 + c * d**2 + g * b**2 - 2 * b * d * f - a * c * g
+        )
+        denominator1 = (b**2 - a * c) * (
+            np.sqrt((a - c) ** 2 + 4 * b**2) - (c + a)
+        )  # noqa: E201
+        denominator2 = (b**2 - a * c) * (
+            -np.sqrt((a - c) ** 2 + 4 * b**2) - (c + a)
+        )
         width = np.sqrt(numerator / denominator1)
         height = np.sqrt(numerator / denominator2)
 
@@ -105,28 +112,28 @@ class LsqEllipseNew(LsqE):
         if b == 0 and a < c:
             phi = 0.0
         elif b == 0 and a > c:
-            phi = np.pi/2
+            phi = np.pi / 2
         elif b != 0 and a < c:
-            phi = 0.5 * np.arctan(2*b/(a-c))
+            phi = 0.5 * np.arctan(2 * b / (a - c))
         elif b != 0 and a > c:
-            phi = 0.5 * (np.pi + np.arctan(2*b/(a-c)))
+            phi = 0.5 * (np.pi + np.arctan(2 * b / (a - c)))
         elif a == c:
             phi = 0.0
         else:
             raise RuntimeError("Unreachable")
 
         return center, width, height, phi
-    
-    def inside(self, x, y, threshold = 0.9):
-        # Check if coordinate (x, y) are withing the ellipse 
+
+    def inside(self, x, y, threshold=0.9):
+        # Check if coordinate (x, y) are withing the ellipse
         #   that has been fit previously returing the following
-        
+
         (xc, yc), a, b, phi = self.as_parameters()
 
         c, s = np.cos(phi), np.sin(phi)
-        R = np.array( [[c, -s], [s, c]])
-        v = np.vstack( (x-xc, y-yc) )    
-        v = R.T@v
-        condition = (v[0]/a)**2 + (v[1]/b)**2 < threshold
+        R = np.array([[c, -s], [s, c]])
+        v = np.vstack((x - xc, y - yc))
+        v = R.T @ v
+        condition = (v[0] / a) ** 2 + (v[1] / b) ** 2 < threshold
 
         return condition

@@ -1,6 +1,7 @@
 import numpy as np
 from tigro.logging import logger
 
+
 def fit_polynomial(sequence, ima, zkm):
     """
     Fit a polynomial model to a 2D image using a masked polynomial basis.
@@ -36,21 +37,21 @@ def fit_polynomial(sequence, ima, zkm):
     ------
     TypeError
         If `ima` is not a masked array.
-    """    
-    logger.info('Fitting sequence {:d}'.format(sequence))
+    """
+    logger.info("Fitting sequence {:d}".format(sequence))
     zkm = zkm.copy()
-    if hasattr(ima, 'mask'):
+    if hasattr(ima, "mask"):
         zkm.mask |= ima.mask
     else:
-        raise TypeError('plyfit expects polynomials as masked arrays')
-    
-    A =  np.einsum('ijk,ljk', zkm.filled(0), zkm.filled(0))
+        raise TypeError("plyfit expects polynomials as masked arrays")
+
+    A = np.einsum("ijk,ljk", zkm.filled(0), zkm.filled(0))
     A /= zkm[0].count()
-    
+
     A[np.abs(A) < 1e-10] = 0.0
-    
+
     B = np.ma.mean(zkm * ima, axis=(-2, -1))
     coeff = np.linalg.lstsq(A, B, rcond=-1)[0]
-    
+
     model = coeff.reshape(-1, 1, 1) * zkm
     return model, coeff
