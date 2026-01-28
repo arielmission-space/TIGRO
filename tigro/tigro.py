@@ -3,7 +3,7 @@ import shutil
 from tigro import __pkg_name__
 from tigro import __version__
 from tigro import logger
-from tigro.core.run import run
+# from tigro.core.run import run
 
 
 def main():
@@ -75,7 +75,7 @@ def main():
         addLogFile(fname=logfile, reset=True, level=logger.level)
         logger.info("Logging to file enabled")
 
-    run(args.config, args.outpath)
+    # run(args.config, args.outpath)
 
     end = timer()
     logger.info(f"Finished in {end - start:.2f} seconds")

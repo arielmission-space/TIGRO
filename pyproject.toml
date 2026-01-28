@@ -1,16 +1,15 @@
 [build-system]
-requires = ["setuptools>=61.2"]
-build-backend = "setuptools.build_meta"
+requires = ["setuptools", "wheel", "poetry-core>=1.0"]
+build-backend = "poetry.core.masonry.api"
 
-[project]
+[tool.poetry]
 name = "tigro"
-version = "0.2.0"
-authors = [
-    {name = "Andrea Bocchieri <andrea.bocchieri@uniroma1.it>"},
-    {name = "Enzo Pascale"},
-]
-description = "TIGRO is a tool developed by the Tiger Team of Ariel with the purpose to analyse the interferometric measurements of M1 + TA of the mission done at the Osservatorio Astrofisico di Arcetri."
-license = {text = "BSD-3-Clause"}
+version = "0.2.0-dev1"
+description = "TIGRO is a tool developed by the Tiger Team of the Ariel Telescope Assembly with the purpose to analyse the interferometric measurements of the mission."
+license = "BSD-3-Clause"
+authors = ["Andrea Bocchieri <andrea.bocchieri@esa.int>", "Enzo Pascale"]
+readme = "README.md"
+homepage = "https://github.com/arielmission-space/TIGRO"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
@@ -25,49 +24,26 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Software Development :: Libraries",
 ]
-requires-python = ">3.8"
-dependencies = [
-    "paos>=1.1.0",
-    "prysm>=0.21.1",
-    "lsq-ellipse>=2.2.1",
-    "opencv-python>=4.10.0",
-    "shiny>=0.10.2",
-    "faicons>=0.2.2",
-    "mpld3>=0.5.10",
-]
 
-[project.readme]
-file = "README.md"
-content-type = "text/markdown"
+[tool.poetry.dependencies]
+python = "^3.9"
+paos = "^1.2.12"
+numpy = "^1.26"
+prysm = "*"
+lsq-ellipse = "*"
+opencv-python = "*"
+shiny = "*"
+faicons = "*"
+mpld3 = "*"
 
-[project.urls]
-Homepage = "https://github.com/arielmission-space/TIGRO"
-"Bug Tracker" = "https://github.com/arielmission-space/TIGRO/issues"
-"Source Code" = "https://github.com/arielmission-space/TIGRO"
+[tool.poetry.group.docs.dependencies]
+sphinx = "*"
+sphinxcontrib-napoleon = "*"
+sphinxcontrib-jsmath = "*"
+sphinx-markdown-tables = "*"
+jupyter-sphinx = "*"
+sphinx-rtd-theme = "*"
 
-[project.optional-dependencies]
-docs = [
-    "sphinx>=5.0",
-    "sphinxcontrib-napoleon",
-    "sphinxcontrib-jsmath",
-    "sphinx_markdown_tables>=0.0.15",
-    "jupyter-sphinx>=0.3.2",
-    "sphinx_rtd_theme>=1.0.0",
-]
-test = [
-    "codecov",
-    "flake8",
-    "pytest",
-]
-
-[project.scripts]
+[tool.poetry.scripts]
 tigro = "tigro.tigro:main"
 tigro_ui = "tigro.tigro_ui:main"
-
-[tool.setuptools]
-zip-safe = true
-include-package-data = true
-license-files = ["LICENSE"]
-
-[tool.setuptools.packages]
-find = {namespaces = false}
