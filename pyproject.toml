@@ -27,7 +27,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-paos = "^1.2.12"
+paos = "^1.2.13"
 numpy = "^1.26"
 prysm = "*"
 lsq-ellipse = "*"

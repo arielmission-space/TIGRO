@@ -3536,14 +3536,14 @@ files = [
 
 [[package]]
 name = "paos"
-version = "1.2.12"
+version = "1.2.13"
 description = "PAOS, the Physical Optics Simulator, is a fast, modern, and reliable Python package for Physical Optics studies. It implements Physical Optics Propagation in Fresnel approximation and paraxial ray tracing to analyze complex waveform propagation through both generic and off-axes optical systems."
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "paos-1.2.12-py3-none-any.whl", hash = "sha256:d11dd97a9975234f76f75f0f5176c29183d010ea01b25bb77b2004375cec53de"},
-    {file = "paos-1.2.12.tar.gz", hash = "sha256:58d92c2b5128b2aeda06b7622fb0663193ff2c5657039692a99e531c6639f59d"},
+    {file = "paos-1.2.13-py3-none-any.whl", hash = "sha256:f1e0b4fa824493fe3c85a59cd064fa275c96eaca562ec7eec1826c139a2ffbb1"},
+    {file = "paos-1.2.13.tar.gz", hash = "sha256:1ea3dff5f0224e45d0be687999d2a537847b8eafe4e26cf03709ce1aa4a7e9f1"},
 ]
 
 [package.dependencies]
@@ -4328,7 +4328,7 @@ description = "Python for Window Extensions"
 optional = false
 python-versions = "*"
 groups = ["main", "docs"]
-markers = "python_version == \"3.9\" and sys_platform == \"win32\" and platform_python_implementation != \"PyPy\""
+markers = "sys_platform == \"win32\" and platform_python_implementation != \"PyPy\" and python_version == \"3.9\""
 files = [
     {file = "pywin32-311-cp310-cp310-win32.whl", hash = "sha256:d03ff496d2a0cd4a5893504789d4a15399133fe82517455e78bad62efbb7f0a3"},
     {file = "pywin32-311-cp310-cp310-win_amd64.whl", hash = "sha256:797c2772017851984b97180b0bebe4b620bb86328e8a884bb626156295a63b3b"},
@@ -6581,4 +6581,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9"
-content-hash = "a78cab0d9a04ebe0020102e19997a4339ce05704b875d929ff737a678dc8d21b"
+content-hash = "a776be15aae62ccb5aeac337ff2f01a90a6e4ea7e072145dc55003757fabeb16"
