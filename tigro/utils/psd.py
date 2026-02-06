@@ -111,13 +111,17 @@ def compute_psd(data, nbins, delta_d=1.0, remove_dc_offs=True, verbose=True):
 def compute_psd_windowed(
     data,
     nbins,
-    delta_d=1,
+    delta_d=1.0,
+    remove_dc_offs=True,
     verbose=True,
     ellipse=None,
     plot=False,
 ):
     if not hasattr(data, "mask"):
         data = np.ma.MaskedArray(data.copy(), ~np.isfinite(data))
+
+    if remove_dc_offs:
+        data -= data.mean()
 
     if ellipse:
         w2d = make_ellipse_window2d(shape=data.shape, ellipse=ellipse)
