@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "tigro"
-version = "0.2.0-dev1"
+version = "0.2.1"
 description = "TIGRO is a tool developed by the Tiger Team of the Ariel Telescope Assembly with the purpose to analyse the interferometric measurements of the mission."
 license = "BSD-3-Clause"
 authors = ["Andrea Bocchieri <andrea.bocchieri@esa.int>", "Enzo Pascale"]

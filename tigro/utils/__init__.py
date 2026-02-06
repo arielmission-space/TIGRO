@@ -3,6 +3,7 @@ from .flag_outliers import flag_outliers
 from .lsqellipse import LsqEllipseNew
 from .transform import transform
 from .common_reference_frame import common_reference_frame
+from .psd import compute_psd, compute_psd_windowed
 
 __all__ = [
     "median_filter",
@@ -10,4 +11,6 @@ __all__ = [
     "LsqEllipseNew",
     "transform",
     "common_reference_frame",
+    "compute_psd",
+    "compute_psd_windowed",
 ]
