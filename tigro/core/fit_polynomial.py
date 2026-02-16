@@ -38,7 +38,7 @@ def fit_polynomial(sequence, ima, zkm):
     TypeError
         If `ima` is not a masked array.
     """
-    logger.info("Fitting sequence {:d}".format(sequence))
+    logger.info(f"Fitting sequence {sequence}")
     zkm = zkm.copy()
     if hasattr(ima, "mask"):
         zkm.mask |= ima.mask
