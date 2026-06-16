@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from prysm.interferogram import Interferogram
 import os, glob, h5py
 from tigro.logging import logger
@@ -65,15 +66,15 @@ def load_phmap(dir_path, sequence_ids, down_sampling=None):
                                     fs["Measurement"][key]["SurfaceInWaves"]["Data"],
                                     # fs['Measurement'][key]['UnprocessedUnwrappedPhase']['Data'],
                                     dtype=np.float64,
-                                )
-                                * wav
+                                ) * wav
                             )
                             if down_sampling:
                                 data = data[::down_sampling, ::down_sampling]
                             retval[sequence][number] = np.ma.masked_array(
                                 data=data, mask=np.isnan(data), fill_value=0.0
                             )
-                            metadata[sequence][number] = {"name": name}
+                            metadata[sequence][number] = {"name": name,
+                                                          "Timestamp" : fs["Measurement"][key]["Metadata"].attrs["Timestamp"].decode('ascii')}
                     else:
                         number = int(number)
                         wav = fs["Measurement"].attrs["WavelengthInNanometers"]
@@ -90,7 +91,8 @@ def load_phmap(dir_path, sequence_ids, down_sampling=None):
                         retval[sequence][number] = np.ma.masked_array(
                             data=data, mask=np.isnan(data), fill_value=0.0
                         )
-                        metadata[sequence][number] = {"name": name}
+                        metadata[sequence][number] = {"name": name,
+                                                      "Timestamp" : fs["Measurement"][key]["Metadata"].attrs["Timestamp"].decode('ascii')}
 
     return retval, metadata
 
@@ -103,9 +105,9 @@ def sort_phmap(data, meta):
         _data = data[sequence]
         _meta = meta[sequence]
 
-        numbers = sorted([num for num in _data.keys()])
-
+        numbers = sorted([num for num in _data.keys()], key=int)
         rawmap = np.ma.stack([_data[num] for num in numbers])
+        timestamps = pd.to_datetime([_meta[num]['Timestamp'] for num in numbers], utc=True)
         names = [_meta[num]["name"] for num in numbers]
         retval[sequence] = rawmap
 
@@ -121,6 +123,6 @@ def sort_phmap(data, meta):
         else:
             phi_offs = 0.0
 
-        metadata[sequence] = {"numbers": numbers, "names": names, "phi_offs": phi_offs}
+        metadata[sequence] = {"numbers": numbers, "names": names, "phi_offs": phi_offs, "timestamp" : timestamps}
 
     return retval, metadata
