@@ -124,16 +124,52 @@ class LsqEllipseNew(LsqE):
 
         return center, width, height, phi
 
-    def inside(self, x, y, threshold=0.9):
-        # Check if coordinate (x, y) are withing the ellipse
-        #   that has been fit previously returing the following
+    # def inside(self, x, y, threshold=0.9):
+    #     # Check if coordinate (x, y) are withing the ellipse
+    #     #   that has been fit previously returing the following
 
+    #     (xc, yc), a, b, phi = self.as_parameters()
+
+    #     c, s = np.cos(phi), np.sin(phi)
+    #     R = np.array([[c, -s], [s, c]])
+    #     v = np.vstack((x - xc, y - yc))
+    #     v = R.T @ v
+    #     condition = (v[0] / a) ** 2 + (v[1] / b) ** 2 < threshold
+
+    #     return condition
+    #
+    def elliptical_sqradius(self, x, y):
+        """
+        Return the squared normalized elliptical radius.
+
+        Points on the fitted ellipse have rho2 = 1.
+        Points inside the ellipse have rho2 < 1.
+        Points outside the ellipse have rho2 > 1.
+        """
         (xc, yc), a, b, phi = self.as_parameters()
 
-        c, s = np.cos(phi), np.sin(phi)
-        R = np.array([[c, -s], [s, c]])
-        v = np.vstack((x - xc, y - yc))
-        v = R.T @ v
-        condition = (v[0] / a) ** 2 + (v[1] / b) ** 2 < threshold
+        x = np.asarray(x, dtype=float)
+        y = np.asarray(y, dtype=float)
 
-        return condition
+        dx = x - xc
+        dy = y - yc
+
+        c = np.cos(phi)
+        s = np.sin(phi)
+
+        # Coordinates in the ellipse principal-axis frame
+        xp = c * dx + s * dy
+        yp = -s * dx + c * dy
+
+        return (xp / a) ** 2 + (yp / b) ** 2
+
+    def inside(self, x, y, threshold=0.90):
+        """
+        Return True for points whose squared normalized elliptical
+        radius is smaller than threshold.
+        """
+        rho2 = self.elliptical_sqradius(x, y)
+
+        return rho2 < threshold
+
+

@@ -1,16 +1,24 @@
 import numpy as np
 import pickle, glob, os
 import h5py
+import pandas as pd
 
 
 def load_recursively_from_h5(group, metadata):
     for key, item in group.items():
         if isinstance(item, h5py.Dataset):
             metadata[key] = item[()]
+
         elif isinstance(item, h5py.Group):
             metadata[key] = {}
             load_recursively_from_h5(item, metadata[key])
 
+        for k, element in item.attrs.items():
+            if 'timestamp' in k: 
+                metadata[key][k] = pd.Timestamp(element)
+            else:
+                metadata[key][k] = element
+              
 
 def get_processed_sequence(
     sequence,
@@ -39,15 +47,21 @@ def get_processed_sequence(
         elif ext == ".h5":
             with h5py.File(fname, "r") as fs:
                 _data = {}
-                load_recursively_from_h5(fs["data"], _data)
-                _map, _map_ptt, _map_pttf, _map_residual = (
+                load_recursively_from_h5(fs[str(seq)], _data)
+                                    
+                if 'timestamp' in _data['metadata'].keys():
+                    _data['metadata']["timestamp"] = pd.Timestamp(_data['metadata']["timestamp"])
+
+                if 'uref' in _data.keys(): _data['metadata']['uref'] = _data['uref']
+                _map, _map_ptt, _map_pttf, _map_residual, _metadata = (
                     np.ma.masked_invalid(_data["regmap"]),
                     np.ma.masked_invalid(_data["regmap_ptt"]),
                     np.ma.masked_invalid(_data["regmap_pttf"]),
                     np.ma.masked_invalid(_data["regmap_residual"]),
+                    _data["metadata"]
                 )
-                _metadata = {}
-                load_recursively_from_h5(fs["metadata"], _metadata)
+                #_metadata = {}
+                #load_recursively_from_h5(fs[f"{seq}/metadata"], _metadata)
 
         else:
             raise ValueError("Unsupported file extension: {:s}".format(ext))

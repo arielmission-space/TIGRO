@@ -23,6 +23,7 @@ from .logging import logger
 from . import io
 from . import utils
 from . import core
+from . import plots
 
 
-__all__ = ["io", "utils", "logger", "core"]
+__all__ = ["io", "utils", "logger", "core", "plots"]
