@@ -4,54 +4,106 @@ from tigro.logging import logger
 
 def fit_polynomial(sequence, ima, zkm):
     """
-    Fit a polynomial model to a 2D image using a masked polynomial basis.
+    Fit a set of basis functions to a 2D masked image by linear least squares.
 
-    This function performs a least-squares fit of a set of polynomial basis
-    functions (`zkm`) to an input image (`ima`). The fit is carried out only
-    on valid (unmasked) pixels, and masking from the input image is propagated
-    to the polynomial basis before fitting.
+    The input basis functions are fitted simultaneously to the valid pixels
+    of `ima`. A common mask is constructed by combining the image mask with
+    the masks of all basis functions, so that only pixels valid in both the
+    image and every basis function are used in the fit.
 
-    The polynomial coefficients are obtained by solving the normal equations
-    constructed from the inner products of the basis functions. The resulting
-    model is returned as a linear combination of the input basis.
+    The fitted model is
+
+        ima ~= sum_k coeff[k] * zkm[k]
+
+    where the coefficients are obtained from an ordinary linear least-squares
+    solution. The function also estimates the residual variance and the
+    covariance matrix of the fitted coefficients.
 
     Parameters
     ----------
     sequence : int
-        Sequence identifier, used only for logging purposes.
+        Sequence identifier used only for logging.
     ima : numpy.ma.MaskedArray
-        Input 2D image to be fitted. Must be a masked array.
+        Two-dimensional masked image to be fitted, with shape `(ny, nx)`.
     zkm : numpy.ma.MaskedArray
-        Polynomial basis array of shape (N, Ny, Nx), where N is the number
-        of basis functions. Must be a masked array.
+        Set of basis functions with shape `(n_basis, ny, nx)`. The spatial
+        dimensions must match those of `ima`.
 
     Returns
     -------
     model : numpy.ma.MaskedArray
-        Reconstructed model image(s), obtained as the linear combination
-        of the polynomial basis with the fitted coefficients.
+        Individual fitted model components, with shape
+        `(n_basis, ny, nx)`. The total fitted model is obtained with
+
+        `model.sum(axis=0)`.
+
     coeff : numpy.ndarray
-        Array of fitted polynomial coefficients of length N.
+        Best-fit coefficients, with shape `(n_basis,)`.
+
+    cov : numpy.ndarray
+        Estimated covariance matrix of the fitted coefficients, with shape
+        `(n_basis, n_basis)`. It is computed as
+
+        `var * pinv(X.T @ X)`
+
+        where `var` is the residual variance and `X` is the design matrix.
 
     Raises
     ------
     TypeError
-        If `ima` is not a masked array.
+        If either `ima` or `zkm` is not a NumPy masked array.
+
+    Notes
+    -----
+    The residual variance is estimated as
+
+        RSS / (N - n_basis)
+
+    where `N` is the number of valid fitted pixels and `RSS` is the residual
+    sum of squares.
+
+    Pixels masked in `ima` or in any element of `zkm` are excluded from the
+    fit and masked in the returned model components.
     """
+    
     logger.info(f"Fitting sequence {sequence}")
-    zkm = zkm.copy()
-    if hasattr(ima, "mask"):
-        zkm.mask |= ima.mask
-    else:
-        raise TypeError("plyfit expects polynomials as masked arrays")
 
-    A = np.einsum("ijk,ljk", zkm.filled(0), zkm.filled(0))
-    A /= zkm[0].count()
+    if not np.ma.isMaskedArray(zkm) or not np.ma.isMaskedArray(ima):
+        raise TypeError("fit_polynomial expects masked arrays")
 
-    A[np.abs(A) < 1e-10] = 0.0
+    zkm = np.ma.asarray(zkm).copy()
+    ima = np.ma.asarray(ima).copy()
 
-    B = np.ma.mean(zkm * ima, axis=(-2, -1))
-    coeff = np.linalg.lstsq(A, B, rcond=-1)[0]
+    # Common mask: reject pixels masked either in the image
+    # or in any polynomial basis function
+    mask = np.any(np.ma.getmaskarray(zkm), axis=0)
+    mask |= np.ma.getmaskarray(ima)
 
-    model = coeff.reshape(-1, 1, 1) * zkm
-    return model, coeff
+    zkm.mask = np.broadcast_to(mask, zkm.shape)
+    ima.mask = mask
+
+    valid = ~mask
+
+    # Design matrix
+    X = zkm.data[:, valid].T
+    y = ima.data[valid]
+
+    N = y.size
+
+    # Least-squares fit
+    coeff, *_ = np.linalg.lstsq(X, y, rcond=None)
+
+    # Model components
+    model = coeff[:, None, None] * zkm
+
+    # Residual variance
+    residual = y - X @ coeff
+    rss = np.sum(residual**2)
+
+    dof = N - coeff.size
+    var = rss / dof
+
+    # Coefficient covariance
+    cov = var * np.linalg.pinv(X.T @ X)
+
+    return model, coeff, cov

@@ -2,7 +2,8 @@ import numpy as np
 from photutils.aperture import EllipticalAperture
 
 
-def common_reference_frame(meta, shape, crop_factor=0.0):
+def common_reference_frame(meta, shape, crop_factor=0.0, 
+                           discard_sequences = []):
     """
     Construct a common reference frame based on the average ellipse parameters
     extracted from multiple datasets.
@@ -47,8 +48,12 @@ def common_reference_frame(meta, shape, crop_factor=0.0):
     """
     xc = shape[1] // 2
     yc = shape[0] // 2
-    semi_major = np.mean([meta[key]["ellipse"]["a"] for key in meta.keys()])
-    semi_minor = np.mean([meta[key]["ellipse"]["b"] for key in meta.keys()])
+    a_list = [meta[key]["ellipse"]["a"] for key in meta.keys() if not key in discard_sequences]
+    b_list = [meta[key]["ellipse"]["b"] for key in meta.keys() if not key in discard_sequences]
+            
+    semi_major = np.median(a_list)
+    semi_minor = np.median(b_list)
+
     aperture = EllipticalAperture(
         (xc, yc),
         (1.0 - crop_factor) * semi_major,
@@ -69,6 +74,12 @@ def common_reference_frame(meta, shape, crop_factor=0.0):
         "yc": yc,
         "a": semi_major,
         "b": semi_minor,
+        "std(a)": np.nanstd(a_list),
+        "min(a)": np.nanmin(a_list),
+        "max(a)": np.nanmax(a_list),
+        "std(b)": np.nanstd(b_list),
+        "min(b)": np.nanmin(b_list),
+        "max(b)": np.nanmax(b_list),
         "yx": [y, x],
         "polar_rho": rho,
         "polar_phi": phi,
